@@ -1,6 +1,9 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'settingsPage.dart';
+import 'calendarPage.dart';
+import 'listPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -65,10 +68,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List _screens = [
     {
-      "screen": const GeneratorPage(),
+      "screen": const listPage(),
       "title": "\n"
     }, //app crashes if the "title" object is absent
-    {"screen": const FavoritesPage(), "title": "\n"},
+    {"screen": const calendarPage(), "title": "\n"},
     {"screen": const SettingsPage(), "title": "\n"},
   ];
 
@@ -105,52 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class GeneratorPage extends StatelessWidget {
-  const GeneratorPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var pair = appState.current;
-
-    IconData icon;
-    if (appState.favorites.contains(pair)) {
-      icon = Icons.favorite;
-    } else {
-      icon = Icons.favorite_border;
-    }
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BigCard(pair: pair),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  appState.toggleFavorite();
-                },
-                icon: Icon(icon),
-                label: const Text('Like'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: const Text('Next'),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class BigCard extends StatelessWidget {
   const BigCard({
     super.key,
@@ -176,100 +133,6 @@ class BigCard extends StatelessWidget {
           semanticsLabel: "${pair.first} ${pair.second}",
         ),
       ),
-    );
-  }
-}
-
-class FavoritesPage extends StatefulWidget {
-  const FavoritesPage({super.key});
-
-  @override
-  State<FavoritesPage> createState() => _FavoritesPageState();
-}
-
-class _FavoritesPageState extends State<FavoritesPage> {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    if (appState.favorites.isEmpty) {
-      return const Center(
-        child: Text('No favorites yet.'),
-      );
-    }
-
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text('You have '
-              '${appState.favorites.length} favorites:'),
-        ),
-        for (var pair in appState.favorites)
-          ListTile(
-            leading: IconButton(
-              icon: const Icon(Icons.delete_forever),
-              onPressed: () {
-                appState.deleteSingle(pair);
-                setState(() {});
-              },
-            ),
-
-            // leading: Icon(Icons.delete),
-            title: Text(pair.asLowerCase),
-          ),
-        ElevatedButton.icon(
-          onPressed: () {
-            appState.deleteList();
-            setState(() {});
-          },
-          icon: const Icon(
-            // <-- Icon
-            Icons.delete,
-            size: 24.0,
-          ),
-          label: const Text('Delete List'), // <-- Text
-        ),
-      ],
-    );
-  }
-}
-
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
-
-  @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    return ListView(
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(20),
-          child: Text(
-            'Settings',
-            style: TextStyle(fontSize: 40),
-          ),
-        ),
-        // for (var color in appState.colors)
-        ListTile(
-          leading: TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
-            ),
-            onPressed: () {},
-            child: const Text('Enabled'),
-          ),
-
-          // leading: Icon(Icons.delete),
-          // title: Text(color),
-        ),
-      ],
     );
   }
 }
