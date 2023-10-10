@@ -1,7 +1,6 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'models.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,10 +43,12 @@ class MyAppState extends ChangeNotifier {
     }
     notifyListeners();
   }
-  void deleteList(){
+
+  void deleteList() {
     favorites.clear();
   }
-  void deleteSingle(var word){
+
+  void deleteSingle(var word) {
     favorites.remove(word);
   }
 }
@@ -63,29 +64,30 @@ class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
 
   final List _screens = [
-    {"screen": const GeneratorPage(), "title": "\n"}, //app crashes if the "title" object is absent
+    {
+      "screen": const GeneratorPage(),
+      "title": "\n"
+    }, //app crashes if the "title" object is absent
     {"screen": const FavoritesPage(), "title": "\n"},
     {"screen": const SettingsPage(), "title": "\n"},
   ];
 
-  void _selectScreen(int value){
-    setState((){ //changes the page to the selected one
+  void _selectScreen(int value) {
+    setState(() {
+      //changes the page to the selected one
       selectedIndex = value;
-
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(    
+    return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("We might add something here?",
-        style: TextStyle(
-          color: Colors.white
-        ),),
-        
+        title: const Text(
+          "We might add something here?",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.pink,
       ),
       body: _screens[selectedIndex]["screen"],
@@ -94,9 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _selectScreen,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "Calendar"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month), label: "Calendar"),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
-
         ],
       ),
     );
@@ -207,34 +209,31 @@ class _FavoritesPageState extends State<FavoritesPage> {
           ListTile(
             leading: IconButton(
               icon: const Icon(Icons.delete_forever),
-              onPressed: (){
+              onPressed: () {
                 appState.deleteSingle(pair);
                 setState(() {});
-
               },
-              ),
-            
+            ),
+
             // leading: Icon(Icons.delete),
             title: Text(pair.asLowerCase),
           ),
-          
-          ElevatedButton.icon(
-            onPressed: () {
-              appState.deleteList();
-              setState(() {});
-            },
-              icon: const Icon( // <-- Icon
-              Icons.delete,
-              size: 24.0,
-              
-            ),
-            label: const Text('Delete List'), // <-- Text
+        ElevatedButton.icon(
+          onPressed: () {
+            appState.deleteList();
+            setState(() {});
+          },
+          icon: const Icon(
+            // <-- Icon
+            Icons.delete,
+            size: 24.0,
           ),
+          label: const Text('Delete List'), // <-- Text
+        ),
       ],
     );
   }
 }
-
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -247,29 +246,29 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-  
+
     return ListView(
       children: [
         const Padding(
           padding: EdgeInsets.all(20),
-          child: Text('Settings',
-              style: TextStyle(fontSize: 40),
-              ),
+          child: Text(
+            'Settings',
+            style: TextStyle(fontSize: 40),
+          ),
         ),
         // for (var color in appState.colors)
-          ListTile(
-            leading: TextButton(
+        ListTile(
+          leading: TextButton(
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 20),
             ),
             onPressed: () {},
             child: const Text('Enabled'),
           ),
-            
-            // leading: Icon(Icons.delete),
-            // title: Text(color),
-          ),
-          
+
+          // leading: Icon(Icons.delete),
+          // title: Text(color),
+        ),
       ],
     );
   }
