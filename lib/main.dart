@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _selectScreen,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorites"),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "Calendar"),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
 
         ],
@@ -206,7 +206,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         for (var pair in appState.favorites)
           ListTile(
             leading: IconButton(
-              icon: const Icon(Icons.edit_calendar),
+              icon: const Icon(Icons.delete_forever),
               onPressed: (){
                 appState.deleteSingle(pair);
                 setState(() {});
@@ -258,25 +258,17 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         // for (var color in appState.colors)
           ListTile(
-            leading: IconButton(
-              icon: const Icon(Icons.check_box),
-              onPressed: (){
-                MaterialApp(
-                  title: 'Namer App',
-                  theme: ThemeData(
-                  useMaterial3: true,
-                  colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-                ),
-                );
-                  setState(() {});
-
-              },
-              ),
+            leading: TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: () {},
+            child: const Text('Enabled'),
+          ),
             
             // leading: Icon(Icons.delete),
             // title: Text(color),
           ),
-          
           
       ],
     );
