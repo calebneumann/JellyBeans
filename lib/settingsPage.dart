@@ -30,7 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
               textStyle: const TextStyle(fontSize: 20),
             ),
             onPressed: () {},
-            child: const Text('Enabled'),
+            child: const Text("This doesn't do anything"),
           ),
             
             // leading: Icon(Icons.delete),
