@@ -1,57 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'main.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class calendarPage extends StatefulWidget {
-  const calendarPage({super.key});
-
   @override
-  State<calendarPage> createState() => _calendarPageState();
+  _calendarPageState createState() => _calendarPageState();
 }
 
 class _calendarPageState extends State<calendarPage> {
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('TableCalendar - Basics'),
+      ),
+      body: TableCalendar(
+        firstDay: DateTime.utc(2010, 10, 16),
+        lastDay: DateTime.utc(2030, 3, 14),
+        focusedDay: DateTime.now(),
+        calendarFormat: _calendarFormat,
+        selectedDayPredicate: (day) {
+          // Use `selectedDayPredicate` to determine which day is currently selected.
+          // If this returns true, then `day` will be marked as selected.
 
-    if (appState.favorites.isEmpty) {
-      return const Center(
-        child: Text('No favorites yet.'),
-      );
-    }
-
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text('You have ' '${appState.favorites.length} favorites:'),
-        ),
-        for (var pair in appState.favorites)
-          ListTile(
-            leading: IconButton(
-              icon: const Icon(Icons.delete_forever),
-              onPressed: () {
-                appState.deleteSingle(pair);
-                setState(() {});
-              },
-            ),
-
-            // leading: Icon(Icons.delete),
-            title: Text(pair.asLowerCase),
-          ),
-        ElevatedButton.icon(
-          onPressed: () {
-            appState.deleteList();
-            setState(() {});
-          },
-          icon: const Icon(
-            // <-- Icon
-            Icons.delete,
-            size: 24.0,
-          ),
-          label: const Text('Delete List'), // <-- Text
-        ),
-      ],
+          // Using `isSameDay` is recommended to disregard
+          // the time-part of compared DateTime objects.
+          return isSameDay(_selectedDay, day);
+        },
+        onDaySelected: (selectedDay, focusedDay) {
+          if (!isSameDay(_selectedDay, selectedDay)) {
+            // Call `setState()` when updating the selected day
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+            });
+          }
+        },
+        onFormatChanged: (format) {
+          if (_calendarFormat != format) {
+            // Call `setState()` when updating calendar format
+            setState(() {
+              _calendarFormat = format;
+            });
+          }
+        },
+        onPageChanged: (focusedDay) {
+          // No need to call `setState()` here
+          _focusedDay = focusedDay;
+        },
+      ),
     );
   }
 }

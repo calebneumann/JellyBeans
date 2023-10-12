@@ -71,8 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
       "screen": const listPage(),
       "title": "\n"
     }, //app crashes if the "title" object is absent
-    {"screen": const calendarPage(), "title": "\n"},
-    {"screen": const SettingsPage(), "title": "\n"},
+    {"screen": calendarPage(), "title": "\n"},
+    {"screen": SettingsPage(), "title": "\n"},
   ];
 
   void _selectScreen(int value) {
