@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'main.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -13,7 +11,6 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
   
     return ListView(
       children: [
@@ -30,7 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
               textStyle: const TextStyle(fontSize: 20),
             ),
             onPressed: () {},
-            child: const Text('Enabled'),
+            child: const Text("This doesn't do anything"),
           ),
             
             // leading: Icon(Icons.delete),
