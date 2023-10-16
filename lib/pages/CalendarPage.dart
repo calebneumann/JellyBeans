@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class calendarPage extends StatefulWidget {
+class CalendarPage extends StatefulWidget {
   @override
-  _calendarPageState createState() => _calendarPageState();
+  State<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _calendarPageState extends State<calendarPage> {
+class _CalendarPageState extends State<CalendarPage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;

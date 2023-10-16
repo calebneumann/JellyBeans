@@ -1,16 +1,19 @@
-import 'package:english_words/english_words.dart';
+import 'package:app_project/init.dart';
+import 'package:app_project/models/Assignment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'settingsPage.dart';
-import 'calendarPage.dart';
-import 'listPage.dart';
+import 'pages/SettingsPage.dart';
+import 'pages/CalendarPage.dart';
+import 'pages/ListPage.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final Future _initFuture = Init.initialize();
 
   @override
   Widget build(BuildContext context) {
@@ -22,38 +25,23 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         ),
-        home: const MyHomePage(),
+        home: FutureBuilder(
+          future: _initFuture,
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return MyHomePage();
+            } else {
+              return MyHomePage(); // TODO: make a loading screen
+            }
+          }),
+        ),
       ),
     );
   }
 }
 
 class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  var favorites = <WordPair>[];
-  var colors = ["Red", "Blue", "Green"];
-  void toggleFavorite() {
-    if (favorites.contains(current)) {
-      favorites.remove(current);
-    } else {
-      favorites.add(current);
-    }
-    notifyListeners();
-  }
-
-  void deleteList() {
-    favorites.clear();
-  }
-
-  void deleteSingle(var word) {
-    favorites.remove(word);
-  }
+  Assignments assignments = Assignments();
 }
 
 class MyHomePage extends StatefulWidget {
@@ -68,10 +56,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List _screens = [
     {
-      "screen": const listPage(),
+      "screen": const ListPage(),
       "title": "\n"
     }, //app crashes if the "title" object is absent
-    {"screen": calendarPage(), "title": "\n"},
+    {"screen": CalendarPage(), "title": "\n"},
     {"screen": SettingsPage(), "title": "\n"},
   ];
 
@@ -88,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "We might add something here?",
+          "We might add something here?\nI think it's just on the list page",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.pink,
@@ -103,35 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.calendar_month), label: "Calendar"),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
         ],
-      ),
-    );
-  }
-}
-
-class BigCard extends StatelessWidget {
-  const BigCard({
-    super.key,
-    required this.pair,
-  });
-
-  final WordPair pair;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
-    );
-
-    return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(
-          pair.asLowerCase,
-          style: style,
-          semanticsLabel: "${pair.first} ${pair.second}",
-        ),
       ),
     );
   }
