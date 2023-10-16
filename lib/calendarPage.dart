@@ -15,7 +15,7 @@ class _calendarPageState extends State<calendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Basics'),
+        title: Text('AHH A CALENDAR!!! RUN!!!!!!!!!!!!!!!!!!!!!!'),
       ),
       body: TableCalendar(
         firstDay: DateTime.utc(2010, 10, 16),
