@@ -10,41 +10,63 @@ class listPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var pair = appState.current;
+    // var pair = appState.current;
 
-    IconData icon;
-    if (appState.favorites.contains(pair)) {
-      icon = Icons.favorite;
-    } else {
-      icon = Icons.favorite_border;
-    }
+    // IconData icon;
+    // if (appState.favorites.contains(pair)) {
+    //   icon = Icons.favorite;
+    // } else {
+    //   icon = Icons.favorite_border;
+    // }
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BigCard(pair: pair),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  appState.toggleFavorite();
-                },
-                icon: Icon(icon),
-                label: const Text('Like'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: const Text('Next'),
-              ),
-            ],
-          ),
-        ],
+    return ListView(
+
+      //TODO: Iterate over some assignment list for these
+      children: [
+        Text("Jan 1"),
+        AssignmentWidget(assignment: "assignment1"),
+        AssignmentWidget(assignment: "assignment2"),
+
+        Text("Dec 10"),
+        AssignmentWidget(assignment: "assignment3"),
+      ],
+    );
+  }
+}
+
+class AssignmentWidget extends StatelessWidget {
+  const AssignmentWidget({
+    super.key,
+    required this.assignment,
+  });
+
+  final String assignment;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final style = theme.textTheme.displaySmall!.copyWith(
+      color: theme.colorScheme.onBackground,
+    );
+
+    return Card(
+      color: theme.colorScheme.background,
+      elevation: 10,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: ExpansionTile(
+          title: Text(this.assignment),
+          children: [
+            Row(
+              children: [
+                Text("notes"),
+                ElevatedButton(onPressed: () => { print("test") }, child:
+                  Text("edit")
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
