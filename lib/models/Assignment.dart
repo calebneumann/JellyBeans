@@ -25,6 +25,13 @@ class Assignments extends ChangeNotifier {
     return assignment;
   }
 
+  Assignment createCanvasAssignment(String id) {
+    var assignment = new Assignment(id);
+    _assignments.add(assignment);
+    notifyListeners();
+    return assignment;
+  }
+
   int deleteAssignment(String id) {
     _assignments.removeWhere((assignment) => assignment.id == id);
     notifyListeners();
