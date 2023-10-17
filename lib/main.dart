@@ -60,7 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
       "title": "\n"
     }, //app crashes if the "title" object is absent
     {"screen": CalendarPage(), "title": "\n"},
-    {"screen": SettingsPage(), "title": "\n"},
+    {"screen": Placeholder(), "title": "\n"},
+    {"screen": Placeholder(), "title": "\n"},
+    {"screen": SettingsPage, "title": "\n"},
   ];
 
   void _selectScreen(int value) {
@@ -76,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "We might add something here?\nI think it's just on the list page",
+          "Jelly Beans' Homework Tracker v0.1",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.pink,
@@ -89,8 +91,13 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month), label: "Calendar"),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
+          BottomNavigationBarItem(icon: Icon(Icons.link), label: "Account"),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
         ],
+        fixedColor: const Color.fromARGB(255, 65, 65,
+            65), //had issue where nav rail was invisible, added these to fix
+        unselectedItemColor: Colors.grey,
       ),
     );
   }
