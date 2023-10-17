@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'main.dart';
+import '../main.dart';
 
-
-
-class listPage extends StatelessWidget {
-  const listPage({super.key});
+class ListPage extends StatelessWidget {
+  const ListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +18,11 @@ class listPage extends StatelessWidget {
     // }
 
     return ListView(
-
       //TODO: Iterate over some assignment list for these
       children: [
         Text("Jan 1"),
         AssignmentWidget(assignment: "assignment1"),
         AssignmentWidget(assignment: "assignment2"),
-
         Text("Dec 10"),
         AssignmentWidget(assignment: "assignment3"),
       ],
@@ -60,9 +56,8 @@ class AssignmentWidget extends StatelessWidget {
             Row(
               children: [
                 Text("notes"),
-                ElevatedButton(onPressed: () => { print("test") }, child:
-                  Text("edit")
-                ),
+                ElevatedButton(
+                    onPressed: () => {print("test")}, child: Text("edit")),
               ],
             ),
           ],
