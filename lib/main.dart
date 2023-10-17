@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     {"screen": CalendarPage(), "title": "\n"},
     {"screen": Placeholder(), "title": "\n"},
     {"screen": Placeholder(), "title": "\n"},
-    {"screen": SettingsPage, "title": "\n"},
+    {"screen": SettingsPage(), "title": "\n"},
   ];
 
   void _selectScreen(int value) {
