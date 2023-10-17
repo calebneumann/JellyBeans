@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
+
+
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -6,12 +11,13 @@ class SettingsPage extends StatefulWidget {
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
-
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends State<SettingsPage>{
+  final player = AudioPlayer();
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
+        
         const Padding(
           padding: EdgeInsets.all(20),
           child: Text(
@@ -43,6 +49,18 @@ class _SettingsPageState extends State<SettingsPage> {
 
           // leading: Icon(Icons.delete),
           // title: Text(color),
+        ),
+        ListTile(
+          leading: TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 25),
+            ),
+            onPressed: () async{ 
+              await player.play(AssetSource('audio/FNAF.mp3')); //plays a silly FNAF noise LOL GOTTEM
+              }, 
+            child: const Text("FNAF JUMPSCARE \n(only sound, need to add gif)",
+            style: TextStyle(fontSize: 20),),
+          ),
         ),
       ],
     );
