@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
+import 'ListPageWidgets/ListPageWidgets.dart';
 
 class ListPage extends StatelessWidget {
   const ListPage({super.key});
@@ -20,49 +21,13 @@ class ListPage extends StatelessWidget {
     return ListView(
       //TODO: Iterate over some assignment list for these
       children: [
+        SearchFilterWidget(),
         Text("Jan 1"),
         AssignmentWidget(assignment: "assignment1"),
         AssignmentWidget(assignment: "assignment2"),
         Text("Dec 10"),
         AssignmentWidget(assignment: "assignment3"),
       ],
-    );
-  }
-}
-
-class AssignmentWidget extends StatelessWidget {
-  const AssignmentWidget({
-    super.key,
-    required this.assignment,
-  });
-
-  final String assignment;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.displaySmall!.copyWith(
-      color: theme.colorScheme.onBackground,
-    );
-
-    return Card(
-      color: theme.colorScheme.background,
-      elevation: 10,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ExpansionTile(
-          title: Text(this.assignment),
-          children: [
-            Row(
-              children: [
-                Text("notes"),
-                ElevatedButton(
-                    onPressed: () => {print("test")}, child: Text("edit")),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
