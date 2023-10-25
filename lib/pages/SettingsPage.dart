@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:app_project/main.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_gif/flutter_gif.dart';
 
 
-
+const List<String> themes = <String>["Light Mode", "Dark Mode", "Colorblind Mode", "Custom"];
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -13,56 +16,135 @@ class SettingsPage extends StatefulWidget {
 }
 class _SettingsPageState extends State<SettingsPage>{
   final player = AudioPlayer();
+  String dropDownValue = themes.first;
+  double textSize = 20;
+  bool _sliderState = false; //slider is not shown by default
+  bool _themesState= false; //slider is not shown by default
+  bool _fnafState = false;
+
+  void showSlider(){
+    setState(() {
+      _sliderState = !_sliderState;
+    });
+  }
+    void showThemes(){
+    setState(() {
+      _themesState = !_themesState;
+    });
+  }
+      void showFNAF(){
+    setState(() {
+      _fnafState = !_fnafState;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
         
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(20),
           child: Text(
             'Settings',
-            style: TextStyle(fontSize: 40),
+            style: TextStyle(fontSize: (textSize + 20)),
           ),
         ),
-        // for (var color in appState.colors)
+
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 25),
+              textStyle: TextStyle(fontSize: textSize),
             ),
-            onPressed: () {},
-            child: const Text("Theme"),
+            onPressed: () {
+              showThemes();
+            },
+            child: const Text("Themes"),
           ),
 
-          // leading: Icon(Icons.delete),
-          // title: Text(color),
         ),
+
+          //toggles the themes dropdown on and off
+          Visibility(
+          visible: _themesState,
+          child:DropdownMenu(
+          initialSelection: themes.first, 
+          onSelected: (String? value){
+            setState(() {
+              dropDownValue = value!;
+
+            });
+          },
+          dropdownMenuEntries: themes.map<DropdownMenuEntry<String>>((String value){
+            return DropdownMenuEntry<String>(value: value, label: value);
+          }).toList(),
+        ),
+        ),
+
+
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 25),
+              textStyle: TextStyle(fontSize: textSize),
             ),
-            onPressed: () {},
+            onPressed: () {
+              showSlider();
+            },
             child: const Text("Text Size"),
           ),
 
-          // leading: Icon(Icons.delete),
-          // title: Text(color),
         ),
+
+        //toggles the slider on and off
+        Visibility( 
+          visible: _sliderState,
+          child:Slider(
+          value: textSize,
+          max: 45,
+          min: 15,
+          divisions: 30,
+          label: textSize.round().toString(),
+          onChanged: (double value){
+            setState(() {
+              textSize = value;
+            });
+          },
+        ),
+        ),
+
+        Visibility( 
+          visible: _fnafState,
+          child:Image.asset(
+                "assets/images/BONNIE.gif",
+                height: 500.0,
+                width: 500.0,
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+                
+              ),
+        ),
+
+
+
+
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 25),
+              textStyle: TextStyle(fontSize: textSize),
             ),
             onPressed: () async{ 
               await player.play(AssetSource('audio/FNAF.mp3')); //plays a silly FNAF noise LOL GOTTEM
+              showFNAF();
+              await Future.delayed(const Duration(seconds: 3));
+              showFNAF();
               }, 
-            child: const Text("FNAF JUMPSCARE \n(only sound, need to add gif)",
-            style: TextStyle(fontSize: 20),),
+              
+            child: Text("FNAF JUMPSCARE",
+            style: TextStyle(fontSize: textSize),),
           ),
         ),
       ],
     );
   }
 }
+
