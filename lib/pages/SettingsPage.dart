@@ -133,7 +133,6 @@ class _SettingsPageState extends State<SettingsPage>{
               textStyle: TextStyle(fontSize: textSize),
             ),
             onPressed: () async{ 
-              var durationFNAF = player.setSourceAsset("assets/images/BONNIE.gif");
               await player.play(AssetSource('audio/FNAF.mp3')); //plays a silly FNAF noise LOL GOTTEM
               showFNAF();
               await Future.delayed(const Duration(seconds: 3));
