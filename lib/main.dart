@@ -57,6 +57,9 @@ class MyAppState extends ChangeNotifier {
     Assignment as3 = assignments.createAssignment();
     as3.name = "assignment3";
     as3.dueDate = DateTime.parse('2023-12-15 16:00:00Z');
+    Assignment as4 = assignments.createAssignment();
+    as4.name = "assignment4";
+    as4.dueDate = DateTime.parse('2024-10-21 16:00:00Z');
     //*/
 
   }
