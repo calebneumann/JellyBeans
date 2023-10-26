@@ -7,7 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 
 
-const List<String> themes = <String>["Light Mode", "Dark Mode", "Colorblind Mode", "Custom"];
+const List<String> themes = <String>["Light Mode", "Dark Mode", "Colorblind Mode", "Custom", "Secret debugging suprise :)"];
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -32,9 +32,10 @@ class _SettingsPageState extends State<SettingsPage>{
       _themesState = !_themesState;
     });
   }
-      void showFNAF(){
+      void showFNAF(bool state){
+
     setState(() {
-      _fnafState = !_fnafState;
+      _fnafState = state;
     });
   }
 
@@ -43,6 +44,20 @@ class _SettingsPageState extends State<SettingsPage>{
     return ListView(
       children: [
         
+
+        Visibility( 
+          visible: _fnafState,
+          child: Image.asset(
+            "assets/images/BONNIE.gif",
+            height: 500.0,
+            width: 500.0,
+            fit: BoxFit.fill,
+            alignment: Alignment.center,
+                
+          ),
+        ),
+
+
         Padding(
           padding: EdgeInsets.all(20),
           child: Text(
@@ -72,6 +87,12 @@ class _SettingsPageState extends State<SettingsPage>{
           onSelected: (String? value){
             setState(() {
               dropDownValue = value!;
+              if(dropDownValue == "Secret debugging suprise :)"){
+                showFNAF(true);
+              }
+              else{
+                showFNAF(false);
+              }
 
             });
           },
@@ -112,17 +133,6 @@ class _SettingsPageState extends State<SettingsPage>{
         ),
         ),
 
-        Visibility( 
-          visible: _fnafState,
-          child:Image.asset(
-                "assets/images/BONNIE.gif",
-                height: 500.0,
-                width: 500.0,
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-                
-              ),
-        ),
 
 
 
@@ -134,9 +144,9 @@ class _SettingsPageState extends State<SettingsPage>{
             ),
             onPressed: () async{ 
               await player.play(AssetSource('audio/FNAF.mp3')); //plays a silly FNAF noise LOL GOTTEM
-              showFNAF();
+              showFNAF(true);
               await Future.delayed(const Duration(seconds: 3));
-              showFNAF();
+              showFNAF(false);
               }, 
               
             child: Text("FNAF JUMPSCARE",
