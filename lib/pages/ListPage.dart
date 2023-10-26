@@ -18,14 +18,10 @@ class ListPage extends StatelessWidget {
     var list = <Widget>[
       SearchFilterWidget(),
     ];
-
     var buffer = <Widget>[];
-    var dateSectionYear = 0;
-    var dateSectionMonth = 0;
-    var dateSectionDay = 0;
+    var sectionYr = 0, sectionMnth = 0, sectionDay = 0;
     for (var ass in appState.assignments.getAllAssignments()){
-
-      if (ass.dueDate.day != dateSectionDay || ass.dueDate.month != dateSectionMonth || ass.dueDate.year != dateSectionYear){
+      if (ass.dueDate.day != sectionDay || ass.dueDate.month != sectionMnth || ass.dueDate.year != sectionYr){
         list.addAll(buffer);
         buffer.clear();
       }
@@ -35,15 +31,14 @@ class ListPage extends StatelessWidget {
       }
 
       if ( buffer.isEmpty ){
-        dateSectionYear = ass.dueDate.year;
-        dateSectionMonth = ass.dueDate.month;
-        dateSectionDay = ass.dueDate.day;
+        sectionYr = ass.dueDate.year; sectionMnth = ass.dueDate.month; sectionDay = ass.dueDate.day;
+        
         buffer.add(SizedBox(height: 10));
         buffer.add(
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Text(
-              "${DateFormat.MMM().format(ass.dueDate)} $dateSectionDay, $dateSectionYear",
+              "${DateFormat.MMM().format(ass.dueDate)} $sectionDay, $sectionYr",
               style: style.apply(fontSizeFactor: 0.6, fontWeightDelta: 3,),
             ),
           ),
