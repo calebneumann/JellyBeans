@@ -1,3 +1,4 @@
+import 'package:app_project/models/Assignment.dart';
 import 'package:flutter/material.dart';
 
 class SearchFilterWidget extends StatelessWidget {
@@ -46,7 +47,7 @@ class AssignmentWidget extends StatelessWidget {
     required this.assignment,
   });
 
-  final String assignment;
+  final Assignment assignment;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class AssignmentWidget extends StatelessWidget {
           tilePadding: EdgeInsets.zero,
           
           title: Text(
-            this.assignment,
+            assignment.name,
             style: style.apply(fontSizeFactor: 0.7, fontWeightDelta: 2),
           ),
           subtitle: Text("priority"),

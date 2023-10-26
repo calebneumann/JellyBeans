@@ -44,6 +44,22 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   Assignments assignments = Assignments();
+  
+  MyAppState(){
+
+    // TODO: This is for testing assignment pulling. This code will not be in the final version
+    Assignment as1 = assignments.createAssignment();
+    as1.name = "assignment1";
+    as1.dueDate = DateTime.parse('2023-01-03 14:30:00Z');
+    Assignment as2 = assignments.createAssignment();
+    as2.name = "assignment2";
+    as2.dueDate = DateTime.parse('2023-12-15 16:00:00Z');
+    Assignment as3 = assignments.createAssignment();
+    as3.name = "assignment3";
+    as3.dueDate = DateTime.parse('2023-12-15 16:00:00Z');
+    //*/
+
+  }
 }
 
 class MyHomePage extends StatefulWidget {
