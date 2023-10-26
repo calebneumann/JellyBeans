@@ -6,7 +6,7 @@ class Assignment {
   String name = '';
   String className = '';
   String details = '';
-  int dueDate = 0;
+  DateTime dueDate = DateTime.now();
   int priority = 0;
   String Notes = '';
   int color = 0;
@@ -41,6 +41,10 @@ class Assignments extends ChangeNotifier {
   Assignment getAssignment(String assignmentId) {
     return _assignments
         .firstWhere((assignment) => assignment.id == assignmentId);
+  }
+
+  List<Assignment> getAllAssignments(){
+    return _assignments;
   }
 
   void saveAssignment(Assignment assignment) {

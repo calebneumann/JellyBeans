@@ -1,5 +1,6 @@
 import 'package:app_project/init.dart';
 import 'package:app_project/models/Assignment.dart';
+import 'package:app_project/pages/AssignmentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'pages/SettingsPage.dart';
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final Future _initFuture = Init.initialize();
-  static Color theme = Colors.pink; //turned theme into variable so that it can eventually be changed on command
+  static Color theme = Colors
+      .pink; //turned theme into variable so that it can eventually be changed on command
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -42,6 +44,25 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   Assignments assignments = Assignments();
+  
+  MyAppState(){
+
+    // TODO: This is for testing assignment pulling. This code will not be in the final version
+    Assignment as1 = assignments.createAssignment();
+    as1.name = "assignment1";
+    as1.dueDate = DateTime.parse('2023-01-03 14:30:00Z');
+    Assignment as2 = assignments.createAssignment();
+    as2.name = "assignment2";
+    as2.dueDate = DateTime.parse('2023-12-15 16:00:00Z');
+    Assignment as3 = assignments.createAssignment();
+    as3.name = "assignment3";
+    as3.dueDate = DateTime.parse('2023-12-15 16:00:00Z');
+    Assignment as4 = assignments.createAssignment();
+    as4.name = "assignment4";
+    as4.dueDate = DateTime.parse('2024-10-21 16:00:00Z');
+    //*/
+
+  }
 }
 
 class MyHomePage extends StatefulWidget {
@@ -60,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
       "title": "\n"
     }, //app crashes if the "title" object is absent
     {"screen": CalendarPage(), "title": "\n"},
-    {"screen": Placeholder(), "title": "\n"},
+    {"screen": AssignmentPage(), "title": "\n"},
     {"screen": Placeholder(), "title": "\n"},
     {"screen": SettingsPage(), "title": "\n"},
   ];
