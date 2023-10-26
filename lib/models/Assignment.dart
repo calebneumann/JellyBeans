@@ -18,8 +18,7 @@ class Assignment {
 class Assignments extends ChangeNotifier {
   List<Assignment> _assignments = [];
 
-  Assignment createAssignment() {
-    var assignment = new Assignment.unnamed();
+  Assignment createAssignment(Assignment assignment) {
     _assignments.add(assignment);
     notifyListeners();
     return assignment;

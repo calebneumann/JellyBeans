@@ -1,5 +1,6 @@
 import 'package:app_project/init.dart';
 import 'package:app_project/models/Assignment.dart';
+import 'package:app_project/pages/AssignmentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'pages/SettingsPage.dart';
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final Future _initFuture = Init.initialize();
-  static Color theme = Colors.pink; //turned theme into variable so that it can eventually be changed on command
+  static Color theme = Colors
+      .pink; //turned theme into variable so that it can eventually be changed on command
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -60,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       "title": "\n"
     }, //app crashes if the "title" object is absent
     {"screen": CalendarPage(), "title": "\n"},
-    {"screen": Placeholder(), "title": "\n"},
+    {"screen": AssignmentPage(), "title": "\n"},
     {"screen": Placeholder(), "title": "\n"},
     {"screen": SettingsPage(), "title": "\n"},
   ];
