@@ -10,16 +10,19 @@ class ListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
-    return ListView(
-      //TODO: Iterate over some assignment list for these
-      children: [
-        SearchFilterWidget(),
-        Text("Jan 1"),
-        AssignmentWidget(assignment: "assignment1"),
-        AssignmentWidget(assignment: "assignment2"),
-        Text("Dec 10"),
-        AssignmentWidget(assignment: "assignment3"),
-      ],
-    );
+    var list = <Widget>[
+      SearchFilterWidget(),
+    ];
+
+    //DateTime prevTime;
+    for (var ass in appState.assignments.getAllAssignments()){
+      /*bool nullCheck = prevTime ?? false;
+      //Create title date separators
+      if ( nullCheck && prevTime ){
+      } */
+      list.add(AssignmentWidget(assignment: ass));
+    }
+
+    return ListView(children: list,);
   }
 }
