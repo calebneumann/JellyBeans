@@ -15,8 +15,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final Future _initFuture = Init.initialize();
-  static Color theme = Colors
-      .pink; //turned theme into variable so that it can eventually be changed on command
+  static Color theme = Colors.pink; //turned theme into variable so that it can eventually be changed on command
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

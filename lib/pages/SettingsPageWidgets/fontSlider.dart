@@ -1,6 +1,12 @@
+//To call SliderWidget, do
+//SliderWidget()
+
+
 import 'package:flutter/material.dart';
 //import 'package:app_project/models/UserSettings.dart';
 import '../SettingsPage.dart';
+
+
 
 class SliderWidget extends StatefulWidget{
   @override
@@ -8,29 +14,19 @@ class SliderWidget extends StatefulWidget{
 }
 
 class _SliderWidgetState extends State<SliderWidget> {
-
-
-  void refresh(){
-    setState(() {
-      SettingsPage();
-    });
-  }
-
-
-
   Widget sliderWidget(){
     return Slider(
-          value: userSettings.getFontSize(),
-          max: 45,
-          min: 15,
-          divisions: 30,
-          label: userSettings.getFontSize().round().toString(),
-          onChanged: (double value){
-            setState(() {
-              userSettings.setFontSize(value);
-            });
-          },
-        );
+      value: userSettings.getFontSize(),
+      max: 45,
+      min: 15,
+      divisions: 30,
+      label: userSettings.getFontSize().round().toString(),
+      onChanged: (double value){
+        setState(() {
+          userSettings.setFontSize(value);
+        });
+      },
+    );
   }
 
   @override

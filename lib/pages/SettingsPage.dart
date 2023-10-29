@@ -1,4 +1,4 @@
-import 'dart:io';
+//import 'dart:io';
 
 import 'package:app_project/main.dart';
 import 'package:flutter/material.dart';
@@ -8,21 +8,26 @@ import 'SettingsPageWidgets/fontSlider.dart';
 import 'SettingsPageWidgets/textWidget.dart';
 import 'SettingsPageWidgets/fnaf.dart';
 import '../models/UserSettings.dart';
+//import 'package:flutter/scheduler.dart';
 
 UserSettings userSettings = UserSettings(1, 20);
+MyHomePage home = MyHomePage();
+
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
+  
+
   @override
   State<SettingsPage> createState() => _SettingsPageState();
+  
 }
 class _SettingsPageState extends State<SettingsPage>{
   final player = AudioPlayer();
   bool _sliderState = false; //slider is not shown by default
   bool _themesState= false; //slider is not shown by default
   bool _fnafState = false;
-
 
 
   void showSlider(){
@@ -42,21 +47,16 @@ class _SettingsPageState extends State<SettingsPage>{
     });
   }
 
+
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return ListView(
       children: [
         
         Visibility( 
           visible: _fnafState,
-          child: Image.asset(
-            "assets/images/BONNIE.gif",
-            height: 500.0,
-            width: 500.0,
-            fit: BoxFit.fill,
-            alignment: Alignment.center,
-                
-          ),
+          child: FnafWidget(),
         ),
 
 
@@ -87,10 +87,10 @@ class _SettingsPageState extends State<SettingsPage>{
           //toggles the themes dropdown on and off
           Visibility(
           visible: _themesState,
-          child:DropDownWidget(),
+          child:DropDownWidget(fontSize: userSettings.getFontSize(),),
         ),
 
-
+          
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
@@ -109,14 +109,15 @@ class _SettingsPageState extends State<SettingsPage>{
 
         //toggles the slider on and off
         
+        //makes slider visible when pressing button
         Visibility( 
           visible: _sliderState,
-          child:SliderWidget(),
+          child: Listener( //listens for presses and drags on the slider (setState wouldn't work from another file idk why D: )
+            onPointerMove: (event) => setState(() {}),
+            onPointerDown: (event) => setState(() {}),
+            child: SliderWidget(),
+          ),
         ),
-
-        
-
-
 
         ListTile(
           leading: TextButton(
@@ -136,8 +137,10 @@ class _SettingsPageState extends State<SettingsPage>{
           ),
           ),
         ),
+
       ],
+      
     );
+    
   }
 }
-
