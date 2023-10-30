@@ -17,6 +17,7 @@ dependencies:
   shared_preferences: ^2.0.15
   audioplayers: ^5.2.0
   flutter_gif: any
+  flutter_native_splash: ^2.3.4
 
   flutter_lints: ^2.0.3
   uuid: ^4.1.0
@@ -45,4 +46,12 @@ flutter:
   assets:
     - assets/audio/
     - assets/images/
+    - assets/images/BEANS.png
+
+
+flutter_native_splash:
+  background_image: "assets/images/BEANS.png"
+  android_12:
+    background_image: "assets/images/BEANS.png"
+
 

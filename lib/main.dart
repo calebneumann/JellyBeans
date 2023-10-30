@@ -6,8 +6,17 @@ import 'package:provider/provider.dart';
 import 'pages/SettingsPage.dart';
 import 'pages/CalendarPage.dart';
 import 'pages/ListPage.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 
 void main() {
+  //async  ^ for when we get splash screen working
+  //stuff for splash screen
+  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  
+  
+  
   runApp(MyApp());
 }
 
@@ -15,8 +24,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final Future _initFuture = Init.initialize();
-  static Color theme = Colors
-      .pink; //turned theme into variable so that it can eventually be changed on command
+  static Color theme = Colors.pink; //turned theme into variable so that it can eventually be changed on command
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -92,6 +100,28 @@ class _MyHomePageState extends State<MyHomePage> {
       selectedIndex = value;
     });
   }
+
+
+  //Working on getting a splash screen set up
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   initialization();
+  // }
+
+  // void initialization() async{
+  //   print('ready in 3...');
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   print('ready in 2...');
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   print('ready in 1...');
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   print('go!');
+  //   FlutterNativeSplash.remove();
+  // }
+
+
+
 
   @override
   Widget build(BuildContext context) {
