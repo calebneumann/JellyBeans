@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 class UserSettings extends ChangeNotifier {
   int _theme;
-  double _fontSize;
+  static double _fontSize = 20;
 
-  UserSettings(this._theme, this._fontSize);
+  UserSettings(this._theme);
 
   int getTheme() {
     return _theme;
   }
 
-  double getFontSize() {
+  static double getFontSize() {
     return _fontSize;
   }
 

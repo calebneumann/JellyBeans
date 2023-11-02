@@ -3,7 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import 'ListPageWidgets/ListPageWidgets.dart';
+import '../models/UserSettings.dart';
 
+UserSettings userSettings = UserSettings(1);
 class ListPage extends StatelessWidget {
   const ListPage({super.key});
 
@@ -39,7 +41,7 @@ class ListPage extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: Text(
               "${DateFormat.MMM().format(ass.dueDate)} $sectionDay, $sectionYr",
-              style: style.apply(fontSizeFactor: 0.6, fontWeightDelta: 3,),
+              style: style.apply(fontSizeFactor: 0.6, fontWeightDelta: 3,), //implement 
             ),
           ),
         );

@@ -10,7 +10,7 @@ import 'SettingsPageWidgets/fnaf.dart';
 import '../models/UserSettings.dart';
 //import 'package:flutter/scheduler.dart';
 
-UserSettings userSettings = UserSettings(1, 20);
+UserSettings userSettings = UserSettings(1);
 MyHomePage home = MyHomePage();
 
 
@@ -64,20 +64,20 @@ class _SettingsPageState extends State<SettingsPage>{
           padding: EdgeInsets.all(20),
           child: Text(
             'Settings',
-            style: TextStyle(fontSize: (userSettings.getFontSize() + 20)),
+            style: TextStyle(fontSize: (UserSettings.getFontSize() + 20)),
           ),
         ),
 
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: TextStyle(fontSize: userSettings.getFontSize()),
+              textStyle: TextStyle(fontSize: UserSettings.getFontSize()),
             ),
             onPressed: () {
               showThemes();
             },
             child: TextWidget(
-            fontSize: userSettings.getFontSize(),
+            fontSize: UserSettings.getFontSize(),
             text: "Themes",
           ),
           ),
@@ -87,20 +87,20 @@ class _SettingsPageState extends State<SettingsPage>{
           //toggles the themes dropdown on and off
           Visibility(
           visible: _themesState,
-          child:DropDownWidget(fontSize: userSettings.getFontSize(),),
+          child:DropDownWidget(fontSize: UserSettings.getFontSize(),),
         ),
 
           
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: TextStyle(fontSize: userSettings.getFontSize()),
+              textStyle: TextStyle(fontSize: UserSettings.getFontSize()),
             ),
             onPressed: () {
               showSlider();
             },
             child: TextWidget(
-            fontSize: userSettings.getFontSize(),
+            fontSize: UserSettings.getFontSize(),
             text: "Text Size",
           ),
           ),
@@ -122,7 +122,7 @@ class _SettingsPageState extends State<SettingsPage>{
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: TextStyle(fontSize: userSettings.getFontSize()),
+              textStyle: TextStyle(fontSize: UserSettings.getFontSize()),
             ),
             onPressed: () async{ 
               await player.play(AssetSource('audio/FNAF.mp3')); //plays a silly FNAF noise LOL GOTTEM
@@ -132,7 +132,7 @@ class _SettingsPageState extends State<SettingsPage>{
               }, 
               
             child: TextWidget(
-            fontSize: userSettings.getFontSize(),
+            fontSize: UserSettings.getFontSize(),
             text: "FNAF JUMPSCARE",
           ),
           ),

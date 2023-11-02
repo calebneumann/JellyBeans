@@ -18,6 +18,7 @@ dependencies:
   audioplayers: ^5.2.0
   flutter_gif: any
   flutter_native_splash: ^2.3.4
+  flutter_launcher_icons: "0.13.1"
 
   flutter_lints: ^2.0.3
   uuid: ^4.1.0
@@ -26,15 +27,14 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_launcher_icons: "0.13.1"
 
 
 flutter_launcher_icons:
-  image_path: "assets/BEANS.png"
+  image_path: "assets/images/BEANS.png"
   android: true
   ios: true
   adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/BEANS.png"
+  adaptive_icon_foreground: "assets/images/BEANS.png"
   min_sdk_android: 21
 
 

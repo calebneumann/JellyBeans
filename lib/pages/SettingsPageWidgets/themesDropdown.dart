@@ -8,7 +8,7 @@ import 'package:app_project/models/UserSettings.dart';
 //list of themes in dropdown menu
 List<String> themes = <String>["Light Mode", "Dark Mode", "Colorblind Mode", "Custom"];
 String dropDownValue = themes.first;
-UserSettings fontsize =  UserSettings(0, 20);
+UserSettings fontsize =  UserSettings(1);
 
 bool h = false;
 
