@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -7,8 +7,6 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime? _selectedDay;
 
   @override
   Widget build(BuildContext context) {
@@ -16,39 +14,72 @@ class _CalendarPageState extends State<CalendarPage> {
       appBar: AppBar(
         title: Text('AHH A CALENDAR!!! RUN!!!!!!!!!!!!!!!!!!!!!!'),
       ),
-      body: TableCalendar(
-        firstDay: DateTime.utc(2010, 10, 16),
-        lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: DateTime.now(),
-        calendarFormat: _calendarFormat,
-        selectedDayPredicate: (day) {
-          // Use `selectedDayPredicate` to determine which day is currently selected.
-          // If this returns true, then `day` will be marked as selected.
+      
+        //TODO: stick this in its own widget bc CalendarPage shouldn't take parameters
+        body: SfCalendar(
+          view: CalendarView.month,
+          showNavigationArrow: true,
+          dataSource: MeetingDataSource(getDataSource()),
+          monthViewSettings: MonthViewSettings(
+            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment
+          ),
+        ),
 
-          // Using `isSameDay` is recommended to disregard
-          // the time-part of compared DateTime objects.
-          return isSameDay(_selectedDay, day);
-        },
-        onDaySelected: (selectedDay, focusedDay) {
-          if (!isSameDay(_selectedDay, selectedDay)) {
-            // Call `setState()` when updating the selected day
-            setState(() {
-              _selectedDay = selectedDay;
-            });
-          }
-        },
-        onFormatChanged: (format) {
-          if (_calendarFormat != format) {
-            // Call `setState()` when updating calendar format
-            setState(() {
-              _calendarFormat = format;
-            });
-          }
-        },
-        onPageChanged: (focusedDay) {
-          // No need to call `setState()` here
-        },
-      ),
     );
   }
+}
+
+//example of adding assignment to calendar
+//going to make it to where you can add an assignment from
+//anywhere in the app by calling the class with parameters
+List<Meeting> getDataSource() {
+  final List<Meeting> meetings = <Meeting>[];
+  final DateTime startTime =
+      DateTime(2023, 11, 13);
+  final DateTime endTime = DateTime(2023, 11, 15);
+  meetings.add(Meeting(
+      'WOW THIS IS AN EXAAAAMPLE ASSIGNMENT', startTime, endTime, Colors.pink, "descriiiiption"));
+  return meetings;
+}
+
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Meeting> source) {
+    appointments = source;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return appointments![index].from;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments![index].to;
+  }
+
+  @override
+  String getSubject(int index) {
+    return appointments![index].eventName;
+  }
+
+  @override
+  Color getColor(int index) {
+    return appointments![index].background;
+  }
+
+  @override
+  Color getDescription(int index) {
+    return appointments![index].background;
+  }
+}
+
+class Meeting {
+  Meeting(this.eventName, this.from, this.to, this.background, this.description);
+
+  String eventName;
+  DateTime from;
+  DateTime to;
+  Color background;
+  String description;
 }

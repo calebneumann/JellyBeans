@@ -19,7 +19,9 @@ dependencies:
   flutter_gif: any
   flutter_native_splash: ^2.3.4
   flutter_launcher_icons: "0.13.1"
-
+  
+  syncfusion_flutter_calendar:
+  
   flutter_lints: ^2.0.3
   uuid: ^4.1.0
 

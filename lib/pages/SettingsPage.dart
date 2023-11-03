@@ -8,7 +8,7 @@ import 'SettingsPageWidgets/fontSlider.dart';
 import 'SettingsPageWidgets/textWidget.dart';
 import 'SettingsPageWidgets/fnaf.dart';
 import '../models/UserSettings.dart';
-//import 'package:flutter/scheduler.dart';
+import 'CalendarPage.dart';
 
 UserSettings userSettings = UserSettings(1);
 MyHomePage home = MyHomePage();
@@ -97,6 +97,8 @@ class _SettingsPageState extends State<SettingsPage>{
               textStyle: TextStyle(fontSize: UserSettings.getFontSize()),
             ),
             onPressed: () {
+              //for testing purposes
+              //getDataSource("pog", DateTime(2023, 11, 13), DateTime(2023, 11, 15), Colors.pink, "this is the description");
               showSlider();
             },
             child: TextWidget(
