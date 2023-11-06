@@ -6,17 +6,15 @@ import 'package:provider/provider.dart';
 import 'pages/SettingsPage.dart';
 import 'pages/CalendarPage.dart';
 import 'pages/ListPage.dart';
+import 'pages/CanvasPage.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
-
 
 void main() {
   //async  ^ for when we get splash screen working
   //stuff for splash screen
   // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  
-  
-  
+
   runApp(MyApp());
 }
 
@@ -24,7 +22,8 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final Future _initFuture = Init.initialize();
-  static Color theme = Colors.pink; //turned theme into variable so that it can eventually be changed on command
+  static Color theme = Colors
+      .pink; //turned theme into variable so that it can eventually be changed on command
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -52,9 +51,8 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   Assignments assignments = Assignments();
-  
-  MyAppState(){
 
+  MyAppState() {
     // TODO: This is for testing assignment pulling. This code will not be in the final version
     Assignment as1 = assignments.createAssignment();
     as1.name = "assignment1";
@@ -69,7 +67,6 @@ class MyAppState extends ChangeNotifier {
     as4.name = "assignment4";
     as4.dueDate = DateTime.parse('2024-10-21 16:00:00Z');
     //*/
-
   }
 }
 
@@ -90,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }, //app crashes if the "title" object is absent
     {"screen": CalendarPage(), "title": "\n"},
     {"screen": AssignmentPage(), "title": "\n"},
-    {"screen": Placeholder(), "title": "\n"},
+    {"screen": CanvasPage(), "title": "\n"},
     {"screen": SettingsPage(), "title": "\n"},
   ];
 
@@ -100,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
       selectedIndex = value;
     });
   }
-
 
   //Working on getting a splash screen set up
   // @override
@@ -119,9 +115,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //   print('go!');
   //   FlutterNativeSplash.remove();
   // }
-
-
-
 
   @override
   Widget build(BuildContext context) {
