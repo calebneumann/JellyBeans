@@ -7,9 +7,17 @@ import 'package:flutter/material.dart';
 
 class FnafWidget extends StatelessWidget{
 
+  const FnafWidget({
+    Key? key,
+    required this.rand
+  }) : super(key: key);
+
+  final String rand;
+
+
   Widget playFNAF(){
     return Image.asset(
-      "assets/images/BONNIE.gif",
+      rand,
       height: 650.0,
       width: 500.0,
       fit: BoxFit.cover,

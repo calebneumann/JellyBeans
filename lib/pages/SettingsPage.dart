@@ -1,5 +1,7 @@
 //import 'dart:io';
 
+import 'dart:math';
+
 import 'package:app_project/main.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -12,7 +14,8 @@ import 'CalendarPage.dart';
 
 UserSettings userSettings = UserSettings(1);
 MyHomePage home = MyHomePage();
-
+String randJump = "assets/images/CHICA.gif";
+int randInt = Random().nextInt(1);
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -40,7 +43,33 @@ class _SettingsPageState extends State<SettingsPage>{
       _themesState = !_themesState;
     });
   }
-      void showFNAF(bool state){
+  void showFNAF(bool state){
+    randInt = Random().nextInt(4); //gets random number between 0 and 3
+
+    switch(randInt){
+      case 0:
+      randJump = "assets/images/BONNIE.gif";
+      break;
+
+      case 1:
+      randJump = "assets/images/CHICA.gif";
+      break;
+
+      case 2:
+      randJump = "assets/images/FREDDY.gif";
+      break;
+      
+      case 3:
+      randJump = "assets/images/FOXY.gif";
+      break;
+
+      default:
+      randJump = "assets/images/BONNIE.gif";
+    }
+
+
+
+
 
     setState(() {
       _fnafState = state;
@@ -56,7 +85,7 @@ class _SettingsPageState extends State<SettingsPage>{
         
         Visibility( 
           visible: _fnafState,
-          child: FnafWidget(),
+          child: FnafWidget(rand: randJump), //sends the randomly chose jumpscare asset
         ),
 
 
