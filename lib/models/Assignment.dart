@@ -8,7 +8,7 @@ class Assignment {
   String details = '';
   DateTime dueDate = DateTime.now();
   int priority = 0;
-  String Notes = '';
+  String notes = '';
   int color = 0;
 
   Assignment(this.id);
@@ -43,7 +43,7 @@ class Assignments extends ChangeNotifier {
         .firstWhere((assignment) => assignment.id == assignmentId);
   }
 
-  List<Assignment> getAllAssignments(){
+  List<Assignment> getAllAssignments() {
     return _assignments;
   }
 
