@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/Uuid.dart';
+//import 'package:uuid/Uuid.dart';
 import 'package:provider/provider.dart';
-import 'ListPage.dart';
+// import 'ListPage.dart';
 import '../models/Assignment.dart';
+import '../main.dart';
 
 class AssignmentPage extends StatefulWidget {
   @override
@@ -10,13 +11,19 @@ class AssignmentPage extends StatefulWidget {
 }
 
 class AssignmentPageState extends State<AssignmentPage> {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameController =
+      TextEditingController(); //text editors currently used to modify all data.
   final TextEditingController _classNameController = TextEditingController();
-  final TextEditingController _dueDateController = TextEditingController();
+  final TextEditingController _dueDateController =
+      TextEditingController(); //will change this soon to a drop down or something similar
   final TextEditingController _detailsController = TextEditingController();
-  final TextEditingController _priorityController = TextEditingController();
+  final TextEditingController _priorityController =
+      TextEditingController(); //TODO: change to drop down
   final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _colorController = TextEditingController();
+  final TextEditingController _colorController =
+      TextEditingController(); //TODO: change to drop down
+
+  Assignment? _currentAssignment; //declared to create save assignment
 
   InputDecoration _boxedDecoration(String hintText) {
     return InputDecoration(
@@ -80,34 +87,34 @@ class AssignmentPageState extends State<AssignmentPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      /*  final assignments = context.read<Assignments>();
-                      final assignment = Assignment(Uuid().v1())
-                        ..name = _nameController.text
-                        ..className = _classNameController.text
-                        ..dueDate = int.parse(_dueDateController.text)
-                        ..details = _detailsController.text
-                        ..priority = int.parse(_priorityController.text)
-                        ..Notes = _notesController.text
-                        ..color = int.parse(_colorController.text);
+                      final appState = context.read<MyAppState>();
+                      if (_currentAssignment == null ||
+                          _currentAssignment!.id.isEmpty) {
+                        _currentAssignment =
+                            appState.assignments.createAssignment();
+                      } //creates assignment if assignment does not exist. Currently, assignment never exists.
 
-                      assignments.createAssignment(assignment);
+                      _currentAssignment!.name = _nameController.text;
+                      _currentAssignment!.className = _classNameController.text;
+                      _currentAssignment!.dueDate =
+                          DateTime.parse(_dueDateController.text);
+                      _currentAssignment!.details = _detailsController.text;
+                      _currentAssignment!.priority =
+                          int.parse(_priorityController.text);
+                      _currentAssignment!.notes = _notesController.text;
+                      _currentAssignment!.color =
+                          int.parse(_colorController.text);
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ListPage())); //Doesn't work! */
+                      appState.assignments.saveAssignment(_currentAssignment!);
+
+                      //selectScreen(0); //still figuring this out
                     },
                     child: Text('Save'),
                   ),
                   SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () {
-                      /*  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ListPage())); //Doesn't work! */
+                      //selectScreen(0);
                     },
                     child: Text('Cancel'),
                   ),
