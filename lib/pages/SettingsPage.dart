@@ -164,7 +164,7 @@ class _SettingsPageState extends State<SettingsPage>{
               
             child: TextWidget(
             fontSize: UserSettings.getFontSize(),
-            text: "FNAF JUMPSCARE",
+            text: "FNAF JUMPSCARE (RANDOM??)",
           ),
           ),
         ),

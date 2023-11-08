@@ -1,21 +1,27 @@
+import 'package:app_project/models/Themes.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import '../models/Assignment.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
 
-class CalendarPage extends StatefulWidget {
-  @override
-  State<CalendarPage> createState() => _CalendarPageState();
-}
-
-class _CalendarPageState extends State<CalendarPage> {
+var assignmentList = <Assignment>[];
+class CalendarPage extends StatelessWidget {
+  const CalendarPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var buffer = <Assignment>[];
+    assignmentList.clear(); //so that it doesn't add onto old list before adding updated list
+    for(var ass in appState.assignments.getAllAssignments()){
+      assignmentList.add(ass);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('AHH A CALENDAR!!! RUN!!!!!!!!!!!!!!!!!!!!!!'),
       ),
-      
-        //TODO: stick this in its own widget bc CalendarPage shouldn't take parameters
         body: SfCalendar(
           view: CalendarView.month,
           showNavigationArrow: true,
@@ -32,54 +38,65 @@ class _CalendarPageState extends State<CalendarPage> {
 //example of adding assignment to calendar
 //going to make it to where you can add an assignment from
 //anywhere in the app by calling the class with parameters
-List<Meeting> getDataSource() {
-  final List<Meeting> meetings = <Meeting>[];
-  final DateTime startTime =
-      DateTime(2023, 11, 13);
-  final DateTime endTime = DateTime(2023, 11, 15);
+List<Assignment> getDataSource() {
+
+
+
+
+
+
+/*
   meetings.add(Meeting(
       'WOW THIS IS AN EXAAAAMPLE ASSIGNMENT', startTime, endTime, Colors.pink, "descriiiiption"));
-  return meetings;
+  */
+  return assignmentList;
 }
 
 
 class MeetingDataSource extends CalendarDataSource {
-  MeetingDataSource(List<Meeting> source) {
+  MeetingDataSource(List<Assignment> source) {
     appointments = source;
   }
 
-  @override
+  
+   @override
   DateTime getStartTime(int index) {
-    return appointments![index].from;
+    return appointments![index].dueDate;
   }
 
   @override
   DateTime getEndTime(int index) {
-    return appointments![index].to;
+    return appointments![index].dueDate;
   }
 
+  //since the calendar can only take one string, I combined to look like "name -- className"
   @override
   String getSubject(int index) {
-    return appointments![index].eventName;
+    String temp = appointments![index].name + " -- " + appointments![index].className;
+    return temp;
   }
 
+//this only takes 1 string, so for now im combining the assignment name and class name
+/*
+  @override
+  String getSubject(int index) {
+    return appointments![index].name;
+  }
+*/
   @override
   Color getColor(int index) {
-    return appointments![index].background;
-  }
-
-  @override
-  Color getDescription(int index) {
-    return appointments![index].background;
+    return Colors.pink;
   }
 }
 
-class Meeting {
-  Meeting(this.eventName, this.from, this.to, this.background, this.description);
+class AddAssignment {
+  AddAssignment(this.name, this.className, this.details, this.dueDate, this.priority, this.notes, this.color);
 
-  String eventName;
-  DateTime from;
-  DateTime to;
-  Color background;
-  String description;
+  String name;
+  String className;
+  String details;
+  DateTime dueDate;
+  int priority;
+  String notes;
+  int color;
 }
