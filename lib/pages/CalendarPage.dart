@@ -1,5 +1,6 @@
 import 'package:app_project/models/Themes.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../models/Assignment.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,6 @@ class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var buffer = <Assignment>[];
     assignmentList.clear(); //so that it doesn't add onto old list before adding updated list
     for(var ass in appState.assignments.getAllAssignments()){
       assignmentList.add(ass);
@@ -29,26 +29,66 @@ class CalendarPage extends StatelessWidget {
           monthViewSettings: MonthViewSettings(
             appointmentDisplayMode: MonthAppointmentDisplayMode.appointment
           ),
+          onTap: (CalendarTapDetails details) {
+
+            if(details.targetElement == CalendarElement.appointment){
+              final Assignment assignmentDetails = details.appointments![0];
+              var assNotes = assignmentDetails.notes;
+              var assClassName = assignmentDetails.className;
+              var assDetails = assignmentDetails.details;
+              DateTime assDueDate = assignmentDetails.dueDate;
+              var assDay = assDueDate.day;
+              var assYear = assDueDate.year;
+
+              var assName = assignmentDetails.name;
+
+            showDialog(context: context, builder: (BuildContext context){
+              return AlertDialog(
+                title: 
+                  Row(children: [
+                    Text(assName),
+                    Text(' - '),
+                    Text(assClassName, style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),),
+                  ],),
+                content: Container(
+                  height: 80,
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Text(assNotes, style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),),
+
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text("${DateFormat.MMM().format(assDueDate)} $assDay, $assYear"),
+                        ],
+                      ),
+                      Text(assDetails, style: TextStyle(fontSize: 10),),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                   TextButton(
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('close'),
+                  )
+                ],
+              );
+            }
+            );
+          }
+          },
         ),
 
     );
   }
 }
 
-//example of adding assignment to calendar
-//going to make it to where you can add an assignment from
-//anywhere in the app by calling the class with parameters
 List<Assignment> getDataSource() {
-
-
-
-
-
-
-/*
-  meetings.add(Meeting(
-      'WOW THIS IS AN EXAAAAMPLE ASSIGNMENT', startTime, endTime, Colors.pink, "descriiiiption"));
-  */
   return assignmentList;
 }
 
