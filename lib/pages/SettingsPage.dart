@@ -10,7 +10,7 @@ import 'SettingsPageWidgets/fontSlider.dart';
 import 'SettingsPageWidgets/textWidget.dart';
 import 'SettingsPageWidgets/fnaf.dart';
 import '../models/UserSettings.dart';
-import 'CalendarPage.dart';
+import 'dart:async';
 
 UserSettings userSettings = UserSettings(1);
 MyHomePage home = MyHomePage();
@@ -32,7 +32,6 @@ class _SettingsPageState extends State<SettingsPage>{
   bool _themesState= false; //slider is not shown by default
   bool _fnafState = false;
 
-
   void showSlider(){
     setState(() {
       _sliderState = !_sliderState;
@@ -43,7 +42,7 @@ class _SettingsPageState extends State<SettingsPage>{
       _themesState = !_themesState;
     });
   }
-  void showFNAF(bool state){
+  void turnOnFNAF(bool state){
     randInt = Random().nextInt(4); //gets random number between 0 and 3
 
     switch(randInt){
@@ -97,8 +96,12 @@ class _SettingsPageState extends State<SettingsPage>{
           ),
         ),
 
-        ListTile(
-          leading: TextButton(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+        
+           ListTile(
+            leading: TextButton(
             style: TextButton.styleFrom(
               textStyle: TextStyle(fontSize: UserSettings.getFontSize()),
             ),
@@ -109,9 +112,9 @@ class _SettingsPageState extends State<SettingsPage>{
             fontSize: UserSettings.getFontSize(),
             text: "Themes",
           ),
+            ),
           ),
-
-        ),
+        
 
           //toggles the themes dropdown on and off
           Visibility(
@@ -119,7 +122,7 @@ class _SettingsPageState extends State<SettingsPage>{
           child:DropDownWidget(fontSize: UserSettings.getFontSize(),),
         ),
 
-          
+        
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
@@ -153,21 +156,33 @@ class _SettingsPageState extends State<SettingsPage>{
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: TextStyle(fontSize: UserSettings.getFontSize()),
+              textStyle: TextStyle(fontSize: UserSettings.getFontSize(),),
             ),
-            onPressed: () async{ 
-              await player.play(AssetSource('audio/FNAF.mp3')); //plays a silly FNAF noise LOL GOTTEM
-              showFNAF(true);
-              await Future.delayed(const Duration(seconds: 3));
-              showFNAF(false);
-              }, 
-              
+
+            onPressed: () { 
+              player.play(AssetSource('audio/FNAF.mp3')); //plays a silly FNAF noise LOL GOTTEM
+              turnOnFNAF(true);
+              Timer.periodic(Duration(seconds: 3), (Timer t){
+                if(!mounted){
+                  t.cancel();
+                } else {
+                  setState(() {
+                    t.cancel();
+                  _fnafState = false;
+                  });
+                }
+              });
+
+            },   
             child: TextWidget(
             fontSize: UserSettings.getFontSize(),
-            text: "FNAF JUMPSCARE (RANDOM??)",
+            text: "FNAF JUMPSCARE",
           ),
           ),
         ),
+
+          ],
+        )
 
       ],
       
