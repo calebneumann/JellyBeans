@@ -80,23 +80,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
 
-  final List _screens = [
-    {
-      "screen": const ListPage(),
-      "title": "\n"
-    }, //app crashes if the "title" object is absent
-    {"screen": CalendarPage(), "title": "\n"},
-    {"screen": AssignmentPage(), "title": "\n"},
-    {"screen": CanvasPage(), "title": "\n"},
-    {"screen": SettingsPage(), "title": "\n"},
-  ];
-
   void _selectScreen(int value) {
     setState(() {
       //changes the page to the selected one
       selectedIndex = value;
     });
   }
+
+  late final List _screens = [
+    {
+      "screen": const ListPage(),
+      "title": "\n"
+    }, //app crashes if the "title" object is absent
+    {"screen": CalendarPage(), "title": "\n"},
+    {"screen": AssignmentPage(selectScreen: _selectScreen), "title": "\n"},
+    {"screen": CanvasPage(), "title": "\n"},
+    {"screen": SettingsPage(), "title": "\n"},
+  ];
 
   //Working on getting a splash screen set up
   // @override

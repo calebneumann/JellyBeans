@@ -6,24 +6,40 @@ import '../models/Assignment.dart';
 import '../main.dart';
 
 class AssignmentPage extends StatefulWidget {
+  final Function(int) selectScreen;
+
+  const AssignmentPage({super.key, required this.selectScreen});
+
   @override
   AssignmentPageState createState() => AssignmentPageState();
 }
 
 class AssignmentPageState extends State<AssignmentPage> {
-  final TextEditingController _nameController =
+  // final _formKey = GlobalKey<FormState>();
+
+  final _nameController =
       TextEditingController(); //text editors currently used to modify all data.
-  final TextEditingController _classNameController = TextEditingController();
-  final TextEditingController _dueDateController =
+  final _classNameController = TextEditingController();
+  final _dueDateController =
       TextEditingController(); //will change this soon to a drop down or something similar
-  final TextEditingController _detailsController = TextEditingController();
-  final TextEditingController _priorityController =
+  final _detailsController = TextEditingController();
+  final _priorityController =
       TextEditingController(); //TODO: change to drop down
-  final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _colorController =
-      TextEditingController(); //TODO: change to drop down
+  final _notesController = TextEditingController();
+  final _colorController = TextEditingController(); //TODO: change to drop down
 
   Assignment? _currentAssignment; //declared to create save assignment
+
+  // void _handleSave() {
+  //   if (_formKey.currentState!.validate()) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Processing Data')),
+  //     );
+
+  //     _formKey.currentState!.save();
+  //     FocusManager.instance.primaryFocus?.unfocus();
+  //   }
+  // }
 
   InputDecoration _boxedDecoration(String hintText) {
     return InputDecoration(
@@ -107,14 +123,15 @@ class AssignmentPageState extends State<AssignmentPage> {
 
                       appState.assignments.saveAssignment(_currentAssignment!);
 
-                      //selectScreen(0); //still figuring this out
+                      widget.selectScreen(
+                          0); //only works if all fields are filled.
                     },
                     child: Text('Save'),
                   ),
                   SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () {
-                      //selectScreen(0);
+                      widget.selectScreen(0);
                     },
                     child: Text('Cancel'),
                   ),
