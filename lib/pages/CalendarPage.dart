@@ -1,54 +1,102 @@
+import 'package:app_project/models/Themes.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+import '../models/Assignment.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
 
-class CalendarPage extends StatefulWidget {
-  @override
-  State<CalendarPage> createState() => _CalendarPageState();
-}
-
-class _CalendarPageState extends State<CalendarPage> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime? _selectedDay;
+var assignmentList = <Assignment>[];
+class CalendarPage extends StatelessWidget {
+  const CalendarPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var buffer = <Assignment>[];
+    assignmentList.clear(); //so that it doesn't add onto old list before adding updated list
+    for(var ass in appState.assignments.getAllAssignments()){
+      assignmentList.add(ass);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('AHH A CALENDAR!!! RUN!!!!!!!!!!!!!!!!!!!!!!'),
       ),
-      body: TableCalendar(
-        firstDay: DateTime.utc(2010, 10, 16),
-        lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: DateTime.now(),
-        calendarFormat: _calendarFormat,
-        selectedDayPredicate: (day) {
-          // Use `selectedDayPredicate` to determine which day is currently selected.
-          // If this returns true, then `day` will be marked as selected.
+        body: SfCalendar(
+          view: CalendarView.month,
+          showNavigationArrow: true,
+          dataSource: MeetingDataSource(getDataSource()),
+          monthViewSettings: MonthViewSettings(
+            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment
+          ),
+        ),
 
-          // Using `isSameDay` is recommended to disregard
-          // the time-part of compared DateTime objects.
-          return isSameDay(_selectedDay, day);
-        },
-        onDaySelected: (selectedDay, focusedDay) {
-          if (!isSameDay(_selectedDay, selectedDay)) {
-            // Call `setState()` when updating the selected day
-            setState(() {
-              _selectedDay = selectedDay;
-            });
-          }
-        },
-        onFormatChanged: (format) {
-          if (_calendarFormat != format) {
-            // Call `setState()` when updating calendar format
-            setState(() {
-              _calendarFormat = format;
-            });
-          }
-        },
-        onPageChanged: (focusedDay) {
-          // No need to call `setState()` here
-        },
-      ),
     );
   }
+}
+
+//example of adding assignment to calendar
+//going to make it to where you can add an assignment from
+//anywhere in the app by calling the class with parameters
+List<Assignment> getDataSource() {
+
+
+
+
+
+
+/*
+  meetings.add(Meeting(
+      'WOW THIS IS AN EXAAAAMPLE ASSIGNMENT', startTime, endTime, Colors.pink, "descriiiiption"));
+  */
+  return assignmentList;
+}
+
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Assignment> source) {
+    appointments = source;
+  }
+
+  
+   @override
+  DateTime getStartTime(int index) {
+    return appointments![index].dueDate;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments![index].dueDate;
+  }
+
+  //since the calendar can only take one string, I combined to look like "name -- className"
+  @override
+  String getSubject(int index) {
+    String temp = appointments![index].name + " -- " + appointments![index].className;
+    return temp;
+  }
+
+//this only takes 1 string, so for now im combining the assignment name and class name
+/*
+  @override
+  String getSubject(int index) {
+    return appointments![index].name;
+  }
+*/
+  @override
+  Color getColor(int index) {
+    return Colors.pink;
+  }
+}
+
+class AddAssignment {
+  AddAssignment(this.name, this.className, this.details, this.dueDate, this.priority, this.notes, this.color);
+
+  String name;
+  String className;
+  String details;
+  DateTime dueDate;
+  int priority;
+  String notes;
+  int color;
 }

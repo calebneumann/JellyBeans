@@ -1,5 +1,7 @@
 //import 'dart:io';
 
+import 'dart:math';
+
 import 'package:app_project/main.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -8,11 +10,12 @@ import 'SettingsPageWidgets/fontSlider.dart';
 import 'SettingsPageWidgets/textWidget.dart';
 import 'SettingsPageWidgets/fnaf.dart';
 import '../models/UserSettings.dart';
-//import 'package:flutter/scheduler.dart';
+import 'CalendarPage.dart';
 
-UserSettings userSettings = UserSettings(1, 20);
+UserSettings userSettings = UserSettings(1);
 MyHomePage home = MyHomePage();
-
+String randJump = "assets/images/CHICA.gif";
+int randInt = Random().nextInt(1);
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -40,7 +43,33 @@ class _SettingsPageState extends State<SettingsPage>{
       _themesState = !_themesState;
     });
   }
-      void showFNAF(bool state){
+  void showFNAF(bool state){
+    randInt = Random().nextInt(4); //gets random number between 0 and 3
+
+    switch(randInt){
+      case 0:
+      randJump = "assets/images/BONNIE.gif";
+      break;
+
+      case 1:
+      randJump = "assets/images/CHICA.gif";
+      break;
+
+      case 2:
+      randJump = "assets/images/FREDDY.gif";
+      break;
+      
+      case 3:
+      randJump = "assets/images/FOXY.gif";
+      break;
+
+      default:
+      randJump = "assets/images/BONNIE.gif";
+    }
+
+
+
+
 
     setState(() {
       _fnafState = state;
@@ -56,7 +85,7 @@ class _SettingsPageState extends State<SettingsPage>{
         
         Visibility( 
           visible: _fnafState,
-          child: FnafWidget(),
+          child: FnafWidget(rand: randJump), //sends the randomly chose jumpscare asset
         ),
 
 
@@ -64,20 +93,20 @@ class _SettingsPageState extends State<SettingsPage>{
           padding: EdgeInsets.all(20),
           child: Text(
             'Settings',
-            style: TextStyle(fontSize: (userSettings.getFontSize() + 20)),
+            style: TextStyle(fontSize: (UserSettings.getFontSize() + 20)),
           ),
         ),
 
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: TextStyle(fontSize: userSettings.getFontSize()),
+              textStyle: TextStyle(fontSize: UserSettings.getFontSize()),
             ),
             onPressed: () {
               showThemes();
             },
             child: TextWidget(
-            fontSize: userSettings.getFontSize(),
+            fontSize: UserSettings.getFontSize(),
             text: "Themes",
           ),
           ),
@@ -87,20 +116,22 @@ class _SettingsPageState extends State<SettingsPage>{
           //toggles the themes dropdown on and off
           Visibility(
           visible: _themesState,
-          child:DropDownWidget(fontSize: userSettings.getFontSize(),),
+          child:DropDownWidget(fontSize: UserSettings.getFontSize(),),
         ),
 
           
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: TextStyle(fontSize: userSettings.getFontSize()),
+              textStyle: TextStyle(fontSize: UserSettings.getFontSize()),
             ),
             onPressed: () {
+              //for testing purposes
+              //getDataSource("pog", DateTime(2023, 11, 13), DateTime(2023, 11, 15), Colors.pink, "this is the description");
               showSlider();
             },
             child: TextWidget(
-            fontSize: userSettings.getFontSize(),
+            fontSize: UserSettings.getFontSize(),
             text: "Text Size",
           ),
           ),
@@ -122,7 +153,7 @@ class _SettingsPageState extends State<SettingsPage>{
         ListTile(
           leading: TextButton(
             style: TextButton.styleFrom(
-              textStyle: TextStyle(fontSize: userSettings.getFontSize()),
+              textStyle: TextStyle(fontSize: UserSettings.getFontSize()),
             ),
             onPressed: () async{ 
               await player.play(AssetSource('audio/FNAF.mp3')); //plays a silly FNAF noise LOL GOTTEM
@@ -132,8 +163,8 @@ class _SettingsPageState extends State<SettingsPage>{
               }, 
               
             child: TextWidget(
-            fontSize: userSettings.getFontSize(),
-            text: "FNAF JUMPSCARE",
+            fontSize: UserSettings.getFontSize(),
+            text: "FNAF JUMPSCARE (RANDOM??)",
           ),
           ),
         ),
