@@ -1,4 +1,3 @@
-import 'package:app_project/models/Themes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -20,14 +19,28 @@ class CalendarPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('AHH A CALENDAR!!! RUN!!!!!!!!!!!!!!!!!!!!!!'),
+        title: Text("Event Calendar"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.info), 
+            onPressed: () => showDialog(
+              context: context, 
+              builder: (context) => infoWidget(),
+            ),
+          ),
+        ],
       ),
         body: SfCalendar(
+          
+          allowedViews: [
+            CalendarView.month,
+            CalendarView.schedule,
+          ],
           view: CalendarView.month,
           showNavigationArrow: true,
           dataSource: MeetingDataSource(getDataSource()),
           monthViewSettings: MonthViewSettings(
-            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment
+            appointmentDisplayMode:MonthAppointmentDisplayMode.appointment,
           ),
           onTap: (CalendarTapDetails details) {
 
@@ -50,7 +63,8 @@ class CalendarPage extends StatelessWidget {
                     Text(' - '),
                     Text(assClassName, style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),),
                   ],),
-                content: Container(
+                content: 
+                Container(
                   height: 80,
                   child: Column(
                     children: <Widget>[
@@ -104,9 +118,12 @@ class MeetingDataSource extends CalendarDataSource {
     return appointments![index].dueDate;
   }
 
+  //set event end time as 11:59 PM because the calendar kept getting mad that the event was given just a start time
   @override
   DateTime getEndTime(int index) {
-    return appointments![index].dueDate;
+    DateTime endTime = appointments![index].dueDate;
+    endTime = DateTime(endTime.year, endTime.month, endTime.day, 23, 59);
+    return endTime;
   }
 
   //since the calendar can only take one string, I combined to look like "name -- className"
@@ -139,4 +156,50 @@ class AddAssignment {
   int priority;
   String notes;
   int color;
+}
+
+class infoWidget extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("INFORMATION"),
+      content: 
+      Wrap(
+        children: [
+
+      
+      Container(
+        height: 150,
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text("Month View: Shows assignments in the month view\n\n",
+                softWrap: true,
+                style: TextStyle(fontSize: 10),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text("Schedule View: Compresses calendar down to show assignments with their respective due dates. Tap on assignment to see details",
+                softWrap: true,
+                style: TextStyle(fontSize: 10),)
+              ],
+            )
+          ],
+        ),
+      ),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+          child: Text('close'),
+        )
+      ],
+    );
+  }
 }
