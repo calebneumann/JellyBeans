@@ -29,6 +29,8 @@ class AssignmentPageState extends State<AssignmentPage> {
   final _colorController = TextEditingController(); //TODO: change to drop down
 
   Assignment? _currentAssignment; //declared to create save assignment
+  String _dateErrorMessage =
+      ''; //declared to handle dateTime format errors (temporary)
 
   @override
   void initState() {
@@ -80,6 +82,7 @@ class AssignmentPageState extends State<AssignmentPage> {
               TextFormField(
                 controller: _nameController,
                 decoration: _boxedDecoration('Name'),
+                onTapOutside: (event) => FocusScope.of(context).unfocus(),
               ),
               Row(
                 children: [
@@ -87,6 +90,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                     child: TextFormField(
                       controller: _classNameController,
                       decoration: _boxedDecoration('Class Name'),
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     ),
                   ),
                   SizedBox(width: 0.0), //To remove space between two boxes
@@ -94,6 +98,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                     child: TextFormField(
                       controller: _dueDateController,
                       decoration: _boxedDecoration('Due Date (YYYY-MM-DD)'),
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     ),
                   ),
                 ],
@@ -102,18 +107,22 @@ class AssignmentPageState extends State<AssignmentPage> {
                 controller: _detailsController,
                 decoration: _boxedDecoration('Details'),
                 maxLines: 7,
+                onTapOutside: (event) => FocusScope.of(context).unfocus(),
               ),
               TextFormField(
                 controller: _priorityController,
                 decoration: _boxedDecoration('Priority (integer)'),
+                onTapOutside: (event) => FocusScope.of(context).unfocus(),
               ),
               TextFormField(
                 controller: _notesController,
                 decoration: _boxedDecoration('Notes'),
+                onTapOutside: (event) => FocusScope.of(context).unfocus(),
               ),
               TextFormField(
                 controller: _colorController,
                 decoration: _boxedDecoration('Color (integer)'),
+                onTapOutside: (event) => FocusScope.of(context).unfocus(),
               ),
               SizedBox(height: 16.0),
               Row(
@@ -131,22 +140,35 @@ class AssignmentPageState extends State<AssignmentPage> {
                       if (_nameController.text.isNotEmpty) {
                         _currentAssignment!.name = _nameController.text;
                       }
+
                       if (_classNameController.text.isNotEmpty) {
                         _currentAssignment!.className =
                             _classNameController.text;
                       }
+
                       if (_dueDateController.text.isNotEmpty) {
-                        _currentAssignment!.dueDate = DateTime.parse(
-                            '${_dueDateController.text} 23:59:59Z');
+                        try {
+                          _currentAssignment!.dueDate = DateTime.parse(
+                              '${_dueDateController.text} 23:59:59Z');
+                        } catch (e) {
+                          setState(() {
+                            _dateErrorMessage =
+                                'Invalid date format. Please use YYYY-MM-DD';
+                          });
+                          return;
+                        }
                       }
+
                       if (_priorityController.text.isNotEmpty) {
                         _currentAssignment!.details = _detailsController.text;
                         _currentAssignment!.priority =
                             int.parse(_priorityController.text);
                       }
+
                       if (_notesController.text.isNotEmpty) {
                         _currentAssignment!.notes = _notesController.text;
                       }
+
                       if (_colorController.text.isNotEmpty) {
                         _currentAssignment!.color =
                             int.parse(_colorController.text);
@@ -170,6 +192,13 @@ class AssignmentPageState extends State<AssignmentPage> {
                   ),
                 ],
               ),
+              if (_dateErrorMessage.isNotEmpty)
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      _dateErrorMessage,
+                      style: TextStyle(color: Colors.red),
+                    ))
             ],
           ),
         ),
