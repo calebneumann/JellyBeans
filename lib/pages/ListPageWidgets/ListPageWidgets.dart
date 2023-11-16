@@ -16,10 +16,12 @@ class SearchFilterWidget extends StatelessWidget {
           child: Row(
             children: [
               IconButton(
-                onPressed: () => { print("TODO: Search functionality") }, 
+                onPressed: () => {print("TODO: Search functionality")},
                 icon: Icon(Icons.search),
               ),
-              SizedBox(width: 5,),
+              SizedBox(
+                width: 5,
+              ),
               Expanded(
                 child: TextField(
                   decoration: InputDecoration(
@@ -28,9 +30,11 @@ class SearchFilterWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 5,),
+              SizedBox(
+                width: 5,
+              ),
               IconButton(
-                onPressed: () => { print("TODO: Filter functionality") }, 
+                onPressed: () => {print("TODO: Filter functionality")},
                 icon: Icon(Icons.filter_list),
               ),
             ],
@@ -45,9 +49,11 @@ class AssignmentWidget extends StatelessWidget {
   const AssignmentWidget({
     super.key,
     required this.assignment,
+    required this.selectScreen,
   });
 
   final Assignment assignment;
+  final Function(dynamic) selectScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +69,6 @@ class AssignmentWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: ExpansionTile(
           tilePadding: EdgeInsets.zero,
-          
           title: Text(
             assignment.name,
             style: style.apply(fontSizeFactor: 0.7, fontWeightDelta: 2),
@@ -82,9 +87,12 @@ class AssignmentWidget extends StatelessWidget {
                       softWrap: false,
                     ),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   ElevatedButton(
-                      onPressed: () => { print("TODO: Assignment View Page") }, child: Text("View")),
+                      onPressed: () => {selectScreen(assignment)},
+                      child: Text("View")),
                 ],
               ),
             ),

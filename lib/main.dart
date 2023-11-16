@@ -7,6 +7,7 @@ import 'pages/SettingsPage.dart';
 import 'pages/CalendarPage.dart';
 import 'pages/ListPage.dart';
 import 'pages/CanvasPage.dart';
+import 'pages/ViewPage.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
@@ -51,6 +52,14 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   Assignments assignments = Assignments();
+  Assignment? currentAssignment;
+
+  // Assignment? get currentAssignment => _currentAssignment;
+
+  // set currentAssignment(Assignment? assignment) {
+  //   _currentAssignment = assignment;
+  //   notifyListeners();
+  // }
 
   MyAppState() {
     // TODO: This is for testing assignment pulling. This code will not be in the final version
@@ -80,16 +89,27 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
 
-  void _selectScreen(int value) {
+  void _selectScreen(dynamic value) {
     setState(() {
       //changes the page to the selected one
-      selectedIndex = value;
+      //TODO: move to appState
+      if (value is int) {
+        selectedIndex = value;
+      } else if (value is Assignment) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ViewPage(assignment: value, selectScreen: _selectScreen),
+          ),
+        );
+      }
     });
   }
 
   late final List _screens = [
     {
-      "screen": const ListPage(),
+      "screen": ListPage(selectScreen: _selectScreen),
       "title": "\n"
     }, //app crashes if the "title" object is absent
     {"screen": CalendarPage(), "title": "\n"},
@@ -122,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Jelly Beans' Homework Tracker v0.1",
+          "Jelly Beans' Homework Tracker v0.2",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.pink,

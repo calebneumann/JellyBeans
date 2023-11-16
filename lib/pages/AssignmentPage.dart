@@ -6,7 +6,7 @@ import '../models/Assignment.dart';
 import '../main.dart';
 
 class AssignmentPage extends StatefulWidget {
-  final Function(int) selectScreen;
+  final Function(dynamic) selectScreen;
 
   const AssignmentPage({super.key, required this.selectScreen});
 
@@ -29,6 +29,14 @@ class AssignmentPageState extends State<AssignmentPage> {
   final _colorController = TextEditingController(); //TODO: change to drop down
 
   Assignment? _currentAssignment; //declared to create save assignment
+
+  @override
+  void initState() {
+    super.initState();
+
+    final appState = context.read<MyAppState>();
+    _currentAssignment = appState.currentAssignment;
+  }
 
   // void _handleSave() {
   //   if (_formKey.currentState!.validate()) {
@@ -53,6 +61,16 @@ class AssignmentPageState extends State<AssignmentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<MyAppState>();
+    if (appState.currentAssignment != null) {
+      _nameController.text = _currentAssignment!.name;
+      _classNameController.text = _currentAssignment!.className;
+      _dueDateController.text = _currentAssignment!.dueDate.toIso8601String();
+      _detailsController.text = _currentAssignment!.details;
+      _priorityController.text = _currentAssignment!.priority.toString();
+      _notesController.text = _currentAssignment!.notes;
+      _colorController.text = _currentAssignment!.color.toString();
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -124,13 +142,15 @@ class AssignmentPageState extends State<AssignmentPage> {
                       appState.assignments.saveAssignment(_currentAssignment!);
 
                       widget.selectScreen(
-                          0); //only works if all fields are filled.
+                          _currentAssignment); //only works if all fields are filled.
                     },
                     child: Text('Save'),
                   ),
                   SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () {
+                      final appState = context.read<MyAppState>();
+                      appState.currentAssignment = null;
                       widget.selectScreen(0);
                     },
                     child: Text('Cancel'),

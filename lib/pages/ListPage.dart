@@ -6,8 +6,11 @@ import 'ListPageWidgets/ListPageWidgets.dart';
 import '../models/UserSettings.dart';
 
 UserSettings userSettings = UserSettings(1);
+
 class ListPage extends StatelessWidget {
-  const ListPage({super.key});
+  final Function(dynamic) selectScreen;
+
+  const ListPage({super.key, required this.selectScreen});
 
   @override
   Widget build(BuildContext context) {
@@ -22,34 +25,44 @@ class ListPage extends StatelessWidget {
     ];
     var buffer = <Widget>[];
     var sectionYr = 0, sectionMnth = 0, sectionDay = 0;
-    for (var ass in appState.assignments.getAllAssignments()){
-      if (ass.dueDate.day != sectionDay || ass.dueDate.month != sectionMnth || ass.dueDate.year != sectionYr){
+    for (var ass in appState.assignments.getAllAssignments()) {
+      if (ass.dueDate.day != sectionDay ||
+          ass.dueDate.month != sectionMnth ||
+          ass.dueDate.year != sectionYr) {
         list.addAll(buffer);
         buffer.clear();
-      }
-      else{
-        buffer.add(AssignmentWidget(assignment: ass));
+      } else {
+        buffer
+            .add(AssignmentWidget(assignment: ass, selectScreen: selectScreen));
         continue;
       }
 
-      if ( buffer.isEmpty ){
-        sectionYr = ass.dueDate.year; sectionMnth = ass.dueDate.month; sectionDay = ass.dueDate.day;
-        
+      if (buffer.isEmpty) {
+        sectionYr = ass.dueDate.year;
+        sectionMnth = ass.dueDate.month;
+        sectionDay = ass.dueDate.day;
+
         buffer.add(SizedBox(height: 10));
         buffer.add(
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Text(
               "${DateFormat.MMM().format(ass.dueDate)} $sectionDay, $sectionYr",
-              style: style.apply(fontSizeFactor: 0.6, fontWeightDelta: 3,), //implement 
+              style: style.apply(
+                fontSizeFactor: 0.6,
+                fontWeightDelta: 3,
+              ), //implement
             ),
           ),
         );
-        buffer.add(AssignmentWidget(assignment: ass));
+        buffer
+            .add(AssignmentWidget(assignment: ass, selectScreen: selectScreen));
       }
     }
     list.addAll(buffer);
 
-    return ListView(children: list,);
+    return ListView(
+      children: list,
+    );
   }
 }
