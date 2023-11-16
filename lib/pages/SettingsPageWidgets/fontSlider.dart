@@ -17,7 +17,7 @@ class _SliderWidgetState extends State<SliderWidget> {
   Widget sliderWidget(){
     return Slider(
       value: UserSettings.getFontSize(),
-      max: 45,
+      max: 27,
       min: 15,
       divisions: 30,
       label: UserSettings.getFontSize().round().toString(),

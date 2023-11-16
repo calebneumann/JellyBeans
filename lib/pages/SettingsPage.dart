@@ -1,8 +1,7 @@
 //import 'dart:io';
 
 import 'dart:math';
-
-import 'package:app_project/main.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'SettingsPageWidgets/themesDropdown.dart';
@@ -13,9 +12,9 @@ import '../models/UserSettings.dart';
 import 'dart:async';
 
 UserSettings userSettings = UserSettings(1);
-MyHomePage home = MyHomePage();
 String randJump = "assets/images/CHICA.gif";
 int randInt = Random().nextInt(1);
+bool isGoldenFreddy = false;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -43,30 +42,25 @@ class _SettingsPageState extends State<SettingsPage>{
     });
   }
   void turnOnFNAF(bool state){
-    randInt = Random().nextInt(4); //gets random number between 0 and 3
-
-    switch(randInt){
-      case 0:
-      randJump = "assets/images/BONNIE.gif";
-      break;
-
-      case 1:
-      randJump = "assets/images/CHICA.gif";
-      break;
-
-      case 2:
-      randJump = "assets/images/FREDDY.gif";
-      break;
-      
-      case 3:
-      randJump = "assets/images/FOXY.gif";
-      break;
-
-      default:
+    randInt = Random().nextInt(101); //gets random number between 0 and 100, inclusively
+    if(randInt >= 0 && randInt < 25){
       randJump = "assets/images/BONNIE.gif";
     }
-
-
+    else if(randInt >= 25 && randInt < 50){
+      randJump = "assets/images/CHICA.gif";
+    }
+    else if(randInt >= 50 && randInt <75){
+      randJump = "assets/images/FREDDY.gif";
+    }
+    else if(randInt >= 75 && randInt < 100){
+      randJump = "assets/images/FOXY.gif";
+    }
+    //freddy has 1/101 chance to be chosen
+    else{
+      randJump = "assets/images/GOLDEN_FREDDY.jpg";
+      //uncomment if you want the app to crash (1/101 chance)
+      //isGoldenFreddy = true; 
+    }
 
 
 
@@ -81,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage>{
   Widget build(BuildContext context) { 
     return ListView(
       children: [
-        
+
         Visibility( 
           visible: _fnafState,
           child: FnafWidget(rand: randJump), //sends the randomly chose jumpscare asset
@@ -165,9 +159,15 @@ class _SettingsPageState extends State<SettingsPage>{
               Timer.periodic(Duration(seconds: 3), (Timer t){
                 if(!mounted){
                   t.cancel();
+                  if(isGoldenFreddy){ //if golden freddy is chosen, the app crashes :)
+                    exit(0);
+                  }
                 } else {
                   setState(() {
                     t.cancel();
+                  if(isGoldenFreddy){
+                    exit(0);
+                  }
                   _fnafState = false;
                   });
                 }
@@ -176,7 +176,7 @@ class _SettingsPageState extends State<SettingsPage>{
             },   
             child: TextWidget(
             fontSize: UserSettings.getFontSize(),
-            text: "FNAF JUMPSCARE",
+            text: "WARNING: DON'T PRESS!",
           ),
           ),
         ),

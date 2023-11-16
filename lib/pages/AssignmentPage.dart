@@ -75,7 +75,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                   Expanded(
                     child: TextFormField(
                       controller: _dueDateController,
-                      decoration: _boxedDecoration('Due Date'),
+                      decoration: _boxedDecoration('Due Date (YYYY-MM-DD)'),
                     ),
                   ),
                 ],
