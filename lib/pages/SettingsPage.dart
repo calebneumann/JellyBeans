@@ -58,7 +58,7 @@ class _SettingsPageState extends State<SettingsPage>{
     //freddy has 1/101 chance to be chosen
     else{
       randJump = "assets/images/GOLDEN_FREDDY.jpg";
-      //uncomment if you want the app to crash
+      //uncomment if you want the app to crash (1/101 chance)
       //isGoldenFreddy = true; 
     }
 
