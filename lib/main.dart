@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
       "screen": ListPage(selectScreen: _selectScreen),
       "title": "\n"
     }, //app crashes if the "title" object is absent
-    {"screen": CalendarPage(), "title": "\n"},
+    {"screen": CalendarPage(selectScreen: _selectScreen), "title": "\n"},
     {"screen": AssignmentPage(selectScreen: _selectScreen), "title": "\n"},
     {"screen": CanvasPage(), "title": "\n"},
     {"screen": SettingsPage(), "title": "\n"},

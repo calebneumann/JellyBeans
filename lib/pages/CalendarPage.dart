@@ -6,14 +6,18 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 
 var assignmentList = <Assignment>[];
+
 class CalendarPage extends StatelessWidget {
-  const CalendarPage({super.key});
+  final Function(dynamic) selectScreen;
+
+  const CalendarPage({super.key, required this.selectScreen});
 
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    assignmentList.clear(); //so that it doesn't add onto old list before adding updated list
-    for(var ass in appState.assignments.getAllAssignments()){
+    assignmentList
+        .clear(); //so that it doesn't add onto old list before adding updated list
+    for (var ass in appState.assignments.getAllAssignments()) {
       assignmentList.add(ass);
     }
 
@@ -22,82 +26,98 @@ class CalendarPage extends StatelessWidget {
         title: Text("Event Calendar"),
         actions: [
           IconButton(
-            icon: Icon(Icons.info), 
+            icon: Icon(Icons.info),
             onPressed: () => showDialog(
-              context: context, 
-              builder: (context) => infoWidget(),
+              context: context,
+              builder: (context) => infoWidget(selectScreen: selectScreen),
             ),
           ),
         ],
       ),
-        body: SfCalendar(
-          
-          allowedViews: [
-            CalendarView.month,
-            CalendarView.schedule,
-          ],
-          view: CalendarView.month,
-          showNavigationArrow: true,
-          dataSource: MeetingDataSource(getDataSource()),
-          monthViewSettings: MonthViewSettings(
-            appointmentDisplayMode:MonthAppointmentDisplayMode.appointment,
-          ),
-          onTap: (CalendarTapDetails details) {
-
-            if(details.targetElement == CalendarElement.appointment){
-              final Assignment assignmentDetails = details.appointments![0];
-              var assNotes = assignmentDetails.notes;
-              var assClassName = assignmentDetails.className;
-              var assDetails = assignmentDetails.details;
-              DateTime assDueDate = assignmentDetails.dueDate;
-              var assDay = assDueDate.day;
-              var assYear = assDueDate.year;
-
-              var assName = assignmentDetails.name;
-
-            showDialog(context: context, builder: (BuildContext context){
-              return AlertDialog(
-                title: 
-                  Row(children: [
-                    Text(assName),
-                    Text(' - '),
-                    Text(assClassName, style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),),
-                  ],),
-                content: 
-                Container(
-                  height: 80,
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Text(assNotes, style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),),
-
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text("${DateFormat.MMM().format(assDueDate)} $assDay, $assYear"),
-                        ],
-                      ),
-                      Text(assDetails, style: TextStyle(fontSize: 10),),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                   TextButton(
-                    onPressed: (){
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('close'),
-                  )
-                ],
-              );
-            }
-            );
-          }
-          },
+      body: SfCalendar(
+        allowedViews: [
+          CalendarView.month,
+          CalendarView.schedule,
+        ],
+        view: CalendarView.month,
+        showNavigationArrow: true,
+        dataSource: MeetingDataSource(getDataSource()),
+        monthViewSettings: MonthViewSettings(
+          appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
         ),
+        onTap: (CalendarTapDetails details) {
+          if (details.targetElement == CalendarElement.appointment) {
+            final Assignment assignmentDetails = details.appointments![0];
+            var assNotes = assignmentDetails.notes;
+            var assClassName = assignmentDetails.className;
+            var assDetails = assignmentDetails.details;
+            DateTime assDueDate = assignmentDetails.dueDate;
+            var assDay = assDueDate.day;
+            var assYear = assDueDate.year;
 
+            var assName = assignmentDetails.name;
+
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: Row(
+                        children: [
+                          Text(assName),
+                          Text(' - '),
+                          Text(
+                            assClassName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 15),
+                          ),
+                        ],
+                      ),
+                      content: Container(
+                        height: 80,
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  assNotes,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 20),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                    "${DateFormat.MMM().format(assDueDate)} $assDay, $assYear"),
+                              ],
+                            ),
+                            Text(
+                              assDetails,
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            selectScreen(assignmentDetails);
+                          },
+                          child: Text('view'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('close'),
+                        ),
+                      ]);
+                });
+          }
+        },
+      ),
     );
   }
 }
@@ -106,14 +126,12 @@ List<Assignment> getDataSource() {
   return assignmentList;
 }
 
-
 class MeetingDataSource extends CalendarDataSource {
   MeetingDataSource(List<Assignment> source) {
     appointments = source;
   }
 
-  
-   @override
+  @override
   DateTime getStartTime(int index) {
     return appointments![index].dueDate;
   }
@@ -129,7 +147,8 @@ class MeetingDataSource extends CalendarDataSource {
   //since the calendar can only take one string, I combined to look like "name -- className"
   @override
   String getSubject(int index) {
-    String temp = appointments![index].name + " -- " + appointments![index].className;
+    String temp =
+        appointments![index].name + " -- " + appointments![index].className;
     return temp;
   }
 
@@ -147,7 +166,8 @@ class MeetingDataSource extends CalendarDataSource {
 }
 
 class AddAssignment {
-  AddAssignment(this.name, this.className, this.details, this.dueDate, this.priority, this.notes, this.color);
+  AddAssignment(this.name, this.className, this.details, this.dueDate,
+      this.priority, this.notes, this.color);
 
   String name;
   String className;
@@ -158,43 +178,57 @@ class AddAssignment {
   int color;
 }
 
-class infoWidget extends StatelessWidget{
+class infoWidget extends StatelessWidget {
+  final Function(dynamic) selectScreen;
+
+  const infoWidget({
+    super.key,
+    required this.selectScreen,
+  });
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("INFORMATION"),
-      content: 
-      Wrap(
+      content: Wrap(
         children: [
-
-      
-      Container(
-        height: 150,
-        child: Column(
-          children: <Widget>[
-            Row(
+          Container(
+            height: 150,
+            child: Column(
               children: <Widget>[
-                Text("Month View: Shows assignments in the month view\n\n",
-                softWrap: true,
-                style: TextStyle(fontSize: 10),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      "Month View: Shows assignments in the month view\n\n",
+                      softWrap: true,
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ],
                 ),
+                Row(
+                  children: [
+                    Text(
+                      "Schedule View: Compresses calendar down to show assignments with their respective due dates. Tap on assignment to see details",
+                      softWrap: true,
+                      style: TextStyle(fontSize: 10),
+                    )
+                  ],
+                )
               ],
             ),
-            Row(
-              children: [
-                Text("Schedule View: Compresses calendar down to show assignments with their respective due dates. Tap on assignment to see details",
-                softWrap: true,
-                style: TextStyle(fontSize: 10),)
-              ],
-            )
-          ],
-        ),
-      ),
+          ),
         ],
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: (){
+          onPressed: () {
+            // selectScreen(assignmentDetails); don't know how to make this work
+            Navigator.of(context).pop();
+          },
+          child: Text('view'),
+        ),
+        TextButton(
+          onPressed: () {
             Navigator.of(context).pop();
           },
           child: Text('close'),

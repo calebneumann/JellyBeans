@@ -105,7 +105,7 @@ class AssignmentPageState extends State<AssignmentPage> {
               ),
               TextFormField(
                 controller: _priorityController,
-                decoration: _boxedDecoration('Priority'),
+                decoration: _boxedDecoration('Priority (integer)'),
               ),
               TextFormField(
                 controller: _notesController,
@@ -113,7 +113,7 @@ class AssignmentPageState extends State<AssignmentPage> {
               ),
               TextFormField(
                 controller: _colorController,
-                decoration: _boxedDecoration('Color'),
+                decoration: _boxedDecoration('Color (integer)'),
               ),
               SizedBox(height: 16.0),
               Row(
@@ -128,16 +128,29 @@ class AssignmentPageState extends State<AssignmentPage> {
                             appState.assignments.createAssignment();
                       } //creates assignment if assignment does not exist. Currently, assignment never exists.
 
-                      _currentAssignment!.name = _nameController.text;
-                      _currentAssignment!.className = _classNameController.text;
-                      _currentAssignment!.dueDate =
-                          DateTime.parse(_dueDateController.text);
-                      _currentAssignment!.details = _detailsController.text;
-                      _currentAssignment!.priority =
-                          int.parse(_priorityController.text);
-                      _currentAssignment!.notes = _notesController.text;
-                      _currentAssignment!.color =
-                          int.parse(_colorController.text);
+                      if (_nameController.text.isNotEmpty) {
+                        _currentAssignment!.name = _nameController.text;
+                      }
+                      if (_classNameController.text.isNotEmpty) {
+                        _currentAssignment!.className =
+                            _classNameController.text;
+                      }
+                      if (_dueDateController.text.isNotEmpty) {
+                        _currentAssignment!.dueDate = DateTime.parse(
+                            '${_dueDateController.text} 23:59:59Z');
+                      }
+                      if (_priorityController.text.isNotEmpty) {
+                        _currentAssignment!.details = _detailsController.text;
+                        _currentAssignment!.priority =
+                            int.parse(_priorityController.text);
+                      }
+                      if (_notesController.text.isNotEmpty) {
+                        _currentAssignment!.notes = _notesController.text;
+                      }
+                      if (_colorController.text.isNotEmpty) {
+                        _currentAssignment!.color =
+                            int.parse(_colorController.text);
+                      }
 
                       appState.assignments.saveAssignment(_currentAssignment!);
 
