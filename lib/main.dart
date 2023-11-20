@@ -11,15 +11,14 @@ import 'pages/ViewPage.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 
   Color theme = Colors.pink; //turned theme into variable so that it can eventually be changed on command
+  Color navBarTheme = Colors.white;
 
-void main() {
-  //async  ^ for when we get splash screen working
-  //stuff for splash screen
-  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  runApp(MyApp());
-}
+void main() => runApp(
+      ChangeNotifierProvider<ThemeNotifier>(
+        create: (_) => ThemeNotifier(lightTheme),
+        child: MyApp(),
+      ),
+    );
 
 
 class MyApp extends StatelessWidget {
@@ -28,14 +27,12 @@ class MyApp extends StatelessWidget {
   final Future _initFuture = Init.initialize();
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
         title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: theme),
-        ),
+        theme: themeNotifier.getTheme(),
         home: FutureBuilder(
           future: _initFuture,
           builder: ((context, snapshot) {
@@ -78,9 +75,11 @@ class MyAppState extends ChangeNotifier {
     as4.dueDate = DateTime.parse('2024-10-21 16:00:00Z');
     //*/
   }
-
-
 }
+
+
+
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -162,10 +161,48 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.link), label: "Account"),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
         ],
-        fixedColor: const Color.fromARGB(255, 65, 65,
-            65), //had issue where nav rail was invisible, added these to fix
+        selectedItemColor: Color.fromARGB(255, 119, 117, 117), //had issue where nav rail was invisible, added these to fix
         unselectedItemColor: Colors.grey,
       ),
     );
   }
 }
+
+//idk why but it wouldn't work if it was in a different file
+
+class ThemeNotifier with ChangeNotifier {
+  ThemeData _themeData;
+
+  ThemeNotifier(this._themeData);
+
+  getTheme() => _themeData;
+
+  setTheme(ThemeData themeData) async {
+    _themeData = themeData;
+    notifyListeners();
+  }
+}
+/*
+ThemeData lightTheme = ThemeData(
+  primarySwatch:Colors.pink,
+  primaryColor: Colors.white,
+  brightness: Brightness.light,
+  dividerColor: Colors.blue,
+);
+*/
+
+ThemeData lightTheme = ThemeData(
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(seedColor: theme),
+);
+
+
+ThemeData darkTheme = ThemeData(
+  primarySwatch:Colors.blueGrey,
+  primaryColor: Colors.black,
+  brightness: Brightness.dark,
+  dividerColor: Colors.black12,
+);
+
+
+//TODO: make theme data for colorblind and custom

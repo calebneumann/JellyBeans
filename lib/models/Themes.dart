@@ -16,7 +16,7 @@
   //for RBG thingy
 
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:provider/provider.dart';
 import '../main.dart';
 import '../pages/SettingsPageWidgets/themesDropdown.dart';
 
@@ -27,11 +27,10 @@ class themes extends StatefulWidget{
 }
 
 class _themesState extends State<themes> {
-
   void changeTheme(){
   if(dropDownValue == "Light Mode"){
     print(dropDownValue);
-    theme = Colors.yellow;
+    theme = Colors.pink;
   }
   else if(dropDownValue == "Dark Mode"){
     print(dropDownValue);
@@ -43,15 +42,28 @@ class _themesState extends State<themes> {
   }
   else if(dropDownValue == "Custom"){
     print(dropDownValue);
-    theme = Colors.purple;
+    theme = customTheme;
   }
 }
 
   @override
   Widget build(BuildContext context){
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return TextButton(
-      onPressed: changeTheme,
-       child: Text("test"));
+      onPressed: (){
+        changeTheme();
+      onThemeChanged(dropDownValue, themeNotifier);
+
+      },
+       child: Text("Set Theme"));
   }
 }
 
+void onThemeChanged(String themeString, ThemeNotifier themeNotifier) async {
+    if(themeString == "Light Mode"){
+      themeNotifier.setTheme(lightTheme);
+    }
+    else if (themeString == "Dark Mode"){
+      themeNotifier.setTheme(darkTheme);
+    }
+}

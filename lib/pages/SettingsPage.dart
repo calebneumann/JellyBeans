@@ -114,7 +114,12 @@ class _SettingsPageState extends State<SettingsPage>{
           //toggles the themes dropdown on and off
           Visibility(
           visible: _themesState,
-          child:DropDownWidget(fontSize: UserSettings.getFontSize(),),
+          child: Row(
+            children: [
+              DropDownWidget(fontSize: UserSettings.getFontSize(),),
+              themes(),
+            ],
+          ),
         ),
 
         
@@ -181,7 +186,6 @@ class _SettingsPageState extends State<SettingsPage>{
           ),
           ),
         ),
-        themes(),
           ],
         )
 
