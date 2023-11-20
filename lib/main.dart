@@ -10,6 +10,8 @@ import 'pages/CanvasPage.dart';
 import 'pages/ViewPage.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 
+  Color theme = Colors.pink; //turned theme into variable so that it can eventually be changed on command
+
 void main() {
   //async  ^ for when we get splash screen working
   //stuff for splash screen
@@ -19,12 +21,11 @@ void main() {
   runApp(MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final Future _initFuture = Init.initialize();
-  static Color theme = Colors
-      .pink; //turned theme into variable so that it can eventually be changed on command
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -77,6 +78,8 @@ class MyAppState extends ChangeNotifier {
     as4.dueDate = DateTime.parse('2024-10-21 16:00:00Z');
     //*/
   }
+
+
 }
 
 class MyHomePage extends StatefulWidget {
@@ -145,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
           "Jelly Beans' Homework Tracker v0.2",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.pink,
+        backgroundColor: theme,
       ),
       body: _screens[selectedIndex]["screen"],
       bottomNavigationBar: BottomNavigationBar(

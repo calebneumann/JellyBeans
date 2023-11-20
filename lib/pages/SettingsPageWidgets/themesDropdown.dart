@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 
 //list of themes in dropdown menu
-List<String> themes = <String>["Light Mode", "Dark Mode", "Colorblind Mode", "Custom"];
-String dropDownValue = themes.first;
+List<String> themesList = <String>["Light Mode", "Dark Mode", "Colorblind Mode", "Custom"];
+String dropDownValue = themesList.first;
 
 bool h = false;
 
@@ -27,7 +27,10 @@ class _DropDownWidgetState extends State<DropDownWidget> {
 
   Widget dropdownMenu(){
     
-    return Padding(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Padding(
       padding: EdgeInsets.all(20),
       child: DropdownMenu(
         initialSelection: dropDownValue, 
@@ -39,10 +42,12 @@ class _DropDownWidgetState extends State<DropDownWidget> {
           });
         },
         textStyle: TextStyle(fontSize: widget.fontSize - 5.0),
-        dropdownMenuEntries: themes.map<DropdownMenuEntry<String>>((String value){
+        dropdownMenuEntries: themesList.map<DropdownMenuEntry<String>>((String value){
           return DropdownMenuEntry<String>(value: value, label: value);
         }).toList(),
       )
+    ),
+      ],
     );
   }
 

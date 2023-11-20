@@ -10,6 +10,7 @@ import 'SettingsPageWidgets/textWidget.dart';
 import 'SettingsPageWidgets/fnaf.dart';
 import '../models/UserSettings.dart';
 import 'dart:async';
+import '../models/themes.dart';
 
 UserSettings userSettings = UserSettings(1);
 String randJump = "assets/images/CHICA.gif";
@@ -180,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage>{
           ),
           ),
         ),
-
+        themes(),
           ],
         )
 
