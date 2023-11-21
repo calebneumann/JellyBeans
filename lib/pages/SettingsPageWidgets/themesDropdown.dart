@@ -31,10 +31,9 @@ class _DropDownWidgetState extends State<DropDownWidget> {
   Color _color = Colors.pink;
   Color chosenColor = Colors.pink;
 
-  void changeColor(Color color){
-    setState(()=>_color = color);
+  void changeColor(Color color) {
+    setState(() => _color = color);
   }
-
 
   Widget build(BuildContext context) {
     return Column(
@@ -52,12 +51,11 @@ class _DropDownWidgetState extends State<DropDownWidget> {
                     setState(() {
                       dropDownValue = value!;
                     });
-                      if(dropDownValue == "Custom"){
-                        curColor = true;
-                      }
-                      else{
-                        curColor = false;
-                      }
+                    if (dropDownValue == "Custom") {
+                      curColor = true;
+                    } else {
+                      curColor = false;
+                    }
                   },
                   textStyle: TextStyle(fontSize: widget.fontSize - 5.0),
                   dropdownMenuEntries:
@@ -66,52 +64,48 @@ class _DropDownWidgetState extends State<DropDownWidget> {
                         value: value, label: value);
                   }).toList(),
                 )),
-            
             Visibility(
-              visible: curColor,
-              child: Column(children: [
-                SizedBox(
-              width: 42.0,
-              height: 42.0,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: customTheme,
-                ),
-                ),
-            ),
-              TextButton(onPressed: (){
-                showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: SingleChildScrollView(
-            child: ColorPicker(
-              pickerColor: _color,
-              onColorChanged: changeColor
-            ),
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-        child: const Text('Got it'),
-        onPressed: () {
-          setState(() {
-            theme = _color;
-            customTheme = _color;
-          });
-          Navigator.of(context).pop();
-        },
-      ),
-          ],
-        );
-      }
-    );
-              }, 
-              child: Text("Choose color"))
-              ],)
-              )
-            
-
-            
+                visible: curColor,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 42.0,
+                      height: 42.0,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: customTheme,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: SingleChildScrollView(
+                                    child: ColorPicker(
+                                        pickerColor: _color,
+                                        onColorChanged: changeColor),
+                                  ),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      child: const Text('Got it'),
+                                      onPressed: () {
+                                        setState(() {
+                                          theme = _color;
+                                          customTheme = _color;
+                                        });
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        child: Text("Choose color"))
+                  ],
+                ))
           ],
         ),
       ],

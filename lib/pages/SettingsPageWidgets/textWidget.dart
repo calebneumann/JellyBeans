@@ -12,8 +12,7 @@
 
 import 'package:flutter/material.dart';
 
-
-class TextWidget extends StatelessWidget{
+class TextWidget extends StatelessWidget {
   const TextWidget({
     Key? key,
     required this.text,
@@ -23,12 +22,11 @@ class TextWidget extends StatelessWidget{
   final String text;
   final double fontSize;
 
-
-  Widget outputText(){
+  Widget outputText() {
     return FittedBox(
       //prevents text from clipping out of screen if the size is too big
-      fit: BoxFit.fitWidth, 
-      child:Text(
+      fit: BoxFit.fitWidth,
+      child: Text(
         text,
         style: TextStyle(fontSize: fontSize),
       ),
@@ -36,8 +34,7 @@ class TextWidget extends StatelessWidget{
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return outputText();
   }
-
 }

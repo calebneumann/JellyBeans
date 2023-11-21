@@ -10,8 +10,9 @@ import 'pages/CanvasPage.dart';
 import 'pages/ViewPage.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-  Color theme = Colors.pink; //turned theme into variable so that it can eventually be changed on command
-  Color navBarTheme = Colors.white;
+Color theme = Colors
+    .pink; //turned theme into variable so that it can eventually be changed on command
+Color navBarTheme = Colors.white;
 
 void main() => runApp(
       ChangeNotifierProvider<ThemeNotifier>(
@@ -19,7 +20,6 @@ void main() => runApp(
         child: MyApp(),
       ),
     );
-
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
@@ -76,10 +76,6 @@ class MyAppState extends ChangeNotifier {
     //*/
   }
 }
-
-
-
-
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -161,7 +157,8 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.link), label: "Account"),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
         ],
-        selectedItemColor: Color.fromARGB(255, 119, 117, 117), //had issue where nav rail was invisible, added these to fix
+        selectedItemColor: Color.fromARGB(255, 119, 117,
+            117), //had issue where nav rail was invisible, added these to fix
         unselectedItemColor: Colors.grey,
       ),
     );
@@ -196,13 +193,11 @@ ThemeData lightTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(seedColor: theme),
 );
 
-
 ThemeData darkTheme = ThemeData(
-  primarySwatch:Colors.blueGrey,
+  primarySwatch: Colors.blueGrey,
   primaryColor: Colors.black,
   brightness: Brightness.dark,
   dividerColor: Colors.black12,
 );
-
 
 //TODO: make theme data for colorblind and custom
