@@ -3,6 +3,7 @@ import 'package:app_project/models/Assignment.dart';
 import 'package:app_project/models/Themes.dart';
 import 'package:app_project/pages/AssignmentPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'pages/SettingsPage.dart';
 import 'pages/CalendarPage.dart';
@@ -15,13 +16,26 @@ Color theme = Colors
     .pink; //turned theme into variable so that it can eventually be changed on command
 Color navBarTheme = Colors.white;
 
-void main() => runApp(
+void main() { 
+    //locks app to portrait mode (ton of issues if its put in landscape)
+    WidgetsFlutterBinding.ensureInitialized();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) => runApp(
+      ChangeNotifierProvider<ThemeNotifier>(
+        create: (_) => ThemeNotifier(lightTheme),
+        child: MyApp(),
+      ),
+    ));
+    
+    //Delete the upper part and uncomment this if we do not want the app to be locked in portrait mode
+    /*
+    runApp(
       ChangeNotifierProvider<ThemeNotifier>(
         create: (_) => ThemeNotifier(lightTheme),
         child: MyApp(),
       ),
     );
-
+    */
+}
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
