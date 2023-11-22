@@ -19,8 +19,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import '../pages/SettingsPageWidgets/themesDropdown.dart';
+import '../pages/SettingsPageWidgets/textWidget.dart';
 
 //Color curTheme = Colors.pink;
+MaterialColor customMaterial =
+    CustomMaterialColor(customTheme.red, customTheme.green, customTheme.blue)
+        .mdColor;
+
+//Made custom themes a list bc colors would not change if values were changed as a global variable.
+//So I have it create new ThemeData to send to main.dart and then clear the list it was put in
+//to delete that instance and then a new one is put in to replace it if the custom theme were to change.
+List<ThemeData> customList = <ThemeData>[];
+
 class themes extends StatefulWidget {
   @override
   State<themes> createState() => _themesState();
@@ -51,14 +61,70 @@ class _themesState extends State<themes> {
           changeTheme();
           onThemeChanged(dropDownValue, themeNotifier);
         },
-        child: Text("Set Theme"));
+        child: TextWidget(text: "Set Theme", multiplier: 1.0));
   }
 }
 
 void onThemeChanged(String themeString, ThemeNotifier themeNotifier) async {
+  Brightness changeMode = Brightness.light;
   if (themeString == "Light Mode") {
     themeNotifier.setTheme(lightTheme);
   } else if (themeString == "Dark Mode") {
     themeNotifier.setTheme(darkTheme);
+  } else if (themeString == "Custom") {
+    customList.clear();
+    customMaterial = CustomMaterialColor(
+            customTheme.red, customTheme.green, customTheme.blue)
+        .mdColor;
+    if (darkMode == true) {
+      changeMode = Brightness.dark;
+    } else {
+      changeMode = Brightness.light;
+    }
+    customList.add(ThemeData(
+      primarySwatch: customMaterial,
+      primaryColor: customTheme,
+      brightness: changeMode,
+      dividerColor: customTheme,
+    ));
+    print(customList.length);
+    themeNotifier.setTheme(customList.first);
   }
 }
+
+class CustomMaterialColor {
+  final int r;
+  final int g;
+  final int b;
+
+  CustomMaterialColor(this.r, this.g, this.b);
+
+  MaterialColor get mdColor {
+    Map<int, Color> color = {
+      50: Color.fromRGBO(r, g, b, .1),
+      100: Color.fromRGBO(r, g, b, .2),
+      200: Color.fromRGBO(r, g, b, .3),
+      300: Color.fromRGBO(r, g, b, .4),
+      400: Color.fromRGBO(r, g, b, .5),
+      500: Color.fromRGBO(r, g, b, .6),
+      600: Color.fromRGBO(r, g, b, .7),
+      700: Color.fromRGBO(r, g, b, .8),
+      800: Color.fromRGBO(r, g, b, .9),
+      900: Color.fromRGBO(r, g, b, 1),
+    };
+    return MaterialColor(Color.fromRGBO(r, g, b, 1).value, color);
+  }
+}
+
+//STICKING CUSTOMIZED THEMES HERE
+ThemeData lightTheme = ThemeData(
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(seedColor: theme),
+);
+
+ThemeData darkTheme = ThemeData(
+  primarySwatch: Colors.blueGrey,
+  primaryColor: Colors.black,
+  brightness: Brightness.dark,
+  dividerColor: Colors.black12,
+);

@@ -11,16 +11,19 @@
 //TextWidget(text: "The string of text", fontSize: userSettings.getFontSize)
 
 import 'package:flutter/material.dart';
+import '../../models/UserSettings.dart';
+
+UserSettings userSettings = UserSettings(1);
 
 class TextWidget extends StatelessWidget {
   const TextWidget({
     Key? key,
     required this.text,
-    required this.fontSize,
+    required this.multiplier,
   }) : super(key: key);
 
   final String text;
-  final double fontSize;
+  final double multiplier;
 
   Widget outputText() {
     return FittedBox(
@@ -28,7 +31,7 @@ class TextWidget extends StatelessWidget {
       fit: BoxFit.fitWidth,
       child: Text(
         text,
-        style: TextStyle(fontSize: fontSize),
+        style: TextStyle(fontSize: UserSettings.getFontSize() * multiplier),
       ),
     );
   }

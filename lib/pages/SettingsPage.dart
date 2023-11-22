@@ -93,10 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onPressed: () {
                   showThemes();
                 },
-                child: TextWidget(
-                  fontSize: UserSettings.getFontSize(),
-                  text: "Themes",
-                ),
+                child: TextWidget(text: "Themes", multiplier: 1.0),
               ),
             ),
 
@@ -123,10 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   //getDataSource("pog", DateTime(2023, 11, 13), DateTime(2023, 11, 15), Colors.pink, "this is the description");
                   showSlider();
                 },
-                child: TextWidget(
-                  fontSize: UserSettings.getFontSize(),
-                  text: "Text Size",
-                ),
+                child: TextWidget(text: "Text Size", multiplier: 1.0),
               ),
             ),
 
@@ -172,10 +166,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     }
                   });
                 },
-                child: TextWidget(
-                  fontSize: UserSettings.getFontSize(),
-                  text: "WARNING: DON'T PRESS!",
-                ),
+                child: TextWidget(text: "WARNING: DON'T PRESS!", multiplier: 1.0),
               ),
             ),
           ],

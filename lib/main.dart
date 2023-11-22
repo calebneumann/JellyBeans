@@ -1,5 +1,6 @@
 import 'package:app_project/init.dart';
 import 'package:app_project/models/Assignment.dart';
+import 'package:app_project/models/Themes.dart';
 import 'package:app_project/pages/AssignmentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -165,8 +166,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-//idk why but it wouldn't work if it was in a different file
 
+//idk why but it wouldn't work if it was in a different file
 class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
 
@@ -179,25 +180,3 @@ class ThemeNotifier with ChangeNotifier {
     notifyListeners();
   }
 }
-/*
-ThemeData lightTheme = ThemeData(
-  primarySwatch:Colors.pink,
-  primaryColor: Colors.white,
-  brightness: Brightness.light,
-  dividerColor: Colors.blue,
-);
-*/
-
-ThemeData lightTheme = ThemeData(
-  useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(seedColor: theme),
-);
-
-ThemeData darkTheme = ThemeData(
-  primarySwatch: Colors.blueGrey,
-  primaryColor: Colors.black,
-  brightness: Brightness.dark,
-  dividerColor: Colors.black12,
-);
-
-//TODO: make theme data for colorblind and custom

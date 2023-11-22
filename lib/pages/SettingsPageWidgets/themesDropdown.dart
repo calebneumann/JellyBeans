@@ -4,8 +4,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../../main.dart';
+import '../SettingsPageWidgets/textWidget.dart';
 
 Color customTheme = Colors.pink;
+bool darkMode = false;
 
 //list of themes in dropdown menu
 List<String> themesList = <String>[
@@ -84,10 +86,14 @@ class _DropDownWidgetState extends State<DropDownWidget> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   content: SingleChildScrollView(
-                                    child: ColorPicker(
-                                        pickerColor: _color,
-                                        onColorChanged: changeColor),
-                                  ),
+                                      child: Column(
+                                    children: <Widget>[
+                                      ColorPicker(
+                                          pickerColor: _color,
+                                          onColorChanged: changeColor),
+                                      DarkModeToggle(),
+                                    ],
+                                  )),
                                   actions: <Widget>[
                                     ElevatedButton(
                                       child: const Text('Got it'),
@@ -103,7 +109,8 @@ class _DropDownWidgetState extends State<DropDownWidget> {
                                 );
                               });
                         },
-                        child: Text("Choose color"))
+                        child:
+                            TextWidget(text: "Choose Color", multiplier: 0.6))
                   ],
                 ))
           ],
@@ -111,10 +118,38 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       ],
     );
   }
-/*
+}
+
+class DarkModeToggle extends StatefulWidget {
+  const DarkModeToggle({super.key});
+
+  @override
+  State<DarkModeToggle> createState() => _DarkModeToggleState();
+}
+
+class _DarkModeToggleState extends State<DarkModeToggle> {
+  String isOn = "Off";
   @override
   Widget build(BuildContext context) {
-    return dropdownMenu();
+    return Column(
+      children: [
+        Switch(
+          // This bool value toggles the switch.
+          value: darkMode,
+          onChanged: (bool value) {
+            // This is called when the user toggles the switch.
+            setState(() {
+              darkMode = value;
+              if (darkMode == false) {
+                isOn = "Off";
+              } else {
+                isOn = "On";
+              }
+            });
+          },
+        ),
+        Text("Dark Mode: $isOn"),
+      ],
+    );
   }
-  */
 }
