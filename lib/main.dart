@@ -1,7 +1,9 @@
 import 'package:app_project/init.dart';
 import 'package:app_project/models/Assignment.dart';
+import 'package:app_project/models/Themes.dart';
 import 'package:app_project/pages/AssignmentPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'pages/SettingsPage.dart';
 import 'pages/CalendarPage.dart';
@@ -10,31 +12,42 @@ import 'pages/CanvasPage.dart';
 import 'pages/ViewPage.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-void main() {
-  //async  ^ for when we get splash screen working
-  //stuff for splash screen
-  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+Color theme = Colors
+    .pink; //turned theme into variable so that it can eventually be changed on command
+Color navBarTheme = Colors.white;
 
-  runApp(MyApp());
+void main() { 
+    //locks app to portrait mode (ton of issues if its put in landscape)
+    WidgetsFlutterBinding.ensureInitialized();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) => runApp(
+      ChangeNotifierProvider<ThemeNotifier>(
+        create: (_) => ThemeNotifier(lightTheme),
+        child: MyApp(),
+      ),
+    ));
+    
+    //Delete the upper part and uncomment this if we do not want the app to be locked in portrait mode
+    /*
+    runApp(
+      ChangeNotifierProvider<ThemeNotifier>(
+        create: (_) => ThemeNotifier(lightTheme),
+        child: MyApp(),
+      ),
+    );
+    */
 }
-
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final Future _initFuture = Init.initialize();
-  static Color theme = Colors
-      .pink; //turned theme into variable so that it can eventually be changed on command
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
         title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: theme),
-        ),
+        theme: themeNotifier.getTheme(),
         home: FutureBuilder(
           future: _initFuture,
           builder: ((context, snapshot) {
@@ -145,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
           "Jelly Beans' Homework Tracker v0.2",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.pink,
+        backgroundColor: theme,
       ),
       body: _screens[selectedIndex]["screen"],
       bottomNavigationBar: BottomNavigationBar(
@@ -159,10 +172,25 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.link), label: "Account"),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
         ],
-        fixedColor: const Color.fromARGB(255, 65, 65,
-            65), //had issue where nav rail was invisible, added these to fix
+        selectedItemColor: Color.fromARGB(255, 119, 117,
+            117), //had issue where nav rail was invisible, added these to fix
         unselectedItemColor: Colors.grey,
       ),
     );
+  }
+}
+
+
+//idk why but it wouldn't work if it was in a different file
+class ThemeNotifier with ChangeNotifier {
+  ThemeData _themeData;
+
+  ThemeNotifier(this._themeData);
+
+  getTheme() => _themeData;
+
+  setTheme(ThemeData themeData) async {
+    _themeData = themeData;
+    notifyListeners();
   }
 }
