@@ -57,4 +57,8 @@ class Assignments extends ChangeNotifier {
     _assignments[index] = assignment;
     notifyListeners();
   }
+
+  void sortAssignments(){
+    _assignments.sort( (a, b) => a.dueDate.compareTo(b.dueDate) );
+  }
 }
