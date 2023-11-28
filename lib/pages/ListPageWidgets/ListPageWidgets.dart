@@ -1,22 +1,41 @@
 import 'package:app_project/models/Assignment.dart';
 import 'package:flutter/material.dart';
 
-class SearchFilterWidget extends StatelessWidget {
+class SearchFilterWidget extends StatefulWidget {
+  final Function(String) applyFilter;
+
   const SearchFilterWidget({
     super.key,
+    required this.applyFilter,
   });
+  
+  @override
+  State<SearchFilterWidget> createState() => _SearchFilterWidgetState();
+}
+
+class _SearchFilterWidgetState extends State<SearchFilterWidget> {
+
+  final textFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    textFieldController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text(""),
+      title: Text("Search/Filter"),
       children: [
         Container(
           padding: EdgeInsets.all(5),
           child: Row(
             children: [
               IconButton(
-                onPressed: () => {print("TODO: Search functionality")},
+                onPressed: () => setState(() {
+                  widget.applyFilter(textFieldController.text);
+                }),
                 icon: Icon(Icons.search),
               ),
               SizedBox(
@@ -24,6 +43,7 @@ class SearchFilterWidget extends StatelessWidget {
               ),
               Expanded(
                 child: TextField(
+                  controller: textFieldController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Search...',
@@ -34,7 +54,10 @@ class SearchFilterWidget extends StatelessWidget {
                 width: 5,
               ),
               IconButton(
-                onPressed: () => {print("TODO: Filter functionality")},
+                onPressed: () => setState(() {
+                  widget.applyFilter(textFieldController.text);
+                  print("may make this one do something different");
+                }),
                 icon: Icon(Icons.filter_list),
               ),
             ],
@@ -81,7 +104,7 @@ class AssignmentWidget extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in aliquam eros, a posuere nibh. Nullam in nisl eleifend, bibendum leo at, volutpat nulla. Vestibulum quis nisi felis. Nam a orci congue, facilisis velit vel, posuere est. Ut dolor ante, ultricies a fermentum a, iaculis a leo. Aliquam erat volutpat. Nulla a ligula ac felis iaculis euismod efficitur eu velit. Aenean finibus quis eros sed ornare. Proin fringilla, velit eget viverra tempor, elit dui lobortis orci, eu hendrerit nunc augue a mauris. Phasellus placerat bibendum lectus non feugiat.",
+                      assignment.details,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 5,
                       softWrap: false,
