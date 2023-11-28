@@ -117,6 +117,7 @@ class AssignmentPageState extends State<AssignmentPage> {
               TextFormField(
                 controller: _notesController,
                 decoration: _boxedDecoration('Notes'),
+                maxLines: 7,
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
               ),
               TextFormField(
@@ -175,6 +176,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                       }
 
                       appState.assignments.saveAssignment(_currentAssignment!);
+                      appState.assignments.sortAssignments();                     //I put this in here to make list page rendering faster. hope it doesnt fuck anything up for u (- kevin)
 
                       widget.selectScreen(
                           _currentAssignment); //only works if all fields are filled.

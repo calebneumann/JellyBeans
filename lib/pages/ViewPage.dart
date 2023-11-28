@@ -33,56 +33,60 @@ class ViewPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Name: ${assignment.name}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        child: Container(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Name: ${assignment.name}',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Class Name: ${assignment.className}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Due Date: ${assignment.dueDate.toString()}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Details: ${assignment.details}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Priority: ${assignment.priority}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Notes: ${assignment.notes}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Color: ${assignment.color}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 16),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final appState = context.read<MyAppState>();
+                      appState.currentAssignment = null;
+                      Navigator.pop(context);
+                      selectScreen(0);
+                    },
+                    child: Text('Done'),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(
-              'Class Name: ${assignment.className}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Due Date: ${assignment.dueDate.toString()}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Details: ${assignment.details}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Priority: ${assignment.priority}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Notes: ${assignment.notes}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Color: ${assignment.color}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  final appState = context.read<MyAppState>();
-                  appState.currentAssignment = null;
-                  Navigator.pop(context);
-                  selectScreen(0);
-                },
-                child: Text('Done'),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
