@@ -24,6 +24,7 @@ class CalendarPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Event Calendar"),
+        backgroundColor: Color.fromARGB(255, theme.red + 100, theme.green + 100, theme.blue + 100),
         actions: [
           IconButton(
             icon: Icon(Icons.info),
@@ -161,7 +162,7 @@ class MeetingDataSource extends CalendarDataSource {
 */
   @override
   Color getColor(int index) {
-    return Colors.pink;
+    return Colors.pink; //TODO: whenever colors are set up stick that puppy here
   }
 }
 
