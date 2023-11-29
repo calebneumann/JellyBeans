@@ -89,8 +89,7 @@ void onThemeChanged(String themeString, ThemeNotifier themeNotifier) async {
     ));
     print(customList.length);
     themeNotifier.setTheme(customList.first);
-  }
-  else if(themeString == "Colorblind Mode"){
+  } else if (themeString == "Colorblind Mode") {
     themeNotifier.setTheme(customThemeData);
   }
 }
@@ -138,4 +137,4 @@ ThemeData customThemeData = ThemeData(
   primarySwatch: Colors.blueGrey,
   primaryColor: Colors.black,
   dividerColor: Colors.black12,
-    );
+);

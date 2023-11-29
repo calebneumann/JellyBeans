@@ -27,10 +27,10 @@ class TextWidget extends StatelessWidget {
 
   Widget outputText() {
     return Text(
-        text,
-        style: TextStyle(fontSize: UserSettings.getFontSize() * multiplier),
-        overflow: TextOverflow.ellipsis,
-        softWrap: true,
+      text,
+      style: TextStyle(fontSize: UserSettings.getFontSize() * multiplier),
+      overflow: TextOverflow.ellipsis,
+      softWrap: true,
     );
   }
 

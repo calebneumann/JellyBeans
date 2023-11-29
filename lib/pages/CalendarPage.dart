@@ -100,4 +100,3 @@ class AddAssignment {
   String notes;
   int color;
 }
-
