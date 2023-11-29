@@ -26,13 +26,11 @@ class TextWidget extends StatelessWidget {
   final double multiplier;
 
   Widget outputText() {
-    return FittedBox(
-      //prevents text from clipping out of screen if the size is too big
-      fit: BoxFit.fitWidth,
-      child: Text(
+    return Text(
         text,
         style: TextStyle(fontSize: UserSettings.getFontSize() * multiplier),
-      ),
+        overflow: TextOverflow.ellipsis,
+        softWrap: true,
     );
   }
 

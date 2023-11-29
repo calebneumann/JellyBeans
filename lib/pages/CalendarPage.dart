@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../models/Assignment.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
+import 'SettingsPageWidgets/textWidget.dart';
 
 var assignmentList = <Assignment>[];
+bool fromCalendar = false;
 
 class CalendarPage extends StatelessWidget {
   final Function(dynamic) selectScreen;
@@ -23,7 +24,7 @@ class CalendarPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event Calendar"),
+        title: TextWidget(text: "Event Calendar", multiplier: 1.0,),
         backgroundColor: Color.fromARGB(255, theme.red + 100, theme.green + 100, theme.blue + 100),
         actions: [
           IconButton(
@@ -49,73 +50,8 @@ class CalendarPage extends StatelessWidget {
         onTap: (CalendarTapDetails details) {
           if (details.targetElement == CalendarElement.appointment) {
             final Assignment assignmentDetails = details.appointments![0];
-            var assNotes = assignmentDetails.notes;
-            var assClassName = assignmentDetails.className;
-            var assDetails = assignmentDetails.details;
-            DateTime assDueDate = assignmentDetails.dueDate;
-            var assDay = assDueDate.day;
-            var assYear = assDueDate.year;
-
-            var assName = assignmentDetails.name;
-
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                      title: Row(
-                        children: [
-                          Text(assName),
-                          Text(' - '),
-                          Text(
-                            assClassName,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      content: Container(
-                        height: 80,
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  assNotes,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 20),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                    "${DateFormat.MMM().format(assDueDate)} $assDay, $assYear"),
-                              ],
-                            ),
-                            Text(
-                              assDetails,
-                              style: TextStyle(fontSize: 10),
-                            ),
-                          ],
-                        ),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            selectScreen(assignmentDetails);
-                          },
-                          child: Text('view'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('close'),
-                        ),
-                      ]);
-                });
+            selectScreen(assignmentDetails);
+            fromCalendar = true;
           }
         },
       ),
@@ -186,7 +122,6 @@ class infoWidget extends StatelessWidget {
     super.key,
     required this.selectScreen,
   });
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -194,25 +129,17 @@ class infoWidget extends StatelessWidget {
       content: Wrap(
         children: [
           Container(
-            height: 150,
             child: Column(
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(
-                      "Month View: Shows assignments in the month view\n\n",
-                      softWrap: true,
-                      style: TextStyle(fontSize: 10),
-                    ),
+                    TextWidget(text: "Month View: Shows assignments in the month view\n\n", multiplier: 1.0,),
                   ],
                 ),
                 Row(
                   children: [
-                    Text(
-                      "Schedule View: Compresses calendar down to show assignments with their respective due dates. Tap on assignment to see details",
-                      softWrap: true,
-                      style: TextStyle(fontSize: 10),
-                    )
+                      TextWidget(text: "Schedule View: Compresses calendar down to show assignments with their respective due dates. Tap on assignment to see details", multiplier: 1.0,)
+
                   ],
                 )
               ],
