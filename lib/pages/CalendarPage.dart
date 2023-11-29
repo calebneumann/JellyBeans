@@ -3,7 +3,6 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../models/Assignment.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
-import 'SettingsPageWidgets/textWidget.dart';
 
 var assignmentList = <Assignment>[];
 bool fromCalendar = false;
@@ -23,19 +22,6 @@ class CalendarPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: TextWidget(text: "Event Calendar", multiplier: 1.0,),
-        backgroundColor: Color.fromARGB(255, theme.red + 100, theme.green + 100, theme.blue + 100),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.info),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => infoWidget(selectScreen: selectScreen),
-            ),
-          ),
-        ],
-      ),
       body: SfCalendar(
         allowedViews: [
           CalendarView.month,
@@ -115,53 +101,3 @@ class AddAssignment {
   int color;
 }
 
-class infoWidget extends StatelessWidget {
-  final Function(dynamic) selectScreen;
-
-  const infoWidget({
-    super.key,
-    required this.selectScreen,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text("INFORMATION"),
-      content: Wrap(
-        children: [
-          Container(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    TextWidget(text: "Month View: Shows assignments in the month view\n\n", multiplier: 1.0,),
-                  ],
-                ),
-                Row(
-                  children: [
-                      TextWidget(text: "Schedule View: Compresses calendar down to show assignments with their respective due dates. Tap on assignment to see details", multiplier: 1.0,)
-
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            // selectScreen(assignmentDetails); don't know how to make this work
-            Navigator.of(context).pop();
-          },
-          child: Text('view'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('close'),
-        )
-      ],
-    );
-  }
-}
