@@ -166,7 +166,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     }
                   });
                 },
-                child: TextWidget(text: "WARNING: DON'T PRESS!", multiplier: 1.0),
+                child:
+                    TextWidget(text: "WARNING: DON'T PRESS!", multiplier: 1.0),
               ),
             ),
           ],

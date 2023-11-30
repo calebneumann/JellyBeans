@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/Assignment.dart';
 import '../main.dart';
 import 'package:provider/provider.dart';
+import 'CalendarPage.dart';
 
 class ViewPage extends StatelessWidget {
   final Function(dynamic) selectScreen;
@@ -79,7 +80,13 @@ class ViewPage extends StatelessWidget {
                       final appState = context.read<MyAppState>();
                       appState.currentAssignment = null;
                       Navigator.pop(context);
-                      selectScreen(0);
+                      if(fromCalendar){
+                        fromCalendar = false;
+                        selectScreen(1);
+                      }
+                      else {
+                        selectScreen(0);
+                      }
                     },
                     child: Text('Done'),
                   ),

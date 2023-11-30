@@ -46,7 +46,7 @@ class _themesState extends State<themes> {
       theme = Colors.black;
     } else if (dropDownValue == "Colorblind Mode") {
       print(dropDownValue);
-      theme = Colors.green;
+      theme = Colors.black;
     } else if (dropDownValue == "Custom") {
       print(dropDownValue);
       theme = customTheme;
@@ -89,6 +89,8 @@ void onThemeChanged(String themeString, ThemeNotifier themeNotifier) async {
     ));
     print(customList.length);
     themeNotifier.setTheme(customList.first);
+  } else if (themeString == "Colorblind Mode") {
+    themeNotifier.setTheme(customThemeData);
   }
 }
 
@@ -123,8 +125,16 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  useMaterial3: true,
   primarySwatch: Colors.blueGrey,
   primaryColor: Colors.black,
   brightness: Brightness.dark,
+  dividerColor: Colors.black12,
+);
+
+ThemeData customThemeData = ThemeData(
+  useMaterial3: true,
+  primarySwatch: Colors.blueGrey,
+  primaryColor: Colors.black,
   dividerColor: Colors.black12,
 );

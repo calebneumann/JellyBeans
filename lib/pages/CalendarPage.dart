@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../models/Assignment.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 
 var assignmentList = <Assignment>[];
+bool fromCalendar = false;
 
 class CalendarPage extends StatelessWidget {
   final Function(dynamic) selectScreen;
@@ -22,18 +22,6 @@ class CalendarPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Event Calendar"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.info),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => infoWidget(selectScreen: selectScreen),
-            ),
-          ),
-        ],
-      ),
       body: SfCalendar(
         allowedViews: [
           CalendarView.month,
@@ -48,73 +36,8 @@ class CalendarPage extends StatelessWidget {
         onTap: (CalendarTapDetails details) {
           if (details.targetElement == CalendarElement.appointment) {
             final Assignment assignmentDetails = details.appointments![0];
-            var assNotes = assignmentDetails.notes;
-            var assClassName = assignmentDetails.className;
-            var assDetails = assignmentDetails.details;
-            DateTime assDueDate = assignmentDetails.dueDate;
-            var assDay = assDueDate.day;
-            var assYear = assDueDate.year;
-
-            var assName = assignmentDetails.name;
-
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                      title: Row(
-                        children: [
-                          Text(assName),
-                          Text(' - '),
-                          Text(
-                            assClassName,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      content: Container(
-                        height: 80,
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  assNotes,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 20),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                    "${DateFormat.MMM().format(assDueDate)} $assDay, $assYear"),
-                              ],
-                            ),
-                            Text(
-                              assDetails,
-                              style: TextStyle(fontSize: 10),
-                            ),
-                          ],
-                        ),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            selectScreen(assignmentDetails);
-                          },
-                          child: Text('view'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('close'),
-                        ),
-                      ]);
-                });
+            selectScreen(assignmentDetails);
+            fromCalendar = true;
           }
         },
       ),
@@ -161,7 +84,7 @@ class MeetingDataSource extends CalendarDataSource {
 */
   @override
   Color getColor(int index) {
-    return Colors.pink;
+    return Colors.pink; //TODO: whenever colors are set up stick that puppy here
   }
 }
 
@@ -176,64 +99,4 @@ class AddAssignment {
   int priority;
   String notes;
   int color;
-}
-
-class infoWidget extends StatelessWidget {
-  final Function(dynamic) selectScreen;
-
-  const infoWidget({
-    super.key,
-    required this.selectScreen,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text("INFORMATION"),
-      content: Wrap(
-        children: [
-          Container(
-            height: 150,
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text(
-                      "Month View: Shows assignments in the month view\n\n",
-                      softWrap: true,
-                      style: TextStyle(fontSize: 10),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Schedule View: Compresses calendar down to show assignments with their respective due dates. Tap on assignment to see details",
-                      softWrap: true,
-                      style: TextStyle(fontSize: 10),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            // selectScreen(assignmentDetails); don't know how to make this work
-            Navigator.of(context).pop();
-          },
-          child: Text('view'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('close'),
-        )
-      ],
-    );
-  }
 }
