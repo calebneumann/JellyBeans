@@ -176,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month), label: "Calendar"),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
+          BottomNavigationBarItem(icon: Icon(Icons.add, color: Colors.red), label: "Add"),
           BottomNavigationBarItem(icon: Icon(Icons.link), label: "Account"),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
         ],
