@@ -1,6 +1,9 @@
 import 'package:app_project/models/User.dart';
+import 'package:app_project/pages/SettingsPageWidgets/textWidget.dart';
 import 'package:flutter/material.dart';
+import '../models/UserSettings.dart';
 
+UserSettings userSettings = UserSettings(1);
 class CanvasPage extends StatefulWidget {
   const CanvasPage({super.key});
 
@@ -17,7 +20,7 @@ class _CanvasPageState extends State<CanvasPage> {
   void _handleSave() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')),
+        const SnackBar(content: TextWidget(text: 'Processing Data', multiplier: 0.7,)),
       );
 
       _formKey.currentState!.save();
@@ -29,7 +32,7 @@ class _CanvasPageState extends State<CanvasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Sign in to Canvas')),
+        title: Center(child: TextWidget(text: 'Sign in to Canvas', multiplier: 1.0,)),
       ),
       body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -41,6 +44,7 @@ class _CanvasPageState extends State<CanvasPage> {
                   controller: _usernameController,
                   decoration: InputDecoration(
                     labelText: 'Username',
+                    labelStyle: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -57,6 +61,7 @@ class _CanvasPageState extends State<CanvasPage> {
                   controller: _passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
+                    labelStyle: TextStyle(fontSize: UserSettings.getFontSize() * 0.8)
                   ),
                   obscureText: true,
                   onEditingComplete: _handleSave,
@@ -74,7 +79,7 @@ class _CanvasPageState extends State<CanvasPage> {
             ),
           )),
       floatingActionButton:
-          ElevatedButton(onPressed: _handleSave, child: const Text('Save')),
+          ElevatedButton(onPressed: _handleSave, child: const TextWidget(text: 'Save', multiplier: 0.7,)),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

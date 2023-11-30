@@ -1,6 +1,8 @@
 import 'package:app_project/models/Assignment.dart';
 import 'package:flutter/material.dart';
-
+import '../../models/UserSettings.dart';
+import '../SettingsPageWidgets/textWidget.dart';
+UserSettings userSettings = UserSettings(1);
 class SearchFilterWidget extends StatefulWidget {
   final Function(String) applyFilter;
 
@@ -26,7 +28,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text("Search/Filter"),
+      title: TextWidget(text: "Search/Filter", multiplier: 0.8,),
       children: [
         Container(
           padding: EdgeInsets.all(5),
@@ -94,9 +96,9 @@ class AssignmentWidget extends StatelessWidget {
           tilePadding: EdgeInsets.zero,
           title: Text(
             assignment.name,
-            style: style.apply(fontSizeFactor: 0.7, fontWeightDelta: 2),
+            style: style.apply(fontSizeFactor: UserSettings.getFontSize() / 27, fontWeightDelta: 2),
           ),
-          subtitle: Text("priority"),
+          subtitle: TextWidget(text: "priority", multiplier: 0.7,),
           children: [
             Container(
               padding: EdgeInsets.all(5),
@@ -108,6 +110,7 @@ class AssignmentWidget extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 5,
                       softWrap: false,
+                      style: TextStyle(fontSize: UserSettings.getFontSize() * 0.7),
                     ),
                   ),
                   SizedBox(
@@ -115,7 +118,7 @@ class AssignmentWidget extends StatelessWidget {
                   ),
                   ElevatedButton(
                       onPressed: () => {selectScreen(assignment)},
-                      child: Text("View")),
+                      child: TextWidget(text: "View", multiplier: 0.7,)),
                 ],
               ),
             ),
