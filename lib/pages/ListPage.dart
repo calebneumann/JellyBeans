@@ -65,10 +65,7 @@ class _ListPageState extends State<ListPage> {
             padding: const EdgeInsets.all(5.0),
             child: Text(
               "${DateFormat.MMM().format(ass.dueDate)} $sectionDay, $sectionYr",
-              style: style.apply(
-                fontSizeFactor: 0.6,
-                fontWeightDelta: 3,
-              ), //implement
+              style: style.apply(fontSizeFactor: UserSettings.getFontSize() / 27, fontWeightDelta: 3), //implement
             ),
           ),
         );

@@ -1,10 +1,13 @@
+import 'package:app_project/pages/SettingsPageWidgets/textWidget.dart';
 import 'package:flutter/material.dart';
 //import 'package:uuid/Uuid.dart';
 import 'package:provider/provider.dart';
 // import 'ListPage.dart';
 import '../models/Assignment.dart';
 import '../main.dart';
+import '../models/UserSettings.dart';
 
+UserSettings userSettings = UserSettings(1);
 class AssignmentPage extends StatefulWidget {
   final Function(dynamic) selectScreen;
 
@@ -83,6 +86,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                 controller: _nameController,
                 decoration: _boxedDecoration('Name'),
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
               ),
               Row(
                 children: [
@@ -91,6 +95,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                       controller: _classNameController,
                       decoration: _boxedDecoration('Class Name'),
                       onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                      style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
                     ),
                   ),
                   SizedBox(width: 0.0), //To remove space between two boxes
@@ -99,6 +104,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                       controller: _dueDateController,
                       decoration: _boxedDecoration('Due Date (YYYY-MM-DD)'),
                       onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                      style: TextStyle(fontSize: UserSettings.getFontSize() * 0.6),
                     ),
                   ),
                 ],
@@ -108,22 +114,26 @@ class AssignmentPageState extends State<AssignmentPage> {
                 decoration: _boxedDecoration('Details'),
                 maxLines: 7,
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
               ),
               TextFormField(
                 controller: _priorityController,
                 decoration: _boxedDecoration('Priority (integer)'),
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
               ),
               TextFormField(
                 controller: _notesController,
                 decoration: _boxedDecoration('Notes'),
                 maxLines: 7,
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
               ),
               TextFormField(
                 controller: _colorController,
                 decoration: _boxedDecoration('Color (integer)'),
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
               ),
               SizedBox(height: 16.0),
               Row(
@@ -181,7 +191,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                       widget.selectScreen(
                           _currentAssignment); //only works if all fields are filled.
                     },
-                    child: Text('Save'),
+                    child: TextWidget(text: 'Save', multiplier: 0.7,),
                   ),
                   SizedBox(width: 16.0),
                   ElevatedButton(
@@ -190,7 +200,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                       appState.currentAssignment = null;
                       widget.selectScreen(0);
                     },
-                    child: Text('Cancel'),
+                    child: TextWidget(text: 'Cancel', multiplier: 0.7,),
                   ),
                 ],
               ),
@@ -199,7 +209,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       _dateErrorMessage,
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: Colors.red, fontSize: UserSettings.getFontSize()),
                     ))
             ],
           ),
