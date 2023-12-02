@@ -222,6 +222,10 @@ class AssignmentPageState extends State<AssignmentPage> {
                       _currentAssignment!.dueDate =
                           _selectedDate ?? DateTime.now();
 
+                      if (_detailsController.text.isNotEmpty) {
+                        _currentAssignment!.details = _detailsController.text;
+                      }
+
                       _currentAssignment!.priority = _selectedPriority ?? 0;
 
                       if (_notesController.text.isNotEmpty) {
