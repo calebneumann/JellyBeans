@@ -1,13 +1,12 @@
 import 'package:app_project/pages/SettingsPageWidgets/textWidget.dart';
 import 'package:flutter/material.dart';
-//import 'package:uuid/Uuid.dart';
 import 'package:provider/provider.dart';
-// import 'ListPage.dart';
 import '../models/Assignment.dart';
 import '../main.dart';
 import '../models/UserSettings.dart';
 
 UserSettings userSettings = UserSettings(1);
+
 class AssignmentPage extends StatefulWidget {
   final Function(dynamic) selectScreen;
 
@@ -20,20 +19,17 @@ class AssignmentPage extends StatefulWidget {
 class AssignmentPageState extends State<AssignmentPage> {
   // final _formKey = GlobalKey<FormState>();
 
-  final _nameController =
-      TextEditingController(); //text editors currently used to modify all data.
+  final _nameController = TextEditingController();
   final _classNameController = TextEditingController();
-  final _dueDateController =
-      TextEditingController(); //will change this soon to a drop down or something similar
   final _detailsController = TextEditingController();
-  final _priorityController =
-      TextEditingController(); //TODO: change to drop down
   final _notesController = TextEditingController();
-  final _colorController = TextEditingController(); //TODO: change to drop down
+  // final _colorController = TextEditingController();
 
   Assignment? _currentAssignment; //declared to create save assignment
   String _dateErrorMessage =
       ''; //declared to handle dateTime format errors (temporary)
+  DateTime? _selectedDate = DateTime.now();
+  int? _selectedPriority;
 
   @override
   void initState() {
@@ -41,6 +37,8 @@ class AssignmentPageState extends State<AssignmentPage> {
 
     final appState = context.read<MyAppState>();
     _currentAssignment = appState.currentAssignment;
+    _selectedDate = _currentAssignment?.dueDate;
+    _selectedPriority = _currentAssignment?.priority;
   }
 
   // void _handleSave() {
@@ -64,17 +62,32 @@ class AssignmentPageState extends State<AssignmentPage> {
     );
   }
 
+  String _priorityText(int priority) {
+    switch (priority) {
+      case 0:
+        return ' (Low Priority)';
+      case 1:
+        return '';
+      case 2:
+        return '';
+      case 3:
+        return '';
+      case 4:
+        return ' (High Priority)';
+      default:
+        return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<MyAppState>();
     if (appState.currentAssignment != null) {
       _nameController.text = _currentAssignment!.name;
       _classNameController.text = _currentAssignment!.className;
-      _dueDateController.text = _currentAssignment!.dueDate.toIso8601String();
       _detailsController.text = _currentAssignment!.details;
-      _priorityController.text = _currentAssignment!.priority.toString();
       _notesController.text = _currentAssignment!.notes;
-      _colorController.text = _currentAssignment!.color.toString();
+      // _colorController.text = _currentAssignment!.color.toString();
     }
     return Scaffold(
       body: SingleChildScrollView(
@@ -95,16 +108,42 @@ class AssignmentPageState extends State<AssignmentPage> {
                       controller: _classNameController,
                       decoration: _boxedDecoration('Class Name'),
                       onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                      style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+                      style:
+                          TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
                     ),
                   ),
                   SizedBox(width: 0.0), //To remove space between two boxes
                   Expanded(
-                    child: TextFormField(
-                      controller: _dueDateController,
-                      decoration: _boxedDecoration('Due Date (YYYY-MM-DD)'),
-                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                      style: TextStyle(fontSize: UserSettings.getFontSize() * 0.6),
+                    child: GestureDetector(
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: _selectedDate ?? DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+
+                        if (pickedDate != null && pickedDate != _selectedDate) {
+                          setState(() {
+                            _selectedDate = pickedDate;
+                          });
+                        }
+                      },
+                      child: AbsorbPointer(
+                        child: TextFormField(
+                          controller: TextEditingController(
+                            text: _selectedDate != null
+                                ? _selectedDate!
+                                    .toLocal()
+                                    .toString()
+                                    .split(' ')[0]
+                                : '',
+                          ),
+                          decoration: _boxedDecoration('Due Date'),
+                          style: TextStyle(
+                              fontSize: UserSettings.getFontSize() * 0.8),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -116,10 +155,21 @@ class AssignmentPageState extends State<AssignmentPage> {
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
               ),
-              TextFormField(
-                controller: _priorityController,
-                decoration: _boxedDecoration('Priority (integer)'),
-                onTapOutside: (event) => FocusScope.of(context).unfocus(),
+              DropdownButtonFormField<int>(
+                value: _selectedPriority,
+                onChanged: (int? newValue) {
+                  setState(() {
+                    _selectedPriority = newValue!;
+                  });
+                },
+                items: List.generate(
+                  5,
+                  (index) => DropdownMenuItem<int>(
+                    value: index,
+                    child: Text('${index + 1} ${_priorityText(index)}'),
+                  ),
+                ),
+                decoration: _boxedDecoration('Priority'),
                 style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
               ),
               TextFormField(
@@ -129,12 +179,12 @@ class AssignmentPageState extends State<AssignmentPage> {
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
               ),
-              TextFormField(
-                controller: _colorController,
-                decoration: _boxedDecoration('Color (integer)'),
-                onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
-              ),
+              // TextFormField(
+              //   controller: _colorController,
+              //   decoration: _boxedDecoration('Color (integer)'),
+              //   onTapOutside: (event) => FocusScope.of(context).unfocus(),
+              //   style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+              // ),
               SizedBox(height: 16.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -142,11 +192,23 @@ class AssignmentPageState extends State<AssignmentPage> {
                   ElevatedButton(
                     onPressed: () {
                       final appState = context.read<MyAppState>();
+
+                      if (_nameController.text.isEmpty) {
+                        setState(() {
+                          _dateErrorMessage = "Please enter an assignment name";
+                        });
+                        return;
+                      } else {
+                        setState(() {
+                          _dateErrorMessage = '';
+                        });
+                      }
+
                       if (_currentAssignment == null ||
                           _currentAssignment!.id.isEmpty) {
                         _currentAssignment =
                             appState.assignments.createAssignment();
-                      } //creates assignment if assignment does not exist. Currently, assignment never exists.
+                      } //creates assignment if assignment does not exist.
 
                       if (_nameController.text.isNotEmpty) {
                         _currentAssignment!.name = _nameController.text;
@@ -157,41 +219,31 @@ class AssignmentPageState extends State<AssignmentPage> {
                             _classNameController.text;
                       }
 
-                      if (_dueDateController.text.isNotEmpty) {
-                        try {
-                          _currentAssignment!.dueDate = DateTime.parse(
-                              '${_dueDateController.text} 23:59:59Z');
-                        } catch (e) {
-                          setState(() {
-                            _dateErrorMessage =
-                                'Invalid date format. Please use YYYY-MM-DD';
-                          });
-                          return;
-                        }
-                      }
+                      _currentAssignment!.dueDate =
+                          _selectedDate ?? DateTime.now();
 
-                      if (_priorityController.text.isNotEmpty) {
-                        _currentAssignment!.details = _detailsController.text;
-                        _currentAssignment!.priority =
-                            int.parse(_priorityController.text);
-                      }
+                      _currentAssignment!.priority = _selectedPriority ?? 0;
 
                       if (_notesController.text.isNotEmpty) {
                         _currentAssignment!.notes = _notesController.text;
                       }
 
-                      if (_colorController.text.isNotEmpty) {
-                        _currentAssignment!.color =
-                            int.parse(_colorController.text);
-                      }
+                      // if (_colorController.text.isNotEmpty) {
+                      //   _currentAssignment!.color =
+                      //       int.parse(_colorController.text);
+                      // }
 
                       appState.assignments.saveAssignment(_currentAssignment!);
-                      appState.assignments.sortAssignments();                     //I put this in here to make list page rendering faster. hope it doesnt fuck anything up for u (- kevin)
+                      appState.assignments
+                          .sortAssignments(); //I put this in here to make list page rendering faster. hope it doesnt fuck anything up for u (- kevin)
 
                       widget.selectScreen(
                           _currentAssignment); //only works if all fields are filled.
                     },
-                    child: TextWidget(text: 'Save', multiplier: 0.7,),
+                    child: TextWidget(
+                      text: 'Save',
+                      multiplier: 0.7,
+                    ),
                   ),
                   SizedBox(width: 16.0),
                   ElevatedButton(
@@ -200,7 +252,10 @@ class AssignmentPageState extends State<AssignmentPage> {
                       appState.currentAssignment = null;
                       widget.selectScreen(0);
                     },
-                    child: TextWidget(text: 'Cancel', multiplier: 0.7,),
+                    child: TextWidget(
+                      text: 'Cancel',
+                      multiplier: 0.7,
+                    ),
                   ),
                 ],
               ),
@@ -209,7 +264,9 @@ class AssignmentPageState extends State<AssignmentPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       _dateErrorMessage,
-                      style: TextStyle(color: Colors.red, fontSize: UserSettings.getFontSize()),
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: UserSettings.getFontSize()),
                     ))
             ],
           ),

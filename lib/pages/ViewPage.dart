@@ -1,5 +1,6 @@
 import 'package:app_project/pages/SettingsPageWidgets/textWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/Assignment.dart';
 import '../main.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'CalendarPage.dart';
 import '../models/UserSettings.dart';
 
 UserSettings userSettings = UserSettings(1);
+
 class ViewPage extends StatelessWidget {
   final Function(dynamic) selectScreen;
   final Assignment assignment;
@@ -23,7 +25,8 @@ class ViewPage extends StatelessWidget {
         centerTitle: true,
         title: Text(
           "Jelly Beans' Homework Tracker v0.2",
-          style: TextStyle(color: Colors.white, fontSize: UserSettings.getFontSize() * 1.0),
+          style: TextStyle(
+              color: Colors.white, fontSize: UserSettings.getFontSize() * 1.0),
         ),
         automaticallyImplyLeading: false,
         backgroundColor: theme,
@@ -44,7 +47,9 @@ class ViewPage extends StatelessWidget {
               children: [
                 Text(
                   'Name: ${assignment.name}',
-                  style: TextStyle(fontSize: UserSettings.getFontSize() * 0.9, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: UserSettings.getFontSize() * 0.9,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -53,7 +58,7 @@ class ViewPage extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Due Date: ${assignment.dueDate.toString()}',
+                  'Due Date: ${DateFormat('yyyy-MM-dd HH:mm:ss').format(assignment.dueDate)}',
                   style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
                 ),
                 SizedBox(height: 8),
@@ -63,7 +68,7 @@ class ViewPage extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Priority: ${assignment.priority}',
+                  'Priority: ${assignment.priority + 1}',
                   style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
                 ),
                 SizedBox(height: 8),
@@ -72,10 +77,10 @@ class ViewPage extends StatelessWidget {
                   style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
                 ),
                 SizedBox(height: 8),
-                Text(
-                  'Color: ${assignment.color}',
-                  style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
-                ),
+                // Text(
+                //   'Color: ${assignment.color}',
+                //   style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+                // ),
                 SizedBox(height: 16),
                 Center(
                   child: ElevatedButton(
@@ -83,15 +88,17 @@ class ViewPage extends StatelessWidget {
                       final appState = context.read<MyAppState>();
                       appState.currentAssignment = null;
                       Navigator.pop(context);
-                      if(fromCalendar){
+                      if (fromCalendar) {
                         fromCalendar = false;
                         selectScreen(1);
-                      }
-                      else {
+                      } else {
                         selectScreen(0);
                       }
                     },
-                    child: TextWidget(text: 'Done', multiplier: 0.7,),
+                    child: TextWidget(
+                      text: 'Done',
+                      multiplier: 0.7,
+                    ),
                   ),
                 ),
               ],
