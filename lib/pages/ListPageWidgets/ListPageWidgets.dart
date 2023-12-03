@@ -34,11 +34,9 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
           padding: EdgeInsets.all(5),
           child: Row(
             children: [
-              IconButton(
-                onPressed: () => setState(() {
-                  widget.applyFilter(textFieldController.text);
-                }),
-                icon: Icon(Icons.search),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Icon(Icons.search),
               ),
               SizedBox(
                 width: 5,
@@ -50,6 +48,9 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                     border: OutlineInputBorder(),
                     labelText: 'Search...',
                   ),
+                  onChanged: (_) => setState(() {
+                    widget.applyFilter(textFieldController.text);
+                  }),
                 ),
               ),
               SizedBox(
