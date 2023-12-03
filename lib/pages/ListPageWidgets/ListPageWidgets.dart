@@ -299,12 +299,9 @@ class PriorityWidget extends StatelessWidget {
       priorityStr,
       style: TextStyle(
         background: Paint()
-          ..color = priorityColor
-          ..strokeWidth = 20
-          ..strokeJoin = StrokeJoin.round
-          ..strokeCap = StrokeCap.round
-          ..style = PaintingStyle.stroke,
+          ..color = priorityColor,
         color: priorityColor.computeLuminance() < 0.5 ? Colors.white : Colors.black,
+        fontSize: UserSettings.getFontSize() * .7,
       )
     );
   }
