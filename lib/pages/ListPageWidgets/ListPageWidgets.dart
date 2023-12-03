@@ -2,13 +2,17 @@ import 'package:app_project/models/Assignment.dart';
 import 'package:flutter/material.dart';
 import '../../models/UserSettings.dart';
 import '../SettingsPageWidgets/textWidget.dart';
+import '../../models/Filters.dart';
 UserSettings userSettings = UserSettings(1);
+
 class SearchFilterWidget extends StatefulWidget {
-  final Function(String) applyFilter;
+  final Function(String) applySearch;
+  final Function(Filters) applyFilters;
 
   const SearchFilterWidget({
     super.key,
-    required this.applyFilter,
+    required this.applySearch,
+    required this.applyFilters,
   });
   
   @override
@@ -17,16 +21,26 @@ class SearchFilterWidget extends StatefulWidget {
 
 class _SearchFilterWidgetState extends State<SearchFilterWidget> {
 
-  final textFieldController = TextEditingController();
+  final searchTextController = TextEditingController();
+  final startDateTextController = TextEditingController();
+  final endDateTextController = TextEditingController();
+  final listFilters = Filters();
+  DateTime? _selectedStartDate;
+  DateTime? _selectedEndDate;
 
   @override
   void dispose() {
-    textFieldController.dispose();
+    searchTextController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final style = theme.textTheme.displaySmall!.copyWith(
+      color: theme.colorScheme.onBackground,
+    );
+
     return ExpansionTile(
       title: TextWidget(text: "Search/Filter", multiplier: 0.8,),
       children: [
@@ -34,34 +48,139 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
           padding: EdgeInsets.all(5),
           child: Row(
             children: [
-              IconButton(
-                onPressed: () => setState(() {
-                  widget.applyFilter(textFieldController.text);
-                }),
-                icon: Icon(Icons.search),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Icon(Icons.search),
               ),
               SizedBox(
                 width: 5,
               ),
               Expanded(
                 child: TextField(
-                  controller: textFieldController,
+                  controller: searchTextController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Search...',
                   ),
+                  onChanged: (_) => setState(() {
+                    widget.applySearch(searchTextController.text);
+                  }),
                 ),
               ),
               SizedBox(
                 width: 5,
               ),
+
               IconButton(
-                onPressed: () => setState(() {
-                  widget.applyFilter(textFieldController.text);
-                  print("may make this one do something different");
-                }),
+                onPressed: () => {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10) ),
+                        backgroundColor: theme.colorScheme.primaryContainer,
+                        elevation: 20,
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: [
+                              Text(
+                                "Filters",
+                                style: style.apply(fontSizeFactor: UserSettings.getFontSize() / 27, fontWeightDelta: 2),
+                              ),
+                              SizedBox(height: 5,),
+                              Row(
+                                children: [
+                                  TextWidget(text: "Date Range: ", multiplier: 0.8,),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: _selectedStartDate ?? DateTime.now(),
+                                          firstDate: DateTime(2000), lastDate: DateTime(2101),
+                                        );
+
+                                        if (pickedDate != null && pickedDate != _selectedStartDate) {
+                                          setState(() {
+                                            _selectedStartDate = pickedDate;
+                                            listFilters.startDate = pickedDate;
+                                            widget.applyFilters(listFilters);
+                                            startDateTextController.text = _selectedStartDate != null ? _selectedStartDate!.toLocal().toString().split(' ')[0]: '';
+                                          });
+                                        }
+                                      },
+                                      child: AbsorbPointer(
+                                        child: TextField(
+                                          controller: startDateTextController,
+                                          style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TextWidget(text: " to ", multiplier: 0.7,),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: _selectedEndDate ?? DateTime.now(),
+                                          firstDate: DateTime(2000), lastDate: DateTime(2101),
+                                        );
+
+                                        if (pickedDate != null && pickedDate != _selectedEndDate) {
+                                          setState(() {
+                                            _selectedEndDate = pickedDate;
+                                            listFilters.startDate = pickedDate;
+                                            widget.applyFilters(listFilters);
+                                            endDateTextController.text = _selectedEndDate != null ? _selectedEndDate!.toLocal().toString().split(' ')[0]: '';
+                                          });
+                                        }
+                                      },
+                                      child: AbsorbPointer(
+                                        child: TextField(
+                                          controller: endDateTextController,
+                                          style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 40,),
+                              ElevatedButton(
+                                onPressed: () { 
+                                  listFilters.reset(); 
+                                  widget.applyFilters(listFilters);
+                                  startDateTextController.clear();
+                                  endDateTextController.clear();
+                                },
+                                child: TextWidget(text: "Reset", multiplier: 0.7,),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  ),
+                },
                 icon: Icon(Icons.filter_list),
               ),
+
+              // IconButton(
+              //   // onPressed: showDialog(
+              //   //   context: context,
+              //   //   builder: 
+              //   // ),
+              //   // onPressed: () => setState(() {
+              //   //   //print("may make this one do something different");
+              //   //   // var temp = Filters();
+              //   //   // temp.startDate = DateTime.parse("2023-12-14 16:00:00Z");
+              //   //   // widget.applyFilters(temp);
+              //   // }),
+              //   icon: Icon(Icons.filter_list),
+              // ),
             ],
           ),
         ),
@@ -69,6 +188,8 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
     );
   }
 }
+
+
 
 class AssignmentWidget extends StatelessWidget {
   const AssignmentWidget({
@@ -98,7 +219,11 @@ class AssignmentWidget extends StatelessWidget {
             assignment.name,
             style: style.apply(fontSizeFactor: UserSettings.getFontSize() / 27, fontWeightDelta: 2),
           ),
-          subtitle: TextWidget(text: "priority", multiplier: 0.7,),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: PriorityWidget(priority: assignment.priority),
+          ), 
+          // TextWidget(text: "priority", multiplier: 0.7,),
           children: [
             Container(
               padding: EdgeInsets.all(5),
@@ -117,14 +242,70 @@ class AssignmentWidget extends StatelessWidget {
                     width: 10,
                   ),
                   ElevatedButton(
-                      onPressed: () => {selectScreen(assignment)},
-                      child: TextWidget(text: "View", multiplier: 0.7,)),
+                    onPressed: () => {selectScreen(assignment)},
+                    child: TextWidget(text: "View", multiplier: 0.7,),
+                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class PriorityWidget extends StatelessWidget {
+  final int priority;
+
+  const PriorityWidget({
+    super.key,
+    required this.priority,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String priorityStr;
+    Color priorityColor;
+
+    switch (priority) {
+      case 1:
+        priorityStr = "Optional";
+        priorityColor = const Color.fromARGB(255, 0, 255, 8);
+        break;
+      case 2:
+        priorityStr = "Minor";
+        priorityColor = Color.fromARGB(255, 166, 255, 0);
+        break;
+      case 3:
+        priorityStr = "Medium";
+        priorityColor = Color.fromARGB(255, 251, 255, 0);
+        break;
+      case 4:
+        priorityStr = "Important";
+        priorityColor = Color.fromARGB(255, 255, 166, 0);
+        break;
+      case 5:
+        priorityStr = "Urgent";
+        priorityColor = Color.fromARGB(255, 255, 0, 0);
+        break;
+      default:
+        priorityStr = "N/A";
+        priorityColor = Color.fromARGB(255, 158, 158, 158);
+        break;
+    }
+
+    return Text(
+      priorityStr,
+      style: TextStyle(
+        background: Paint()
+          ..color = priorityColor
+          ..strokeWidth = 20
+          ..strokeJoin = StrokeJoin.round
+          ..strokeCap = StrokeCap.round
+          ..style = PaintingStyle.stroke,
+        color: priorityColor.computeLuminance() < 0.5 ? Colors.white : Colors.black,
+      )
     );
   }
 }
