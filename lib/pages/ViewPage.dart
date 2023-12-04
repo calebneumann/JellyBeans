@@ -15,6 +15,36 @@ class ViewPage extends StatelessWidget {
 
   ViewPage({required this.assignment, required this.selectScreen});
 
+  void _deleteAssignment(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Assignment'),
+          content: Text('Are you sure you want to delete this assignment?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                final appState = context.read<MyAppState>();
+                appState.assignments.deleteAssignment(assignment.id);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                appState.assignments.sortAssignments();
+              },
+              child: Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<MyAppState>();
@@ -31,12 +61,23 @@ class ViewPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: theme,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(context);
-          selectScreen(2);
-        },
-        child: Icon(Icons.edit),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.pop(context);
+              selectScreen(2);
+            },
+            child: Icon(Icons.edit),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: () => _deleteAssignment(context),
+            child: Icon(Icons.delete),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
