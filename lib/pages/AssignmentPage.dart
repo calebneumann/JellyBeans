@@ -65,15 +65,15 @@ class AssignmentPageState extends State<AssignmentPage> {
   String _priorityText(int priority) {
     switch (priority) {
       case 0:
-        return ' (Low Priority)';
+        return ' (Optional)';
       case 1:
-        return '';
+        return ' (Minor)';
       case 2:
-        return '';
+        return ' (Medium)';
       case 3:
-        return '';
+        return ' (Important)';
       case 4:
-        return ' (High Priority)';
+        return ' (Urgent)';
       default:
         return '';
     }
@@ -166,7 +166,10 @@ class AssignmentPageState extends State<AssignmentPage> {
                   5,
                   (index) => DropdownMenuItem<int>(
                     value: index,
-                    child: Text('${index + 1} ${_priorityText(index)}'),
+                    child: Text(
+                      '${index + 1} ${_priorityText(index)}',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ),
                 decoration: _boxedDecoration('Priority'),
