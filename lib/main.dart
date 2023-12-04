@@ -16,18 +16,19 @@ Color theme = Colors
     .pink; //turned theme into variable so that it can eventually be changed on command
 Color navBarTheme = Colors.white;
 
-void main() { 
-    //locks app to portrait mode (ton of issues if its put in landscape)
-    WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) => runApp(
-      ChangeNotifierProvider<ThemeNotifier>(
-        create: (_) => ThemeNotifier(lightTheme),
-        child: MyApp(),
-      ),
-    ));
-    
-    //Delete the upper part and uncomment this if we do not want the app to be locked in portrait mode
-    /*
+void main() {
+  //locks app to portrait mode (ton of issues if its put in landscape)
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(
+            ChangeNotifierProvider<ThemeNotifier>(
+              create: (_) => ThemeNotifier(lightTheme),
+              child: MyApp(),
+            ),
+          ));
+
+  //Delete the upper part and uncomment this if we do not want the app to be locked in portrait mode
+  /*
     runApp(
       ChangeNotifierProvider<ThemeNotifier>(
         create: (_) => ThemeNotifier(lightTheme),
@@ -36,6 +37,7 @@ void main() {
     );
     */
 }
+
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
@@ -78,8 +80,10 @@ class MyAppState extends ChangeNotifier {
     // TODO: This is for testing assignment pulling. This code will not be in the final version
     Assignment as1 = assignments.createAssignment();
     as1.name = "Sample Assignment 1";
-    as1.details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in aliquam eros, a posuere nibh. Nullam in nisl eleifend, bibendum leo at, volutpat nulla. Vestibulum quis nisi felis. Nam a orci congue, facilisis velit vel, posuere est. Ut dolor ante, ultricies a fermentum a, iaculis a leo. Aliquam erat volutpat. Nulla a ligula ac felis iaculis euismod efficitur eu velit. Aenean finibus quis eros sed ornare. Proin fringilla, velit eget viverra tempor, elit dui lobortis orci, eu hendrerit nunc augue a mauris. Phasellus placerat bibendum lectus non feugiat.";
-    as1.notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu enim tellus. Quisque pharetra ipsum quam, et tristique mauris pretium quis. Nulla dui diam, maximus.";
+    as1.details =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in aliquam eros, a posuere nibh. Nullam in nisl eleifend, bibendum leo at, volutpat nulla. Vestibulum quis nisi felis. Nam a orci congue, facilisis velit vel, posuere est. Ut dolor ante, ultricies a fermentum a, iaculis a leo. Aliquam erat volutpat. Nulla a ligula ac felis iaculis euismod efficitur eu velit. Aenean finibus quis eros sed ornare. Proin fringilla, velit eget viverra tempor, elit dui lobortis orci, eu hendrerit nunc augue a mauris. Phasellus placerat bibendum lectus non feugiat.";
+    as1.notes =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu enim tellus. Quisque pharetra ipsum quam, et tristique mauris pretium quis. Nulla dui diam, maximus.";
     as1.dueDate = DateTime.parse('2023-01-03 14:30:00Z');
     as1.priority = 1;
     Assignment as2 = assignments.createAssignment();
@@ -87,19 +91,22 @@ class MyAppState extends ChangeNotifier {
     as2.details = "cheese and crackers grommit";
     as2.notes = "CHEESE GROMIT! CHEESE!";
     as2.dueDate = DateTime.parse('2023-12-15 16:00:00Z');
-    as2.priority = 4;
+    as2.priority = 3;
     Assignment as3 = assignments.createAssignment();
     as3.name = "Sample Assignment 3";
-    as3.details = "The Hog Rider card is unlocked from the Spell Valley (Arena 5). He is a very fast building-targeting, melee troop with moderately high hitpoints and damage. He appears just like his Clash of Clans counterpart; a man with brown eyebrows, a beard, a mohawk, and a golden body piercing in his left ear who is riding a hog. A Hog Rider card costs 4 Elixir to deploy.";
+    as3.details =
+        "The Hog Rider card is unlocked from the Spell Valley (Arena 5). He is a very fast building-targeting, melee troop with moderately high hitpoints and damage. He appears just like his Clash of Clans counterpart; a man with brown eyebrows, a beard, a mohawk, and a golden body piercing in his left ear who is riding a hog. A Hog Rider card costs 4 Elixir to deploy.";
     as3.notes = "HOOOG RIIIDAAAAAAAAAAAAAAAAAAAAAAAA";
     as3.dueDate = DateTime.parse('2023-12-15 16:00:00Z');
-    as3.priority = 5;
+    as3.priority = 4;
     Assignment as4 = assignments.createAssignment();
     as4.name = "Sample Assignment 4";
-    as4.details = "Hello, hello? Uh, I wanted to record a message for you to help you get settled in on your first night. Um, I actually worked in that office before you. I'm finishing up my last week now, as a matter of fact. So, I know it can be a bit overwhelming, but I'm here to tell you there's nothing to worry about. Uh, you'll do fine. So, let's just focus on getting you through your first week. Okay? Uh, let's see, first there's an introductory greeting from the company that I'm supposed to read. Uh, it's kind of a legal thing, you know. Um, \"Welcome to Freddy Fazbear's Pizza. A magical place for kids and grown-ups alike, where fantasy and fun come to life. Fazbear Entertainment is not responsible for damage to property or person. Upon discovering that damage or death has occurred, a missing person report will be filed within 90 days, or as soon property and premises have been thoroughly cleaned and bleached, and the carpets have been replaced.\"";
-    as4.notes = "Hello, Internet, welcome to the 200th Episode of Game Theory! Technically it's the two hundred first and a-half episode because, we had a Mini Theory WAY WAY back on the channel a long time ago that's now privated because of reasons and then technically the Bendy Episode last week was the 200th episode but I thought this felt more appropriate because it's solving FNAF with one final MEGA Theory so the 200th Episode of Game theory!";
+    as4.details =
+        "Hello, hello? Uh, I wanted to record a message for you to help you get settled in on your first night. Um, I actually worked in that office before you. I'm finishing up my last week now, as a matter of fact. So, I know it can be a bit overwhelming, but I'm here to tell you there's nothing to worry about. Uh, you'll do fine. So, let's just focus on getting you through your first week. Okay? Uh, let's see, first there's an introductory greeting from the company that I'm supposed to read. Uh, it's kind of a legal thing, you know. Um, \"Welcome to Freddy Fazbear's Pizza. A magical place for kids and grown-ups alike, where fantasy and fun come to life. Fazbear Entertainment is not responsible for damage to property or person. Upon discovering that damage or death has occurred, a missing person report will be filed within 90 days, or as soon property and premises have been thoroughly cleaned and bleached, and the carpets have been replaced.\"";
+    as4.notes =
+        "Hello, Internet, welcome to the 200th Episode of Game Theory! Technically it's the two hundred first and a-half episode because, we had a Mini Theory WAY WAY back on the channel a long time ago that's now privated because of reasons and then technically the Bendy Episode last week was the 200th episode but I thought this felt more appropriate because it's solving FNAF with one final MEGA Theory so the 200th Episode of Game theory!";
     as4.dueDate = DateTime.parse('2024-10-21 16:00:00Z');
-    as4.priority = 3;
+    as4.priority = 2;
     //*/
   }
 }
@@ -191,7 +198,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
 
 //idk why but it wouldn't work if it was in a different file
 class ThemeNotifier with ChangeNotifier {
