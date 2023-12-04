@@ -12,24 +12,41 @@ class Assignment {
   int color = 0;
 
   Assignment(this.id);
-  Assignment.unnamed() : this.id = Uuid().v1();
+  Assignment.unnamed() : id = Uuid().v1();
+
+  factory Assignment.fromJson(Map<String, dynamic> json, String nickname) {
+    return Assignment('${json['id']}')
+      ..name = json['name'] ?? 'Untitled Assignment'
+      ..details = json['description'] ?? ''
+      ..dueDate = DateTime.parse(json['due_at'])
+      ..className = nickname;
+  }
 }
 
 class Assignments extends ChangeNotifier {
   List<Assignment> _assignments = [];
 
   Assignment createAssignment() {
-    var assignment = new Assignment.unnamed();
+    var assignment = Assignment.unnamed();
     _assignments.add(assignment);
     notifyListeners();
     return assignment;
   }
 
-  Assignment createCanvasAssignment(String id) {
-    var assignment = new Assignment(id);
-    _assignments.add(assignment);
+  int addCanvasAssignments(List<Assignment> assignments) {
+    int count = 0;
+
+    for (var assignment in assignments) {
+      if (_assignments.any((a) => a.id == assignment.id)) {
+        continue;
+      }
+
+      count += 1;
+      _assignments.add(assignment);
+    }
     notifyListeners();
-    return assignment;
+
+    return count;
   }
 
   int deleteAssignment(String id) {
@@ -58,7 +75,7 @@ class Assignments extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sortAssignments(){
-    _assignments.sort( (a, b) => a.dueDate.compareTo(b.dueDate) );
+  void sortAssignments() {
+    _assignments.sort((a, b) => a.dueDate.compareTo(b.dueDate));
   }
 }
