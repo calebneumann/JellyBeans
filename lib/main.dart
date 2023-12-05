@@ -2,6 +2,7 @@ import 'package:app_project/init.dart';
 import 'package:app_project/models/Assignment.dart';
 import 'package:app_project/models/Themes.dart';
 import 'package:app_project/pages/AssignmentPage.dart';
+import 'package:app_project/pages/SettingsPageWidgets/textWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final Future _initFuture = Init.initialize();
+
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
@@ -54,9 +56,18 @@ class MyApp extends StatelessWidget {
           future: _initFuture,
           builder: ((context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return MyHomePage();
+              var _assignments = context.watch<MyAppState>().assignments;
+              _assignments.fromDb(snapshot.data?[0] ?? []);
+              final _assignmentCount =
+                  _assignments.addCanvasAssignments(snapshot.data?[1] ?? []);
+
+              if (_assignmentCount > 0) {
+                Init.saveAssignments(_assignments.getAllAssignments());
+              }
+
+              return MyHomePage(assignmentCount: _assignmentCount);
             } else {
-              return MyHomePage(); // TODO: make a loading screen
+              return Text('loading...'); // TODO: make a loading screen
             }
           }),
         ),
@@ -78,6 +89,8 @@ class MyAppState extends ChangeNotifier {
 
   MyAppState() {
     // TODO: This is for testing assignment pulling. This code will not be in the final version
+    // Note that assignments cannot be saved between runs of the debugger
+    // Assignments can be saved when the app is reloaded
     Assignment as1 = assignments.createAssignment();
     as1.name = "Sample Assignment 1";
     as1.details =
@@ -108,11 +121,15 @@ class MyAppState extends ChangeNotifier {
     as4.dueDate = DateTime.parse('2024-10-21 16:00:00Z');
     as4.priority = 2;
     //*/
+
+    Init.saveAssignments(assignments.getAllAssignments());
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  final int assignmentCount;
+
+  const MyHomePage({super.key, required this.assignmentCount});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -170,6 +187,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.assignmentCount > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: TextWidget(
+            text: 'Added ${widget.assignmentCount} new Canvas assignments',
+            multiplier: 0.7,
+          )),
+        );
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

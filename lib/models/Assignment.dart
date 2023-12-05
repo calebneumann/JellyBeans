@@ -1,3 +1,4 @@
+import 'package:app_project/init.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,6 +22,30 @@ class Assignment {
       ..dueDate = DateTime.parse(json['due_at'])
       ..className = nickname;
   }
+
+  Map<String, dynamic> toDb() {
+    return {
+      'id': id,
+      'name': name,
+      'className': className,
+      'details': details,
+      'dueDate': dueDate.toIso8601String(),
+      'priority': priority,
+      'notes': notes,
+      'color': color,
+    };
+  }
+
+  static Assignment fromDb(Map<String, dynamic> db) {
+    return Assignment(db['id'])
+      ..name = db['name']
+      ..className = db['className']
+      ..details = db['details']
+      ..dueDate = DateTime.parse(db['dueDate'])
+      ..priority = db['priority']
+      ..notes = db['notes']
+      ..color = db['color'];
+  }
 }
 
 class Assignments extends ChangeNotifier {
@@ -30,6 +55,8 @@ class Assignments extends ChangeNotifier {
     var assignment = Assignment.unnamed();
     _assignments.add(assignment);
     notifyListeners();
+
+    Init.saveAssignments(_assignments);
     return assignment;
   }
 
@@ -46,12 +73,17 @@ class Assignments extends ChangeNotifier {
     }
     notifyListeners();
 
+    Init.saveAssignments(_assignments);
+
     return count;
   }
 
   int deleteAssignment(String id) {
     _assignments.removeWhere((assignment) => assignment.id == id);
     notifyListeners();
+
+    Init.saveAssignments(_assignments);
+
     return _assignments.length;
   }
 
@@ -73,9 +105,19 @@ class Assignments extends ChangeNotifier {
 
     _assignments[index] = assignment;
     notifyListeners();
+
+    Init.saveAssignments(_assignments);
   }
 
   void sortAssignments() {
     _assignments.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+  }
+
+  static List<dynamic> toDb(List<Assignment> assignments) {
+    return assignments.map((a) => a.toDb()).toList();
+  }
+
+  void fromDb(dynamic db) {
+    _assignments = List<Assignment>.from(db?.map((x) => Assignment.fromDb(x)));
   }
 }
