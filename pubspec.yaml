@@ -53,6 +53,7 @@ flutter:
     - assets/audio/
     - assets/images/
     - assets/images/BEANS.png
+    - lib/pages/SettingsPageWidgets/theme.txt
 
 
 flutter_native_splash:
