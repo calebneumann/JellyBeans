@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           builder: ((context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               var _assignments = context.watch<MyAppState>().assignments;
-              _assignments.fromDb(snapshot.data?[0] ?? []);
+              _assignments.fromDb(snapshot.data?[0]?['assignments'] ?? []);
               final _assignmentCount =
                   _assignments.addCanvasAssignments(snapshot.data?[1] ?? []);
 
@@ -137,6 +137,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
+  bool showCount = true;
 
   void _selectScreen(dynamic value) {
     setState(() {
@@ -188,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.assignmentCount > 0) {
+      if (showCount && widget.assignmentCount > 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: TextWidget(
@@ -196,6 +197,8 @@ class _MyHomePageState extends State<MyHomePage> {
             multiplier: 0.7,
           )),
         );
+
+        showCount = false;
       }
     });
 

@@ -1,6 +1,6 @@
 import 'package:app_project/models/Assignment.dart';
 import 'package:app_project/models/User.dart';
-import 'package:app_project/models/UserSettings.dart';
+import 'package:app_project/pages/AssignmentPage.dart';
 import 'package:app_project/utils/canvas/fetchAssignments.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
@@ -24,6 +24,8 @@ class Init {
       final storedData = await _loadStoredData();
       final assignments = await _loadAssignments();
 
+      userSettings.setFontSize(storedData?['settings']?['fontSize'] ?? 20);
+
       print('Initialized');
       return [storedData, assignments];
     } catch (e) {
@@ -31,20 +33,25 @@ class Init {
     }
   }
 
-  static Future<dynamic> _loadStoredData() async {
+  static Future<Map<String, dynamic>?> _loadStoredData() async {
     // Load data from database
     try {
       User.fromDb(await store.record('user').get(db!));
-      return await store.record('assignments').get(db!);
+
+      final assignments = await store.record('assignments').get(db!);
+      final settings = await store.record('settings').get(db!);
+
+      return {'assignments': assignments, 'settings': settings};
     } catch (e) {
       print(e);
     }
+
+    return null;
   }
 
   static Future<dynamic> _loadAssignments() async {
     // Load assignments from database and canvas
     if (User.accessToken.length != 69) {
-      print('abandoned');
       return;
     }
 
@@ -55,8 +62,8 @@ class Init {
     await store.record('assignments').put(db!, Assignments.toDb(assignments));
   }
 
-  static Future<void> saveSettings(UserSettings settings) async {
-    await store.record('settings').put(db!, settings.toDb());
+  static Future<void> saveSettings(Map<String, dynamic> settings) async {
+    await store.record('settings').put(db!, settings);
   }
 
   static Future<void> saveUser() async {
