@@ -23,4 +23,11 @@ class UserSettings extends ChangeNotifier {
     _fontSize = fontSize;
     notifyListeners();
   }
+
+  Map<String, dynamic> toDb() {
+    return {
+      'theme': _theme,
+      'fontSize': _fontSize,
+    };
+  }
 }
