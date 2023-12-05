@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           builder: ((context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               var _assignments = context.watch<MyAppState>().assignments;
-              _assignments.fromDb(snapshot.data?[0] ?? []);
+              _assignments.fromDb(snapshot.data?[0]?['assignments'] ?? []);
               final _assignmentCount =
                   _assignments.addCanvasAssignments(snapshot.data?[1] ?? []);
 
