@@ -44,7 +44,6 @@ class Init {
   static Future<dynamic> _loadAssignments() async {
     // Load assignments from database and canvas
     if (User.accessToken.length != 69) {
-      print('abandoned');
       return;
     }
 

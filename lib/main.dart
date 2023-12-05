@@ -137,6 +137,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
+  bool showCount = true;
 
   void _selectScreen(dynamic value) {
     setState(() {
@@ -188,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.assignmentCount > 0) {
+      if (showCount && widget.assignmentCount > 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: TextWidget(
@@ -196,6 +197,8 @@ class _MyHomePageState extends State<MyHomePage> {
             multiplier: 0.7,
           )),
         );
+
+        showCount = false;
       }
     });
 
