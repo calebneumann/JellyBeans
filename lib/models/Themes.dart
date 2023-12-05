@@ -82,10 +82,9 @@ void onThemeChanged(String themeString, ThemeNotifier themeNotifier) async {
       changeMode = Brightness.light;
     }
     customList.add(ThemeData(
+      useMaterial3: true,
       primarySwatch: customMaterial,
-      primaryColor: customTheme,
-      brightness: changeMode,
-      dividerColor: customTheme,
+      brightness: Brightness.dark,
     ));
     print(customList.length);
     themeNotifier.setTheme(customList.first);

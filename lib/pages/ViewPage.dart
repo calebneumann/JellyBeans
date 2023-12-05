@@ -65,7 +65,7 @@ class ViewPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          FloatingActionButton(
+          TextButton(
             onPressed: () {
               Navigator.pop(context);
               selectScreen(2);
@@ -73,7 +73,7 @@ class ViewPage extends StatelessWidget {
             child: Icon(Icons.edit),
           ),
           SizedBox(height: 16),
-          FloatingActionButton(
+          TextButton(
             onPressed: () => _deleteAssignment(context),
             child: Icon(Icons.delete),
           ),
