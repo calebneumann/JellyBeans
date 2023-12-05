@@ -1,3 +1,4 @@
+import 'package:app_project/init.dart';
 import 'package:flutter/foundation.dart';
 
 class UserSettings extends ChangeNotifier {
@@ -22,6 +23,8 @@ class UserSettings extends ChangeNotifier {
   void setFontSize(double fontSize) {
     _fontSize = fontSize;
     notifyListeners();
+
+    Init.saveSettings(toDb());
   }
 
   Map<String, dynamic> toDb() {
