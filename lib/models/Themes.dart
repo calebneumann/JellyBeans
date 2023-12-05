@@ -56,7 +56,7 @@ class _themesState extends State<themes> {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    return ElevatedButton(
+    return TextButton(
         onPressed: () {
           changeTheme();
           onThemeChanged(dropDownValue, themeNotifier);

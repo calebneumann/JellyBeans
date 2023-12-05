@@ -8,9 +8,6 @@ import '../SettingsPageWidgets/textWidget.dart';
 
 Color customTheme = Colors.pink;
 bool darkMode = false;
-bool curColor = false;
-Color _color = Colors.pink;
-
 
 //list of themes in dropdown menu
 List<String> themesList = <String>[
@@ -32,7 +29,9 @@ class DropDownWidget extends StatefulWidget {
 }
 
 class _DropDownWidgetState extends State<DropDownWidget> {
-Color chosenColor = Colors.pink;
+  bool curColor = false;
+  Color _color = Colors.pink;
+  Color chosenColor = Colors.pink;
 
   void changeColor(Color color) {
     setState(() => _color = color);
