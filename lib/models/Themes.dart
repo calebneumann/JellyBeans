@@ -41,16 +41,12 @@ class themes extends StatefulWidget {
 class _themesState extends State<themes> {
   void changeTheme() {
     if (dropDownValue == "Light Mode") {
-      print(dropDownValue);
       theme = Colors.pink;
     } else if (dropDownValue == "Dark Mode") {
-      print(dropDownValue);
       theme = Colors.black;
     } else if (dropDownValue == "Colorblind Mode") {
-      print(dropDownValue);
       theme = Colors.black;
     } else if (dropDownValue == "Custom") {
-      print(dropDownValue);
       theme = customTheme;
     }
   }
@@ -70,10 +66,8 @@ class _themesState extends State<themes> {
 void onThemeChanged(String themeString, ThemeNotifier themeNotifier) async {
   //Brightness changeMode = Brightness.light;
   if (themeString == "Light Mode") {
-    userSettings.setTheme("Light Mode");
     themeNotifier.setTheme(lightTheme);
   } else if (themeString == "Dark Mode") {
-    userSettings.setTheme("Dark Mode");
     themeNotifier.setTheme(darkTheme);
   } else if (themeString == "Custom") {
     customList.clear();
@@ -92,12 +86,8 @@ void onThemeChanged(String themeString, ThemeNotifier themeNotifier) async {
       primarySwatch: customMaterial,
       brightness: Brightness.dark,
     ));
-    print(customList.length);
-      String poop = customList.first.toString();
-  print(poop);
     themeNotifier.setTheme(customList.first);
   } else if (themeString == "Colorblind Mode") {
-    userSettings.setTheme("Colorblind Mode");
     themeNotifier.setTheme(customThemeData);
   }
 

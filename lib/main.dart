@@ -1,7 +1,6 @@
 import 'package:app_project/init.dart';
 import 'package:app_project/models/Assignment.dart';
 import 'package:app_project/models/Themes.dart';
-import 'package:app_project/models/UserSettings.dart';
 import 'package:app_project/pages/AssignmentPage.dart';
 import 'package:app_project/pages/SettingsPageWidgets/textWidget.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +11,7 @@ import 'pages/CalendarPage.dart';
 import 'pages/ListPage.dart';
 import 'pages/CanvasPage.dart';
 import 'pages/ViewPage.dart';
-import 'models/UserSettings.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
-UserSettings userSettings = UserSettings(1);
 
 Color theme = Colors
     .pink; //turned theme into variable so that it can eventually be changed on command
@@ -26,8 +23,7 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(
             ChangeNotifierProvider<ThemeNotifier>(
-              //create: (_) => ThemeNotifier(lightTheme),
-              create: (_) => ThemeNotifier(UserSettings.getThemeData()),
+              create: (_) => ThemeNotifier(lightTheme),
               child: MyApp(),
             ),
           ));
@@ -60,7 +56,6 @@ class _MyAppState extends State<MyApp> {
       create: (context) => MyAppState(),
       child: MaterialApp(
         title: 'Namer App',
-        //theme: UserSettings.getThemeData(),
         theme: themeNotifier.getTheme(),
         home: FutureBuilder(
           future: _initFuture,
@@ -146,17 +141,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
-  @override
-  void initState(){
-    super.initState();
-    ThemeData poop = UserSettings.getThemeData();
-    print(UserSettings.getTheme());
-    setState(() {
-      
-    });
-  }
 
 
   var selectedIndex = 0;
