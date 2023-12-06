@@ -20,11 +20,13 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 import '../pages/SettingsPageWidgets/themesDropdown.dart';
 import '../pages/SettingsPageWidgets/textWidget.dart';
+import 'UserSettings.dart';
 
 //Color curTheme = Colors.pink;
 MaterialColor customMaterial =
     CustomMaterialColor(customTheme.red, customTheme.green, customTheme.blue)
         .mdColor;
+UserSettings userSettings = UserSettings(1);
 
 //Made custom themes a list bc colors would not change if values were changed as a global variable.
 //So I have it create new ThemeData to send to main.dart and then clear the list it was put in
@@ -66,31 +68,39 @@ class _themesState extends State<themes> {
 }
 
 void onThemeChanged(String themeString, ThemeNotifier themeNotifier) async {
-  Brightness changeMode = Brightness.light;
+  //Brightness changeMode = Brightness.light;
   if (themeString == "Light Mode") {
+    userSettings.setTheme("Light Mode");
     themeNotifier.setTheme(lightTheme);
   } else if (themeString == "Dark Mode") {
+    userSettings.setTheme("Dark Mode");
     themeNotifier.setTheme(darkTheme);
   } else if (themeString == "Custom") {
     customList.clear();
     customMaterial = CustomMaterialColor(
             customTheme.red, customTheme.green, customTheme.blue)
         .mdColor;
+        /*
     if (darkMode == true) {
       changeMode = Brightness.dark;
     } else {
       changeMode = Brightness.light;
     }
+    */
     customList.add(ThemeData(
       useMaterial3: true,
       primarySwatch: customMaterial,
       brightness: Brightness.dark,
     ));
     print(customList.length);
+      String poop = customList.first.toString();
+  print(poop);
     themeNotifier.setTheme(customList.first);
   } else if (themeString == "Colorblind Mode") {
+    userSettings.setTheme("Colorblind Mode");
     themeNotifier.setTheme(customThemeData);
   }
+
 }
 
 class CustomMaterialColor {
