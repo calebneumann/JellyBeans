@@ -28,9 +28,10 @@ class ViewPage extends StatelessWidget {
               onPressed: () {
                 final appState = context.read<MyAppState>();
                 appState.assignments.deleteAssignment(assignment.id);
-                Navigator.pop(context);
-                Navigator.pop(context);
                 appState.assignments.sortAssignments();
+                appState.currentAssignment = null;
+                Navigator.pop(context);
+                selectScreen(2);
               },
               child: Text('Delete'),
             ),
@@ -71,13 +72,14 @@ class ViewPage extends StatelessWidget {
               Navigator.pop(context);
               selectScreen(2);
             },
-            child: Icon(Icons.edit),
+            child: Icon(Icons.edit, size: 32.0),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 32),
           TextButton(
             onPressed: () => _deleteAssignment(context),
-            child: Icon(Icons.delete),
+            child: Icon(Icons.delete, size: 32.0),
           ),
+          SizedBox(height: 32),
         ],
       ),
       body: Padding(
