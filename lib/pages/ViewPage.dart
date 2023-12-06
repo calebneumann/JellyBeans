@@ -6,6 +6,7 @@ import '../main.dart';
 import 'package:provider/provider.dart';
 import 'CalendarPage.dart';
 import '../models/UserSettings.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 UserSettings userSettings = UserSettings(1);
 
@@ -81,69 +82,68 @@ class ViewPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Container(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Name: ${assignment.name}',
-                  style: TextStyle(
-                      fontSize: UserSettings.getFontSize() * 0.9,
-                      fontWeight: FontWeight.bold),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Name: ${assignment.name}',
+                style: TextStyle(
+                    fontSize: UserSettings.getFontSize() * 0.9,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Class Name: ${assignment.className}',
+                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Due Date: ${DateFormat('yyyy-MM-dd HH:mm:ss').format(assignment.dueDate)}',
+                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+              ),
+              SizedBox(height: 8),
+              Html(data: "<p>Details: ${assignment.details}</p>", style: {
+                "p": Style(
+                  fontSize: FontSize(UserSettings.getFontSize() * 0.8),
                 ),
-                SizedBox(height: 8),
-                Text(
-                  'Class Name: ${assignment.className}',
-                  style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Due Date: ${DateFormat('yyyy-MM-dd HH:mm:ss').format(assignment.dueDate)}',
-                  style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Details: ${assignment.details}',
-                  style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Priority: ${assignment.priority + 1}',
-                  style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Notes: ${assignment.notes}',
-                  style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
-                ),
-                SizedBox(height: 8),
-                // Text(
-                //   'Color: ${assignment.color}',
-                //   style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
-                // ),
-                SizedBox(height: 16),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      final appState = context.read<MyAppState>();
-                      appState.currentAssignment = null;
-                      Navigator.pop(context);
-                      if (fromCalendar) {
-                        fromCalendar = false;
-                        selectScreen(1);
-                      } else {
-                        selectScreen(0);
-                      }
-                    },
-                    child: TextWidget(
-                      text: 'Done',
-                      multiplier: 0.7,
-                    ),
+              }),
+              SizedBox(height: 8),
+              Text(
+                'Priority: ${assignment.priority + 1}',
+                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Notes: ${assignment.notes}',
+                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+              ),
+              SizedBox(height: 8),
+              // Text(
+              //   'Color: ${assignment.color}',
+              //   style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+              // ),
+              SizedBox(height: 16),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    final appState = context.read<MyAppState>();
+                    appState.currentAssignment = null;
+                    Navigator.pop(context);
+                    if (fromCalendar) {
+                      fromCalendar = false;
+                      selectScreen(1);
+                    } else {
+                      selectScreen(0);
+                    }
+                  },
+                  child: TextWidget(
+                    text: 'Done',
+                    multiplier: 0.7,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
