@@ -90,6 +90,7 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+
 class MyAppState extends ChangeNotifier {
   Assignments assignments = Assignments();
   Assignment? currentAssignment;
