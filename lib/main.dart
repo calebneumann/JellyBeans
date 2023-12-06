@@ -11,12 +11,12 @@ import 'pages/CalendarPage.dart';
 import 'pages/ListPage.dart';
 import 'pages/CanvasPage.dart';
 import 'pages/ViewPage.dart';
+import 'pages/SettingsPageWidgets/fnaf.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Color theme = Colors
     .pink; //turned theme into variable so that it can eventually be changed on command
 Color navBarTheme = Colors.white;
-
 void main() {
   //locks app to portrait mode (ton of issues if its put in landscape)
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,9 +46,9 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+bool setAssignment = true;
 class _MyAppState extends State<MyApp> {
   final Future _initFuture = Init.initialize();
-
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
         home: FutureBuilder(
           future: _initFuture,
           builder: ((context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.connectionState == ConnectionState.done && setAssignment == true) {
               var _assignments = context.watch<MyAppState>().assignments;
               _assignments.fromDb(snapshot.data?[0]?['assignments'] ?? []);
               final _assignmentCount =
@@ -69,10 +69,19 @@ class _MyAppState extends State<MyApp> {
               if (_assignmentCount > 0) {
                 Init.saveAssignments(_assignments.getAllAssignments());
               }
-
+              setAssignment = false;
               return MyHomePage(assignmentCount: _assignmentCount);
-            } else {
-              return Text('loading...'); // TODO: make a loading screen
+            } 
+            else if(setAssignment == false){ //this is probably bad practice but it works so shut up
+              print("im so tired of this");
+              return MyHomePage(assignmentCount: 0);
+            }
+            
+            else {
+              setAssignment = true;
+              print("loading");
+              //return Text('loading...'); // TODO: make a loading screen
+              return FnafWidget(rand: "assets/images/BONNIE.png");
             }
           }),
         ),
@@ -80,6 +89,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
 
 class MyAppState extends ChangeNotifier {
   Assignments assignments = Assignments();
