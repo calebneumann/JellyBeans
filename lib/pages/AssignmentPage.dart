@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/Assignment.dart';
 import '../main.dart';
 import '../models/UserSettings.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 UserSettings userSettings = UserSettings(1);
 
@@ -148,13 +149,23 @@ class AssignmentPageState extends State<AssignmentPage> {
                   ),
                 ],
               ),
-              TextFormField(
-                controller: _detailsController,
-                decoration: _boxedDecoration('Details'),
-                maxLines: 7,
-                onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                style: TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
-              ),
+              !(appState.currentAssignment?.details.startsWith('<') ?? false)
+                  ? TextFormField(
+                      controller: _detailsController,
+                      decoration: _boxedDecoration('Details'),
+                      maxLines: 7,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                      style:
+                          TextStyle(fontSize: UserSettings.getFontSize() * 0.8),
+                    )
+                  : Html(
+                      data: "<p>Details: ${_detailsController.value.text}</p>",
+                      style: {
+                        "p": Style(
+                          fontSize: FontSize(UserSettings.getFontSize() * 0.8),
+                        ),
+                      },
+                    ),
               DropdownButtonFormField<int>(
                 value: _selectedPriority,
                 onChanged: (int? newValue) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/UserSettings.dart';
 import '../SettingsPageWidgets/textWidget.dart';
 import '../../models/Filters.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 UserSettings userSettings = UserSettings(1);
 
@@ -278,14 +279,26 @@ class AssignmentWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Flexible(
-                    child: Text(
-                      assignment.details,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
-                      softWrap: false,
-                      style:
-                          TextStyle(fontSize: UserSettings.getFontSize() * 0.7),
-                    ),
+                    child: assignment.details.startsWith('<')
+                        ? Html(
+                            data: assignment.details,
+                            style: {
+                              'body': Style(
+                                fontSize:
+                                    FontSize(UserSettings.getFontSize() * 0.7),
+                                height: Height(
+                                    UserSettings.getFontSize() * 0.7 * 5),
+                              )
+                            },
+                          )
+                        : Text(
+                            assignment.details,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5,
+                            softWrap: false,
+                            style: TextStyle(
+                                fontSize: UserSettings.getFontSize() * 0.7),
+                          ),
                   ),
                   SizedBox(
                     width: 10,

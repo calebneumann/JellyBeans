@@ -28,6 +28,7 @@ dependencies:
   http: ^1.1.0
   sembast: ^3.5.0+1
   path_provider: ^2.1.1
+  flutter_html: ^3.0.0-beta.2
 
 dev_dependencies:
   flutter_test:
