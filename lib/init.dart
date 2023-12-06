@@ -25,6 +25,7 @@ class Init {
       final assignments = await _loadAssignments();
 
       userSettings.setFontSize(storedData?['settings']?['fontSize'] ?? 20);
+      userSettings.setTheme(storedData?['settings']?['theme'] ?? "Light Mode");
 
       print('Initialized');
       return [storedData, assignments];
