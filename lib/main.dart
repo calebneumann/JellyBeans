@@ -26,6 +26,7 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(
             ChangeNotifierProvider<ThemeNotifier>(
+              //create: (_) => ThemeNotifier(lightTheme),
               create: (_) => ThemeNotifier(UserSettings.getThemeData()),
               child: MyApp(),
             ),
@@ -59,7 +60,8 @@ class _MyAppState extends State<MyApp> {
       create: (context) => MyAppState(),
       child: MaterialApp(
         title: 'Namer App',
-        theme: UserSettings.getThemeData(),
+        //theme: UserSettings.getThemeData(),
+        theme: themeNotifier.getTheme(),
         home: FutureBuilder(
           future: _initFuture,
           builder: ((context, snapshot) {

@@ -18,15 +18,15 @@ class UserSettings extends ChangeNotifier {
 
   static ThemeData getThemeData() {
     if (getTheme() == "Light Mode") {
-      theme = Colors.pink;
+      //theme = Colors.pink;
       _startThemeData = lightTheme;
       print("came light mode");
     } else if (getTheme() == "Dark Mode") {
-      theme = Colors.black;
+      //theme = Colors.black;
       _startThemeData = darkTheme;
       print("came dark mode");
     } else if (getTheme() == "Colorblind Mode") {
-      theme = Colors.black;
+      //theme = Colors.black;
       _startThemeData = customThemeData;
       print("came colorblind mode");
     }
