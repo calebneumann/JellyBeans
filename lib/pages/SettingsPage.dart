@@ -43,8 +43,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void turnOnFNAF(bool state) {
-    randInt = Random()
-        .nextInt(101); //gets random number between 0 and 100, inclusively
+    randInt = Random().nextInt(127); //gets random number between 0 and 126, inclusively. gave golden freddy a little high chance
     if (randInt >= 0 && randInt < 25) {
       randJump = "assets/images/BONNIE.gif";
     } else if (randInt >= 25 && randInt < 50) {
@@ -53,12 +52,14 @@ class _SettingsPageState extends State<SettingsPage> {
       randJump = "assets/images/FREDDY.gif";
     } else if (randInt >= 75 && randInt < 100) {
       randJump = "assets/images/FOXY.gif";
+    } else if (randInt >= 101 && randInt < 125) {
+      randJump = "assets/images/BEANS.gif";
     }
-    //freddy has 1/101 chance to be chosen
+    //freddy has 1/63 chance to be chosen
     else {
       randJump = "assets/images/GOLDEN_FREDDY.jpg";
       //uncomment if you want the app to crash (1/101 chance)
-      //isGoldenFreddy = true;
+      isGoldenFreddy = true;
     }
 
     setState(() {
