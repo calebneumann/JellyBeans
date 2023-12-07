@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
               setAssignment = true;
               print("loading");
               //return Text('loading...'); // TODO: make a loading screen
-              return FnafWidget(rand: "assets/images/BONNIE.png");
+              return FnafWidget(rand: "assets/images/BEANS.gif");
             }
           }),
         ),
