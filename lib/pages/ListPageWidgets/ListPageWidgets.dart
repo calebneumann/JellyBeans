@@ -28,6 +28,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
   final listFilters = Filters();
   DateTime? _selectedStartDate;
   DateTime? _selectedEndDate;
+  int? _selectedPriority;
 
   @override
   void dispose() {
@@ -167,7 +168,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                                               pickedDate != _selectedEndDate) {
                                             setState(() {
                                               _selectedEndDate = pickedDate;
-                                              listFilters.startDate =
+                                              listFilters.endDate =
                                                   pickedDate;
                                               widget.applyFilters(listFilters);
                                               endDateTextController.text =
@@ -194,14 +195,52 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                                   ],
                                 ),
                                 SizedBox(
+                                  height: 20,
+                                ),
+
+                                Row(
+                                  children: [
+                                    TextWidget(
+                                      text: "Priority: ",
+                                      multiplier: 0.8,
+                                    ),
+                                    DropdownButton<int>(
+                                      value: _selectedPriority,
+                                      elevation: 100,
+                                      items: List.generate(
+                                        5,
+                                        (index) => DropdownMenuItem<int>(
+                                          value: index,
+                                          child: Text(
+                                            '${index + 1} ${_priorityText(index)}',
+                                            style: TextStyle(color: Colors.black),
+                                          ),
+                                        ),
+                                      ),
+                                      onChanged: (int? newValue) {
+                                        setState(() {
+                                          _selectedPriority = newValue!;
+                                          listFilters.maxPriority = newValue;
+                                          listFilters.minPriority = newValue;
+                                          widget.applyFilters(listFilters);
+                                        });
+                                      },
+                                    ),
+                                  ]
+                                ),
+                                SizedBox(
                                   height: 40,
                                 ),
+
                                 ElevatedButton(
                                   onPressed: () {
-                                    listFilters.reset();
-                                    widget.applyFilters(listFilters);
-                                    startDateTextController.clear();
-                                    endDateTextController.clear();
+                                    setState(() {
+                                      listFilters.reset();
+                                      widget.applyFilters(listFilters);
+                                      startDateTextController.clear();
+                                      endDateTextController.clear();
+                                      _selectedPriority = null;
+                                    });
                                   },
                                   child: TextWidget(
                                     text: "Reset",
@@ -317,6 +356,23 @@ class AssignmentWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+String _priorityText(int priority) {
+  switch (priority) {
+    case 0:
+      return ' (Optional)';
+    case 1:
+      return ' (Minor)';
+    case 2:
+      return ' (Medium)';
+    case 3:
+      return ' (Important)';
+    case 4:
+      return ' (Urgent)';
+    default:
+      return '';
   }
 }
 

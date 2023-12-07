@@ -51,9 +51,9 @@ class _ListPageState extends State<ListPage> {
 
     //Filter by filters
     var assignments = appState.assignments.getAllAssignments().where( (a) => 
-      (a.dueDate.isAfter(listFilters.startDate) && a.dueDate.isBefore(listFilters.endDate)) || (a.priority > listFilters.minPriority && a.priority < listFilters.minPriority) 
+      (a.dueDate.isAfter(listFilters.startDate) && a.dueDate.isBefore(listFilters.endDate)) && (a.priority >= listFilters.minPriority && a.priority <= listFilters.maxPriority) 
     ).toList();
-
+    
     //Search by query
     assignments = assignments.where( (a) => 
       a.name.contains(searchQuery) || a.notes.contains(searchQuery) || a.details.contains(searchQuery) 

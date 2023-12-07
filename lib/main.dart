@@ -223,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Jelly Beans' Homework Tracker v0.2",
+          "Jelly Beans' Homework Tracker v0.3",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: theme,
