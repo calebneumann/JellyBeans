@@ -82,7 +82,7 @@ class ViewPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Jelly Beans' Homework Tracker v0.2",
+          "Jelly Beans' Homework Tracker v0.3",
           style: TextStyle(
               color: Colors.white, fontSize: UserSettings.getFontSize() * 1.0),
         ),
