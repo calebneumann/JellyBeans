@@ -32,6 +32,7 @@ class ViewPage extends StatelessWidget {
                 appState.currentAssignment = null;
                 Navigator.pop(context);
                 selectScreen(2);
+                _deleteConfirm(context);
               },
               child: Text('Delete'),
             ),
@@ -40,6 +41,31 @@ class ViewPage extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _deleteConfirm(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Assignment Successfully Deleted'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                if (fromCalendar == true) {
+                  selectScreen(1);
+                } else {
+                  selectScreen(0);
+                }
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
             ),
           ],
         );

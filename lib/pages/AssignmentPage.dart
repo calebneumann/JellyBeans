@@ -40,6 +40,14 @@ class AssignmentPageState extends State<AssignmentPage> {
     _currentAssignment = appState.currentAssignment;
     _selectedDate = _currentAssignment?.dueDate;
     _selectedPriority = _currentAssignment?.priority;
+
+    if (appState.currentAssignment != null) {
+      _nameController.text = _currentAssignment!.name;
+      _classNameController.text = _currentAssignment!.className;
+      _detailsController.text = _currentAssignment!.details;
+      _notesController.text = _currentAssignment!.notes;
+      // _colorController.text = _currentAssignment!.color.toString();
+    }
   }
 
   // void _handleSave() {
@@ -83,13 +91,7 @@ class AssignmentPageState extends State<AssignmentPage> {
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<MyAppState>();
-    if (appState.currentAssignment != null) {
-      _nameController.text = _currentAssignment!.name;
-      _classNameController.text = _currentAssignment!.className;
-      _detailsController.text = _currentAssignment!.details;
-      _notesController.text = _currentAssignment!.notes;
-      // _colorController.text = _currentAssignment!.color.toString();
-    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -222,29 +224,20 @@ class AssignmentPageState extends State<AssignmentPage> {
                           _currentAssignment!.id.isEmpty) {
                         _currentAssignment =
                             appState.assignments.createAssignment();
-                      } //creates assignment if assignment does not exist.
+                      } // creates assignment if assignment does not exist.
 
-                      if (_nameController.text.isNotEmpty) {
-                        _currentAssignment!.name = _nameController.text;
-                      }
+                      _currentAssignment!.name = _nameController.text;
 
-                      if (_classNameController.text.isNotEmpty) {
-                        _currentAssignment!.className =
-                            _classNameController.text;
-                      }
+                      _currentAssignment!.className = _classNameController.text;
 
                       _currentAssignment!.dueDate =
                           _selectedDate ?? DateTime.now();
 
-                      if (_detailsController.text.isNotEmpty) {
-                        _currentAssignment!.details = _detailsController.text;
-                      }
+                      _currentAssignment!.details = _detailsController.text;
 
                       _currentAssignment!.priority = _selectedPriority ?? 0;
 
-                      if (_notesController.text.isNotEmpty) {
-                        _currentAssignment!.notes = _notesController.text;
-                      }
+                      _currentAssignment!.notes = _notesController.text;
 
                       // if (_colorController.text.isNotEmpty) {
                       //   _currentAssignment!.color =
@@ -255,8 +248,7 @@ class AssignmentPageState extends State<AssignmentPage> {
                       appState.assignments
                           .sortAssignments(); //I put this in here to make list page rendering faster. hope it doesnt fuck anything up for u (- kevin)
 
-                      widget.selectScreen(
-                          _currentAssignment); //only works if all fields are filled.
+                      widget.selectScreen(_currentAssignment);
                     },
                     child: TextWidget(
                       text: 'Save',
